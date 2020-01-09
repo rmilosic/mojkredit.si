@@ -21,7 +21,8 @@ class App extends React.Component {
         'creditLength': 24,
         'creditAmount': 5000,
         'creditAffiliation': true,
-        'activeBanks': []
+        'activeBanks': [],
+        'creditInsurance': 'mortgage'
       },
       bankSkills: {
         'mortgage': ['sberbank'],

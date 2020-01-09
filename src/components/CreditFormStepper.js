@@ -15,10 +15,10 @@ import CreditType from './CreditType'
 import CreditAmount from './CreditAmount'
 import CreditInsurance from './CreditInsurance'
 
+
 const getSteps = function() {
   return ['Izberi kategorijo', 'Izberi znesek', 'Način zavarovanja'];
 }
-
 
 class CreditFormStepper extends Component {
   
@@ -32,6 +32,8 @@ class CreditFormStepper extends Component {
       steps: getSteps(),
     }
     this.handleNext = this.handleNext.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+
 
   }
 
@@ -96,8 +98,8 @@ class CreditFormStepper extends Component {
     });
   };*/
 
- handleReset = () => {
-    this.setActiveStep(0);
+  handleReset = () => {
+    this.setState({ activeStep: 0});
   };
 
 
@@ -135,14 +137,11 @@ class CreditFormStepper extends Component {
 
 
 
-          {this.state['activeStep'] === this.state['steps'].length ? (
+          {this.state['activeStep'] === this.state['steps'].length - 1  ? (
             
             <Grid item xs={12}>
               <Box mt="2rem"/>
                 
-              <Typography >
-                All steps completed - you&apos;re finished
-              </Typography>
               <Button onClick={this.handleReset}>
                 Reset
               </Button>
