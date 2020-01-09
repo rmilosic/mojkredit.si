@@ -18,8 +18,8 @@ class App extends React.Component {
     this.state = {
       formValues: {
         'creditType': 'mortgage',
-        'creditLength': 24,
         'creditAmount': 5000,
+        'creditTime': 120,
         'creditAffiliation': true,
         'activeBanks': [],
         'creditInsurance': 'mortgage'
@@ -36,13 +36,49 @@ class App extends React.Component {
     this.gatherCalculations = this.gatherCalculations.bind(this)
   }
 
-  /*calculate(bank){
-    console.log('credit type', this.state.formValues['creditType'])
-    console.log('calculating bank', bank)
-  }*/
-
+  fetchExample(){
+    return fetch('https://www.sberbank.si/scredits/?command=calculate', {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Connection': 'keep-alive',
+        'Content-Length': 170,
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Sec-Fetch-Site': 'same-origin',
+        'Origin': 'https://www.sberbank.si',
+        'Sec-Fetch-Mode': 'cors',
+        'Referer': 'https://www.sberbank.si/izracun-stanovanjski-kredit',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Host': 'www.sberbank.si'
+      },
+      body: JSON.stringify({
+        'id': 17,
+        'namenKredita': 2,
+        'oblikaSodelovanja': 1,
+        'valuta': 1,
+        'vrstaOM': 1,
+        'znesekKredita': 1000,
+        'odplacilnaDoba': 68,
+        'zadnjaMesecnaAnuiteta': 0,
+        'format': 'html',
+        'nacinZavarovanja': 1
+      }),
+    })
+    .then(response => console.log(response))
+    .catch((error) =>{
+      console.error(error);
+    });
+  }
+  
+  
   gatherCalculations(){
-    console.log('Triggered gatherCalculations')
+    console.log('Triggered gatherCalculations');
+
+    this.fetchExample();
 
     if (this.state.formValues['activeBanks']){
       let activeBanks = this.state.formValues['activeBanks']
@@ -110,18 +146,10 @@ class App extends React.Component {
         >
           
           <Grid item xs={12} sm={10} md={8} lg={8}>
-            {/*<CreditForm 
-            creditType={this.state.formValues['creditType']}
-            creditTime={this.state.formValues['creditLength']}
-            creditAmount={this.state.formValues['creditAmount']}
-            creditAffiliation={this.state.formValues['creditAffiliation']}
-            creditInsurance={this.state.formValues['creditInsurance']}
-            gatherCalculations={this.gatherCalculations}
-            handleChange={this.handleChange}/>*/}
             <CreditFormStepper 
               creditType={this.state.formValues['creditType']}
-              creditTime={this.state.formValues['creditLength']}
               creditAmount={this.state.formValues['creditAmount']}
+              creditTime={this.state.formValues['creditTime']}
               creditAffiliation={this.state.formValues['creditAffiliation']}
               creditInsurance={this.state.formValues['creditInsurance']}
               gatherCalculations={this.gatherCalculations}
