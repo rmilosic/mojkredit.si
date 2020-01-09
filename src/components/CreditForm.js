@@ -5,11 +5,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import CreditType from './CreditType'
-import CreditAffiliation from './CreditAffiliation'
-import CreditAmount from './CreditAmount'
-import CreditInsurance from './CreditInsurance'
-/*import HorizontalLinearStepper from './CreditFormStepper'*/
+
+import HorizontalLinearStepper from './CreditFormStepper'
 
 
 class CreditForm extends Component {

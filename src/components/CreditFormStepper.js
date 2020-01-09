@@ -1,133 +1,186 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 
-function getSteps() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+import FormControl from '@material-ui/core/FormControl';
+
+import CreditType from './CreditType'
+/*import CreditAffiliation from './CreditAffiliation'*/
+import CreditAmount from './CreditAmount'
+import CreditInsurance from './CreditInsurance'
+
+const getSteps = function() {
+  return ['Izberi kategorijo', 'Izberi znesek', 'Način zavarovanja'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return 'Select campaign settings...';
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown step';
+
+class CreditFormStepper extends Component {
+  
+  
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeStep: 0,
+      skipped: new Set(),
+      steps: getSteps(),
+    }
+    this.handleNext = this.handleNext.bind(this);
+
   }
-}
 
-export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-  const steps = getSteps();
+  
+  
+  getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} />;
+      case 1:
+        return <CreditAmount creditAmount={this.props.creditAmount} handleChange={this.props.handleChange} />;
+      case 2:
+        return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
+      default:
+        return 'Unknown step';
+    }
+  }
 
-  const isStepOptional = step => {
-    return step === 1;
+  
+
+
+  isStepOptional = step => {
+    return false;
   };
 
-  const isStepSkipped = step => {
-    return skipped.has(step);
+  isStepSkipped(step){
+    return this.state['skipped'].has(step);
   };
 
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
+  handleNext(){
+    console.log(this.state['skipped']);
+    console.log(this.state);
+    let activeStep = this.state['activeStep'];
+    let newSkipped = this.state['skipped'];
+
+    if (this.isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+      newSkipped.delete(this.state['activeStep']);
     }
 
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    this.setState({ activeStep: this.state['activeStep'] + 1 });
+
+    /*this.setSkipped(newSkipped);*/
   };
 
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+  handleBack = () => {
+    this.setState({ activeStep: this.state['activeStep'] - 1 });
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
+  /*handleSkip = () => {
+    if (!this.isStepOptional(this.state['activeStep'])) {
       // You probably want to guard against something like this,
       // it should never occur unless someone's actively trying to break something.
       throw new Error("You can't skip a step that isn't optional.");
     }
 
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-    setSkipped(prevSkipped => {
+    this.setActiveStep(prevActiveStep => prevActiveStep + 1);
+    this.setSkipped(prevSkipped => {
       const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
+      newSkipped.add(this.state['activeStep']);
       return newSkipped;
     });
+  };*/
+
+ handleReset = () => {
+    this.setActiveStep(0);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
-  return (
-    <div>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = <Typography variant="caption">Optional</Typography>;
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography >
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset}>
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Typography >{getStepContent(activeStep)}</Typography>
-            <div>
-              <Button disabled={activeStep === 0} onClick={handleBack}>
-                Back
+  render() {
+    return ( 
+        <div>
+        <Stepper activeStep={this.state['activeStep']}>
+          {this.state['steps'].map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+            if (this.isStepOptional(index)) {
+              labelProps.optional = <Typography variant="caption">Optional</Typography>;
+            }
+            if (this.isStepSkipped(index)) {
+              stepProps.completed = false;
+            }
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+          </Stepper>
+          
+          <Grid item xs={12}>
+            <Box mt="2rem"/>
+            <FormControl component="fieldset" fullWidth={true}>
+                
+            {this.getStepContent(this.state['activeStep'])}
+          
+          </FormControl>
+          
+          </Grid>
+         
+
+
+
+          {this.state['activeStep'] === this.state['steps'].length ? (
+            
+            <Grid item xs={12}>
+              <Box mt="2rem"/>
+                
+              <Typography >
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Button onClick={this.handleReset}>
+                Reset
               </Button>
-              {isStepOptional(activeStep) && (
+              <Button variant="contained" color="primary" onClick={this.props.gatherCalculations}>Izračunaj</Button>
+
+              </Grid>
+          ) : (
+              <Grid item xs={12}>
+                <Box mt="2rem"/>
+
+                <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
+                  Back
+                </Button>
+                {this.isStepOptional(this.state['activeStep']) && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleSkip}
+                  >
+                    Skip
+                  </Button>
+                )}
+
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleSkip}
+                  onClick={this.handleNext}
                 >
-                  Skip
+                  {this.state['activeStep'] === this.state['steps'].length - 1 ? 'Finish' : 'Next'}
                 </Button>
-              )}
+              </Grid>
 
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-              >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
+            )}
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+      );
+  }
 }
 
+
+      
+export default CreditFormStepper;
