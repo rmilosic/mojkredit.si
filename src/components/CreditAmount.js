@@ -15,7 +15,7 @@ class CreditAmount extends Component {
                     <h1>Izberite znesek kredita</h1>
                 </Grid>
             
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <Slider
                         value={this.props.creditAmount}
                         name="creditAmount"

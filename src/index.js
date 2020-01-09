@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CreditForm from './components/CreditForm';
+/*import CreditForm from './components/CreditForm';*/
+import CreditFormStepper from './components/CreditFormStepper';
 import Container from '@material-ui/core/Container';
 
 
@@ -108,14 +109,23 @@ class App extends React.Component {
         >
           
           <Grid item xs={12} sm={10} md={8} lg={8}>
-            <CreditForm 
+            {/*<CreditForm 
             creditType={this.state.formValues['creditType']}
             creditTime={this.state.formValues['creditLength']}
             creditAmount={this.state.formValues['creditAmount']}
             creditAffiliation={this.state.formValues['creditAffiliation']}
             creditInsurance={this.state.formValues['creditInsurance']}
             gatherCalculations={this.gatherCalculations}
-            handleChange={this.handleChange}/>
+            handleChange={this.handleChange}/>*/}
+            <CreditFormStepper 
+              creditType={this.state.formValues['creditType']}
+              creditTime={this.state.formValues['creditLength']}
+              creditAmount={this.state.formValues['creditAmount']}
+              creditAffiliation={this.state.formValues['creditAffiliation']}
+              creditInsurance={this.state.formValues['creditInsurance']}
+              gatherCalculations={this.gatherCalculations}
+              handleChange={this.handleChange} />
+
           </Grid>
           
         </Grid>
