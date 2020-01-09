@@ -17,7 +17,7 @@ import CreditInsurance from './CreditInsurance'
 
 
 const getSteps = function() {
-  return ['Izberi kategorijo', 'Izberi znesek', 'Način zavarovanja'];
+  return ['Kategorija', 'Znesek & doba', 'Način zavarovanja'];
 }
 
 class CreditFormStepper extends Component {
@@ -30,11 +30,12 @@ class CreditFormStepper extends Component {
       activeStep: 0,
       skipped: new Set(),
       steps: getSteps(),
+      hideForm: false
     }
     this.handleNext = this.handleNext.bind(this);
     this.handleReset = this.handleReset.bind(this);
-
-
+    this.handleFinishClick = this.handleFinishClick.bind(this);
+    this.showForm = this.showForm.bind(this);
   }
 
   
@@ -44,7 +45,8 @@ class CreditFormStepper extends Component {
       case 0:
         return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} />;
       case 1:
-        return <CreditAmount creditAmount={this.props.creditAmount} handleChange={this.props.handleChange} />;
+        return <CreditAmount creditAmount={this.props.creditAmount} 
+        creditTime={this.props.creditTime} handleChange={this.props.handleChange} />;
       case 2:
         return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
       default:
@@ -102,78 +104,101 @@ class CreditFormStepper extends Component {
     this.setState({ activeStep: 0});
   };
 
+  handleFinishClick() {
+    this.setState({ hideForm: true });
+    this.props.gatherCalculations();
+  }
+
+  showForm(){
+    this.setState({ hideForm: false });
+    
+  }
 
   render() {
     return ( 
+        
         <div>
-        <Stepper activeStep={this.state['activeStep']}>
-          {this.state['steps'].map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            if (this.isStepOptional(index)) {
-              labelProps.optional = <Typography variant="caption">Optional</Typography>;
-            }
-            if (this.isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-          </Stepper>
-          
-          <Grid item xs={12}>
-            <Box mt="2rem"/>
-            <FormControl component="fieldset" fullWidth={true}>
-                
-            {this.getStepContent(this.state['activeStep'])}
-          
-          </FormControl>
-          
-          </Grid>
-         
-
-
-
-          {this.state['activeStep'] === this.state['steps'].length - 1  ? (
+          { this.state['hideForm'] ? (
+            <div>
+              <Typography>Form hidden</Typography>
+              <Button onClick={this.showForm} 
+              variant="contained"
+              color="primary">
+                    Show Form
+              </Button>
+            </div>
+          ) : (
+          <div>
+          <Stepper activeStep={this.state['activeStep']}>
+            {this.state['steps'].map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              if (this.isStepOptional(index)) {
+                labelProps.optional = <Typography variant="caption">Optional</Typography>;
+              }
+              if (this.isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+            </Stepper>
             
             <Grid item xs={12}>
               <Box mt="2rem"/>
-                
-              <Button onClick={this.handleReset}>
-                Reset
-              </Button>
-              <Button variant="contained" color="primary" onClick={this.props.gatherCalculations}>Izračunaj</Button>
+              <FormControl component="fieldset" fullWidth={true}>
+                  
+              {this.getStepContent(this.state['activeStep'])}
+            
+            </FormControl>
+            
+            </Grid>
+          
+            
 
-              </Grid>
-          ) : (
+            
+            {this.state['activeStep'] === this.state['steps'].length - 1  ? (
+              
               <Grid item xs={12}>
                 <Box mt="2rem"/>
-
-                <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
-                  Back
+                  
+                <Button onClick={this.handleReset}>
+                  Ponastavi
                 </Button>
-                {this.isStepOptional(this.state['activeStep']) && (
+                <Button variant="contained" color="primary" onClick={this.handleFinishClick}>Izračunaj</Button>
+
+                </Grid>
+            ) : (
+                <Grid item xs={12}>
+                  <Box mt="2rem"/>
+
+                  <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
+                    Nazaj
+                  </Button>
+                  {this.isStepOptional(this.state['activeStep']) && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleSkip}
+                    >
+                      Skip
+                    </Button>
+                  )}
+
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={this.handleSkip}
+                    onClick={this.handleNext}
                   >
-                    Skip
+                    {this.state['activeStep'] === this.state['steps'].length - 1 ? 'Finish' : 'Naprej'}
                   </Button>
-                )}
+                </Grid>
 
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                >
-                  {this.state['activeStep'] === this.state['steps'].length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </Grid>
-
+              )}
+              </div>
             )}
             </div>
       );
