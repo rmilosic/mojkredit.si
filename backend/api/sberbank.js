@@ -5,27 +5,33 @@ const htmlParser = require('node-html-parser');
 
 console.log('Loading function');
 
-var options = {
-  "data": "id=4&nacinZavarovanja=2&namenKredita=1&oblikaSodelovanja=1&valuta=1&vrstaOM=2&znesekKredita=15000&odplacilnaDoba=132&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html",
-  "options": {
-    "host": "www.sberbank.si",
-    "path": "/scredits/?command=calculate",
-    "method": "POST",
-    "headers": {
-      "Accept": "*/*",
-      "Connection": "keep-alive",
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Cookie": "ASP.NET_SessionId=l3nillj4s0lj2zriyrzarz3h",
-      "Host": "www.sberbank.si",
-      "Origin": "https://www.sberbank.si",
-      "Referer": "http://www.sberbank.si/scredits/?command=calculate",
-      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"
+module.exports.potrosniskiCalc = (event, context, callback) => {
+
+  var form_data = event.data;
+  console.log(form_data);
+
+  var options = {
+    "data": `id=4&nacinZavarovanja=${form_data['creditInsurance']}&namenKredita=1&oblikaSodelovanja=1&valuta=1&vrstaOM=2&znesekKredita=${form_data['creditAmount']}
+    &odplacilnaDoba=${form_data['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
+    "options": {
+      "host": "www.sberbank.si",
+      "path": "/scredits/?command=calculate",
+      "method": "POST",
+      "headers": {
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cookie": "ASP.NET_SessionId=l3nillj4s0lj2zriyrzarz3h",
+        "Host": "www.sberbank.si",
+        "Origin": "https://www.sberbank.si",
+        "Referer": "http://www.sberbank.si/scredits/?command=calculate",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"
+      }
     }
   }
-}
+  console.log(options.data);
 
-module.exports.getCalculation = (event, context, callback) => {
-  
+  console.log(event);
   const req = https.request(options.options, (res) => {
     
     let body = '';
@@ -54,6 +60,7 @@ module.exports.getCalculation = (event, context, callback) => {
           console.log(effective_interest_rate)
           console.log(total_amount_paid)
           
+          // TODO: return JSON response
           /*callback(null, parsedBodyRoot.querySelecto(".calculation-item"))*/
       });
       

@@ -58,12 +58,19 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  sberbank:
-    handler: api/sberbank.getCalculation
+  sberbank_potrosniski:
+    handler: api/sberbank.potrosniskiCalc
     events:
       - http:
-          path: /sberbank
+          path: /sberbank/potrosniski
           method: get
+    request:
+      template:
+        application/json: '{ 
+          "creditAmount": "$input.params(''creditAmount'')",
+          "creditTime": "$input.params(''creditTime'')",
+          "creditInsurance": "$input.params(''creditInsurance'')"
+         }'
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
