@@ -10,23 +10,23 @@ class CreditAmount extends Component {
 
     amountMarks = [
         {
-          value: 1000,
-          label: '1000',
+          value: this.props.valueMapper['sberbank']['value_range']['min_amount'],
+          label: this.props.valueMapper['sberbank']['value_range']['min_amount'],
         },
         {
-          value: 200000,
-          label: '200 000',
+          value: this.props.valueMapper['sberbank']['value_range']['max_amount'],
+          label: this.props.valueMapper['sberbank']['value_range']['max_amount'],
         },
       ];
 
       timeMarks = [
         {
-          value: 12,
-          label: '12',
+          value: this.props.valueMapper['sberbank']['value_range']['min_time'],
+          label: this.props.valueMapper['sberbank']['value_range']['min_time'],
         },
         {
-          value: 240,
-          label: '240',
+          value: this.props.valueMapper['sberbank']['value_range']['max_time'],
+          label: this.props.valueMapper['sberbank']['value_range']['max_time'],
         },
       ];
 
@@ -44,9 +44,9 @@ class CreditAmount extends Component {
                         name="creditAmount"
                         aria-labelledby="input-slider"
                         step={100}
-                        min={1000}
+                        min={this.props.valueMapper['sberbank']['value_range']['min_amount']}
                         marks={this.amountMarks}
-                        max={200000}
+                        max={this.props.valueMapper['sberbank']['value_range']['max_amount']}
                         onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
                     />
                     </Box>        
@@ -59,8 +59,8 @@ class CreditAmount extends Component {
                         margin='none'
                         inputProps={{
                             step: 1000,
-                            min: 1000,
-                            max: 200000,
+                            min: this.props.valueMapper['sberbank']['value_range']['min_amount'],
+                            max: this.props.valueMapper['sberbank']['value_range']['max_amount'],
                             type: 'number',
                             'aria-labelledby': 'input-slider',
                         }}
@@ -84,8 +84,8 @@ class CreditAmount extends Component {
                         name="creditTime"
                         aria-labelledby="input-slider"
                         step={1}
-                        min={12}
-                        max={240}
+                        min={this.props.valueMapper['sberbank']['value_range']['min_time']}
+                        max={this.props.valueMapper['sberbank']['value_range']['max_time']}
                         marks={this.timeMarks}
                         onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
                     /> 
@@ -99,8 +99,8 @@ class CreditAmount extends Component {
                         margin='none'
                         inputProps={{
                             step: 1,
-                            min: 12,
-                            max: 240,
+                            min: this.props.valueMapper['sberbank']['value_range']['min_time'],
+                            max: this.props.valueMapper['sberbank']['value_range']['max_time'],
                             type: 'number',
                             'aria-labelledby': 'input-slider',
                         }}
