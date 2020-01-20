@@ -46,7 +46,9 @@ class CreditFormStepper extends Component {
         return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} />;
       case 1:
         return <CreditAmount creditAmount={this.props.creditAmount} 
-        creditTime={this.props.creditTime} handleChange={this.props.handleChange} />;
+        creditTime={this.props.creditTime} 
+        valueMapper={this.props.valueMapper}
+        handleChange={this.props.handleChange} />;
       case 2:
         return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
       default:
@@ -78,7 +80,6 @@ class CreditFormStepper extends Component {
 
     this.setState({ activeStep: this.state['activeStep'] + 1 });
 
-    /*this.setSkipped(newSkipped);*/
   };
 
   handleBack = () => {
@@ -111,7 +112,6 @@ class CreditFormStepper extends Component {
 
   showForm(){
     this.setState({ hideForm: false });
-    
   }
 
   render() {
@@ -120,12 +120,8 @@ class CreditFormStepper extends Component {
         <div>
           { this.state['hideForm'] ? (
             <div>
-              <Typography>Form hidden</Typography>
-              <Button onClick={this.showForm} 
-              variant="contained"
-              color="primary">
-                    Show Form
-              </Button>
+              {/*<Typography>Form hidden</Typography>*/}
+              
             </div>
           ) : (
           <div>
