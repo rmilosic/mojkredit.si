@@ -7,12 +7,14 @@ console.log('Loading function');
 
 module.exports.potrosniskiCalc = (event, context, callback) => {
 
-  var form_data = event.data;
-  console.log(form_data);
+  console.log(event);
+
+  var queryData = event['queryStringParameters'];
+  console.log(queryData);
 
   var options = {
-    "data": `id=4&nacinZavarovanja=${form_data['creditInsurance']}&namenKredita=1&oblikaSodelovanja=1&valuta=1&vrstaOM=2&znesekKredita=${form_data['creditAmount']}
-    &odplacilnaDoba=${form_data['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
+    "data": `id=4&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=1&oblikaSodelovanja=1&valuta=1&vrstaOM=2&znesekKredita=${queryData['creditAmount']}
+    &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
     "options": {
       "host": "www.sberbank.si",
       "path": "/scredits/?command=calculate",
@@ -48,28 +50,43 @@ module.exports.potrosniskiCalc = (event, context, callback) => {
           body = result['data']['resultText'];
           
           var parsedBodyRoot = htmlParser.parse(body.toString())
-          
-          var monthly_annuity = parsedBodyRoot.querySelectorAll(".calculation-item")[0].querySelectorAll("div")[1].rawText
-          var annual_interest_rate = parsedBodyRoot.querySelectorAll(".calculation-item")[6].querySelectorAll("div")[1].rawText
-          var total_loan_cost = parsedBodyRoot.querySelectorAll(".calculation-item")[10].querySelectorAll("div")[1].rawText
-          var effective_interest_rate = parsedBodyRoot.querySelectorAll(".calculation-item")[11].querySelectorAll("div")[1].rawText
-          var total_amount_paid = parsedBodyRoot.querySelectorAll(".calculation-item")[12].querySelectorAll("div")[1].rawText
-          console.log(monthly_annuity)
-          console.log(annual_interest_rate)
-          console.log(total_loan_cost)
-          console.log(effective_interest_rate)
-          console.log(total_amount_paid)
-          
-          // TODO: return JSON response
-          /*callback(null, parsedBodyRoot.querySelecto(".calculation-item"))*/
+
+          var monthlyAnnuity = parsedBodyRoot.querySelectorAll(".calculation-item")[0].querySelectorAll("div")[1].rawText
+          var annualInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[6].querySelectorAll("div")[1].rawText
+          var totalLoanCost = parsedBodyRoot.querySelectorAll(".calculation-item")[10].querySelectorAll("div")[1].rawText
+          var effectiveInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[11].querySelectorAll("div")[1].rawText
+          var totalAmountPaid = parsedBodyRoot.querySelectorAll(".calculation-item")[12].querySelectorAll("div")[1].rawText
+
+          var responseData = {
+            "monthlyAnnuity": monthlyAnnuity.replace(/(\r\n|\r|\n|€| )/g, ""),
+            "annualInterestRate": annualInterestRate.replace(/(\r\n|\r|\n)/g, ""),
+            "totalLoanCost": totalLoanCost.replace(/(\r\n|\r|\n|€| )/g, ""),
+            "effectiveInterestRate": effectiveInterestRate.replace(/(\r\n|\r|\n|€| )/g, ""),
+            "totalAmountPaid": totalAmountPaid.replace(/(\r\n|\r|\n|€| )/g, "")
+          }
+                    
+
+          callback(null, {
+            statusCode: 200,
+            headers:{
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+              "message": 'Executed successfully',
+              "input": event,
+              "data": responseData
+            })
+          })
       });
       
-      
+
     
     });
-    
   });
+
   req.on('error', callback);
+  
   req.write(options.data);
   req.end();
   
