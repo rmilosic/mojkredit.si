@@ -21,25 +21,29 @@ class App extends React.Component {
     this.state = {
       formValues: {
         'creditType': 'mortgage',
-        'creditAmount': 150000,
+        'creditAmount': 50000,
         'creditTime': 20,
         'creditAffiliation': true,
         'activeBanks': [],
-        'creditInsurance': 'mortgage'
+        'creditInsurance': 'insurance_company'
       },
+      // TODO show form options depending on present bankSkills
       bankSkills: {
-        'mortgage': ['sberbank'],
-        'car': ['sberbank'],
-        'cash': ['sberbank', 'addiko'],
-        'quick': ['sberbank']
+        'stanovanjski': [],
+        'avtomobilski': [],
+        'potrošniški': ['sberbank'],
+        'hitri': []
       },
-      offerResults: []
+      offerResults: [],
+      creditFormHidden: false
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.gatherCalculations = this.gatherCalculations.bind(this)
+    this.handleFinishClick = this.handleFinishClick.bind(this)
+    this.showForm = this.showForm.bind(this)
+    this.handleFinishClick = this.handleFinishClick.bind(this)
   }
-
 
   
   valueMapper = {
@@ -53,24 +57,65 @@ class App extends React.Component {
         "max_time": 84,
         "min_amount": 15000,
         "max_amount": 50000
-      },
-      "urls": {
-        "cash": ''
       }
-
     }
   }
 
-  fetchExample(bankName, creditType){
+  getAvailableBankSkills(){
+    let skillsList = []
+    for (const [key, value] of Object.entries(this.state.bankSkills)) {
+      if (value.length) {
+        skillsList.push(key);
+      }
+    }
+    return skillsList;
+  }
+  
+  handleFinishClick() {
+    this.toggleFormVisibility();
+    this.gatherCalculations();
+  }
+
+  showForm(){
+    this.setState({ creditFormHidden: false });
+  }
+
+  toggleFormVisibility(){
+    let formState = this.state.creditFormHidden;
+    let newFormState = ( formState ? false : true )
+    this.setState({ creditFormHidden: newFormState });
+  }
+
+  getUrl(bankName){
+
+    let creditAmount = this.state.formValues["creditAmount"];
+    let creditType = this.state.formValues["creditType"];
+    let creditInsurance = this.valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+    let creditTime = this.state.formValues["creditTime"];
 
 
+    var urlMapper = {
+      "sberbank": {
+        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+      }
+    };
+
+    console.log(urlMapper);
+    
+    return urlMapper[bankName][creditType]
+
+  }
+
+  
+
+  fetchExample(bankName){
+    
     let offerResults = this.state["offerResults"];
 
-    var creditAmount = this.state.formValues['creditAmount'];
-    var creditInsurance = this.valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
-    var creditTime = this.state.formValues['creditTime'];
+    var url = this.getUrl(bankName);
+    console.log("url:", url);
 
-    return fetch(`https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`, {
+    return fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -100,13 +145,13 @@ class App extends React.Component {
   gatherCalculations(){
     console.log('Triggered gatherCalculations');
 
-    this.fetchExample('sberbank');
-
-
     if (this.state.formValues['activeBanks']){
       let activeBanks = this.state.formValues['activeBanks']
       console.log('Found active banks')
-      activeBanks.map((bank) => console.log('Scraping bank', bank))
+      let fetchResult = activeBanks.map((bank) => this.fetchExample(bank));
+
+      console.log("Fetch result", fetchResult);
+
 
 
     } else {
@@ -114,6 +159,11 @@ class App extends React.Component {
 
     }
   
+  }
+
+  backToStart = () => {
+    this.setState({offerResults: [] });
+    this.toggleFormVisibility();
   }
   
 
@@ -161,6 +211,9 @@ class App extends React.Component {
 
   render() {
 
+    var availableBankSkills = this.getAvailableBankSkills();
+
+
     var offerList = this.state["offerResults"];
     console.log(offerList)
     var offerItems = offerList.map(function(e, i){
@@ -183,23 +236,30 @@ class App extends React.Component {
         alignItems='center'
         >
           
-          <Grid item xs={12} sm={10} md={8}>
-            <CreditFormStepper 
-              creditType={this.state.formValues['creditType']}
-              creditAmount={this.state.formValues['creditAmount']}
-              creditTime={this.state.formValues['creditTime']}
-              creditAffiliation={this.state.formValues['creditAffiliation']}
-              creditInsurance={this.state.formValues['creditInsurance']}
-              gatherCalculations={this.gatherCalculations}
-              handleChange={this.handleChange} 
-              valueMapper={this.valueMapper}/>
-
-          </Grid>
+          { !this.state.creditFormHidden &&
+            
+            <Grid item xs={12} sm={10} md={8}>
+              <CreditFormStepper 
+                creditType={this.state.formValues['creditType']}
+                creditAmount={this.state.formValues['creditAmount']}
+                creditTime={this.state.formValues['creditTime']}
+                creditAffiliation={this.state.formValues['creditAffiliation']}
+                creditInsurance={this.state.formValues['creditInsurance']}
+                gatherCalculations={this.gatherCalculations}
+                handleChange={this.handleChange} 
+                valueMapper={this.valueMapper} 
+                handleFinishClick={this.handleFinishClick}
+                availableBankSkills={availableBankSkills}
+                /> 
+           </Grid>  
+           
+          }
+          
           
           { offerItems.length > 0 ?  
             <div>
               <Grid item xs={12} sm={12}>
-              <Button onClick={this.showForm} 
+              <Button onClick={this.backToStart} 
                 variant="contained"
                 color="primary">
                       Nazaj na izračun

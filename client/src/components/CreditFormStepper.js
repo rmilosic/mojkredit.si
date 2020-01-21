@@ -34,8 +34,8 @@ class CreditFormStepper extends Component {
     }
     this.handleNext = this.handleNext.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.handleFinishClick = this.handleFinishClick.bind(this);
-    this.showForm = this.showForm.bind(this);
+    /*this.handleFinishClick = this.handleFinishClick.bind(this);
+    this.showForm = this.showForm.bind(this);*/
   }
 
   
@@ -43,7 +43,8 @@ class CreditFormStepper extends Component {
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} />;
+        return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} 
+        availableBankSkills={this.props.availableBankSkills} />;
       case 1:
         return <CreditAmount creditAmount={this.props.creditAmount} 
         creditTime={this.props.creditTime} 
@@ -57,7 +58,6 @@ class CreditFormStepper extends Component {
   }
 
   
-
 
   isStepOptional = step => {
     return false;
@@ -105,26 +105,20 @@ class CreditFormStepper extends Component {
     this.setState({ activeStep: 0});
   };
 
-  handleFinishClick() {
+  /*handleFinishClick() {
     this.setState({ hideForm: true });
     this.props.gatherCalculations();
-  }
+  }*/
 
-  showForm(){
+  /*showForm(){
     this.setState({ hideForm: false });
-  }
+  }*/
 
   render() {
     return ( 
         
         <div>
-          { this.state['hideForm'] ? (
-            <div>
-              {/*<Typography>Form hidden</Typography>*/}
-              
-            </div>
-          ) : (
-          <div>
+          
           <Stepper activeStep={this.state['activeStep']}>
             {this.state['steps'].map((label, index) => {
               const stepProps = {};
@@ -136,53 +130,49 @@ class CreditFormStepper extends Component {
                 stepProps.completed = false;
               }
               return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
               );
             })}
-            </Stepper>
+          </Stepper>
             
-            <Grid item xs={12}>
+          <Grid item xs={12}>
               <Box mt="2rem"/>
               <FormControl component="fieldset" fullWidth={true}>
                   
               {this.getStepContent(this.state['activeStep'])}
             
-            </FormControl>
+              </FormControl>
             
             </Grid>
           
-            
-
-            
-            {this.state['activeStep'] === this.state['steps'].length - 1  ? (
+          
+          {this.state['activeStep'] === this.state['steps'].length - 1  ? (
               
-              <Grid item xs={12}>
-                <Box mt="2rem"/>
-                  
-                <Button onClick={this.handleReset}>
-                  Ponastavi
-                </Button>
-                <Button variant="contained" color="primary" onClick={this.handleFinishClick}>Izračunaj</Button>
-
-                </Grid>
+            <Grid item xs={12}>
+              <Box mt="2rem"/>
+              <Button onClick={this.handleReset}>
+                Ponastavi
+              </Button>
+              <Button variant="contained" color="primary" onClick={this.props.handleFinishClick}>Izračunaj</Button>
+            </Grid>
             ) : (
-                <Grid item xs={12}>
-                  <Box mt="2rem"/>
+            <Grid item xs={12}>
+              <Box mt="2rem"/>
 
-                  <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
-                    Nazaj
-                  </Button>
-                  {this.isStepOptional(this.state['activeStep']) && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleSkip}
-                    >
-                      Skip
-                    </Button>
-                  )}
+              <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
+                Nazaj
+              </Button>
+              {this.isStepOptional(this.state['activeStep']) && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleSkip}
+                >
+                  Skip
+                </Button>
+              )}
 
                   <Button
                     variant="contained"
@@ -193,13 +183,13 @@ class CreditFormStepper extends Component {
                   </Button>
                 </Grid>
 
-              )}
-              </div>
             )}
-            </div>
-      );
-  }
-}
+            
+        </div>
+         
+      
+  
+    )}};
 
 
       
