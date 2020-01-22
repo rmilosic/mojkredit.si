@@ -59,10 +59,24 @@ package:
 
 functions:
   sberbank_potrosniski:
-    handler: api/sberbank.potrosniskiCalc
+    handler: api/sberbank/potrosniski.potrosniskiCalc
     events:
       - http:
           path: /sberbank/potrosniski
+          method: get
+          cors: true
+    request:
+      template:
+        application/json: '{ 
+          "creditAmount": "$input.params(''creditAmount'')",
+          "creditTime": "$input.params(''creditTime'')",
+          "creditInsurance": "$input.params(''creditInsurance'')"
+         }'
+  sberbank_stanovanjski:
+    handler: api/sberbank/stanovanjski.stanovanjskiCalc
+    events:
+      - http:
+          path: /sberbank/stanovanjski
           method: get
           cors: true
     request:

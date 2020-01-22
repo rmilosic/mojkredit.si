@@ -20,7 +20,7 @@ class App extends React.Component {
 
     this.state = {
       formValues: {
-        'creditType': 'mortgage',
+        'creditType': 'potrošniški',
         'creditAmount': 50000,
         'creditTime': 20,
         'creditAffiliation': true,
@@ -29,7 +29,7 @@ class App extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': [],
+        'stanovanjski': ['sberbank'],
         'avtomobilski': [],
         'potrošniški': ['sberbank'],
         'hitri': []
@@ -96,7 +96,8 @@ class App extends React.Component {
 
     var urlMapper = {
       "sberbank": {
-        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
       }
     };
 
