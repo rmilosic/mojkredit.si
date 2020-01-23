@@ -17,7 +17,7 @@ import CreditInsurance from './CreditInsurance'
 
 
 const getSteps = function() {
-  return ['Kategorija', 'Znesek & doba', 'Način zavarovanja'];
+  return ['Vrsta', 'Zavarovanje', 'Znesek & doba'];
 }
 
 class CreditFormStepper extends Component {
@@ -46,12 +46,14 @@ class CreditFormStepper extends Component {
         return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} 
         availableBankSkills={this.props.availableBankSkills} />;
       case 1:
+        return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
+      case 2:
         return <CreditAmount creditAmount={this.props.creditAmount} 
+        creditType={this.props.creditType}
+        creditInsurance={this.props.creditInsurance}
         creditTime={this.props.creditTime} 
         valueMapper={this.props.valueMapper}
         handleChange={this.props.handleChange} />;
-      case 2:
-        return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
       default:
         return 'Unknown step';
     }

@@ -25,12 +25,12 @@ class App extends React.Component {
         'creditTime': 20,
         'creditAffiliation': true,
         'activeBanks': [],
-        'creditInsurance': 'insurance_company'
+        'creditInsurance': 'insurance'
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
         'stanovanjski': ['sberbank'],
-        'avtomobilski': [],
+        'avtomobilski': ['sberbank'],
         'potrošniški': ['sberbank'],
         'hitri': []
       },
@@ -45,18 +45,67 @@ class App extends React.Component {
     this.handleFinishClick = this.handleFinishClick.bind(this)
   }
 
+  componentDidMount() {
+    this.setActiveBanks(this.state.formValues['creditType']);
+  }
+
+  setActiveBanks(creditType){
+    let newFormValues = this.state.formValues;
+    let activeBanks = this.state.bankSkills[creditType]
+    newFormValues['activeBanks'] = activeBanks;
+    this.setState({formValues: newFormValues});
+  }
   
+
   valueMapper = {
     "sberbank": {
       "creditInsurance": {
           "mortgage": 2,
-          "insurance_company": 1
+          "insurance": 1
       },
-      "value_range": {
-        "min_time": 12,
-        "max_time": 84,
-        "min_amount": 15000,
-        "max_amount": 50000
+      "creditAmountRange": {
+        "stanovanjski": {
+          "creditInsurance":{
+            "mortgage": {
+              "min_time": 12,
+              "max_time": 360,
+              "min_amount": 1000,
+              "max_amount": 500000
+            },
+            "insurance": {
+              "min_time": 12,
+              "max_time": 240,
+              "min_amount": 1000,
+              "max_amount": 500000
+            }
+          }
+        },
+        "potrošniški": {
+          "creditInsurance":{
+            "mortgage": {
+              "min_time": 12,
+              "max_time": 120,
+              "min_amount": 15000,
+              "max_amount": 500000
+            },
+            "insurance": {
+              "min_time": 12,
+              "max_time": 84,
+              "min_amount": 1000,
+              "max_amount": 50000
+            }
+          }
+        },
+        "avtomobilski": {
+          "creditInsurance":{
+            "insurance": {
+              "min_time": 12,
+              "max_time": 84,
+              "min_amount": 1000,
+              "max_amount": 50000
+            }
+          }
+        }
       }
     }
   }
@@ -97,7 +146,8 @@ class App extends React.Component {
     var urlMapper = {
       "sberbank": {
         "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
       }
     };
 
@@ -168,6 +218,8 @@ class App extends React.Component {
   }
   
 
+  
+
   handleChange(event, elem, value){
     let formValues = this.state.formValues;
     let bankSkills = this.state.bankSkills;
@@ -184,13 +236,15 @@ class App extends React.Component {
 
     console.log("value: "+value);
 
+   
+
     // select and assign active banks to state when changing creditType
     if (event.target.name === 'creditType') {
-      var ActiveBanks = bankSkills[event.target.value];
+      /*var ActiveBanks = bankSkills[event.target.value];
       console.log('Active banks', ActiveBanks)
-      formValues['activeBanks'] = ActiveBanks;
-      
-
+      formValues['activeBanks'] = ActiveBanks;*/
+      this.setActiveBanks(event.target.value);
+  
     }
 
     if (event.target.name) {

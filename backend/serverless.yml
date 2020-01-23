@@ -72,11 +72,27 @@ functions:
           "creditTime": "$input.params(''creditTime'')",
           "creditInsurance": "$input.params(''creditInsurance'')"
          }'
+  
   sberbank_stanovanjski:
     handler: api/sberbank/stanovanjski.stanovanjskiCalc
     events:
       - http:
           path: /sberbank/stanovanjski
+          method: get
+          cors: true
+    request:
+      template:
+        application/json: '{ 
+          "creditAmount": "$input.params(''creditAmount'')",
+          "creditTime": "$input.params(''creditTime'')",
+          "creditInsurance": "$input.params(''creditInsurance'')"
+         }'
+    
+  sberbank_avtomobilski:
+    handler: api/sberbank/avtomobilski.avtomobilskiCalc
+    events:
+      - http:
+          path: /sberbank/avtomobilski
           method: get
           cors: true
     request:

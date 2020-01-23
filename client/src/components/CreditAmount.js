@@ -7,26 +7,35 @@ import Box from '@material-ui/core/Box';
 
 
 class CreditAmount extends Component {
+    componentDidMount() {
+        console.log(this.props.valueMapper['sberbank']);
+    }
+   
+    
+    minAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_amount'];
+    maxAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['max_amount'];
+    minTime = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_time'];
+    maxTime = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['max_time'];
 
     amountMarks = [
         {
-          value: this.props.valueMapper['sberbank']['value_range']['min_amount'],
-          label: this.props.valueMapper['sberbank']['value_range']['min_amount'],
+          value: this.minAmount,
+          label: this.minAmount,
         },
         {
-          value: this.props.valueMapper['sberbank']['value_range']['max_amount'],
-          label: this.props.valueMapper['sberbank']['value_range']['max_amount'],
+          value: this.maxAmount,
+          label: this.maxAmount,
         },
       ];
 
       timeMarks = [
         {
-          value: this.props.valueMapper['sberbank']['value_range']['min_time'],
-          label: this.props.valueMapper['sberbank']['value_range']['min_time'],
+          value: this.minTime,
+          label: this.minTime,
         },
         {
-          value: this.props.valueMapper['sberbank']['value_range']['max_time'],
-          label: this.props.valueMapper['sberbank']['value_range']['max_time'],
+          value: this.maxTime,
+          label: this.maxTime,
         },
       ];
 
@@ -44,9 +53,9 @@ class CreditAmount extends Component {
                         name="creditAmount"
                         aria-labelledby="input-slider"
                         step={100}
-                        min={this.props.valueMapper['sberbank']['value_range']['min_amount']}
+                        min={this.minAmount}
                         marks={this.amountMarks}
-                        max={this.props.valueMapper['sberbank']['value_range']['max_amount']}
+                        max={this.maxAmount}
                         onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
                     />
                     </Box>        
@@ -59,8 +68,8 @@ class CreditAmount extends Component {
                         margin='none'
                         inputProps={{
                             step: 1000,
-                            min: this.props.valueMapper['sberbank']['value_range']['min_amount'],
-                            max: this.props.valueMapper['sberbank']['value_range']['max_amount'],
+                            min: this.minAmount,
+                            max: this.maxAmount,
                             type: 'number',
                             'aria-labelledby': 'input-slider',
                         }}
@@ -84,8 +93,8 @@ class CreditAmount extends Component {
                         name="creditTime"
                         aria-labelledby="input-slider"
                         step={1}
-                        min={this.props.valueMapper['sberbank']['value_range']['min_time']}
-                        max={this.props.valueMapper['sberbank']['value_range']['max_time']}
+                        min={this.minTime}
+                        max={this.maxTime}
                         marks={this.timeMarks}
                         onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
                     /> 
@@ -99,8 +108,8 @@ class CreditAmount extends Component {
                         margin='none'
                         inputProps={{
                             step: 1,
-                            min: this.props.valueMapper['sberbank']['value_range']['min_time'],
-                            max: this.props.valueMapper['sberbank']['value_range']['max_time'],
+                            min: this.minTime,
+                            max: this.maxTime,
                             type: 'number',
                             'aria-labelledby': 'input-slider',
                         }}
