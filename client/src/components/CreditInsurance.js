@@ -20,7 +20,7 @@ class CreditInsurance extends Component {
             <RadioGroup aria-label="creditInsurance" name="creditInsurance" value={this.props.creditInsurance} onChange={this.props.handleChange}>
                 <FormControlLabel value="insurance" control={<Radio />} label="Zavarovalna premija" />
                 <FormControlLabel value="mortgage" control={<Radio />} label="Nepremičnina" />
-                <FormControlLabel value="person" control={<Radio />} label="S poroki" />
+                {/*<FormControlLabel value="person" control={<Radio />} label="S poroki" />*/}
 
             </RadioGroup>
             </Grid>

@@ -20,8 +20,8 @@ class App extends React.Component {
 
     this.state = {
       formValues: {
-        'creditType': 'potrošniški',
-        'creditAmount': 50000,
+        'creditType': 'stanovanjski',
+        'creditAmount': 75000,
         'creditTime': 20,
         'creditAffiliation': true,
         'activeBanks': [],
@@ -32,7 +32,8 @@ class App extends React.Component {
         'stanovanjski': ['sberbank'],
         'avtomobilski': ['sberbank'],
         'potrošniški': ['sberbank'],
-        'hitri': []
+        'hitri': [],
+        gotovinski: ['sberbank']
       },
       offerResults: [],
       creditFormHidden: false
@@ -105,6 +106,22 @@ class App extends React.Component {
               "max_amount": 50000
             }
           }
+        },
+        "gotovinski": {
+          "creditInsurance":{
+            "insurance": {
+              "min_time": 12,
+              "max_time": 84,
+              "min_amount": 1000,
+              "max_amount": 50000
+            },
+            "mortgage": {
+              "min_time": 12,
+              "max_time": 120,
+              "min_amount": 15000,
+              "max_amount": 500000
+            },
+          }
         }
       }
     }
@@ -147,7 +164,9 @@ class App extends React.Component {
       "sberbank": {
         "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+        "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+
       }
     };
 
