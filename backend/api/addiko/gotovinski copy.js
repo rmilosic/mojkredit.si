@@ -5,36 +5,64 @@ const htmlParser = require('node-html-parser');
 
 console.log('Loading function');
 
-module.exports.potrosniskiCalc = (event, context, callback) => {
+module.exports.gotovinskiCalc = (event, context, callback) => {
 
-  /*console.log(event);*/
+
+  const options = {
+    hostname: 'https://www.hipkredit.si/OnlineLoans/informativniIzracun.xhtml',
+    port: 443,
+    path: '/',
+    method: 'GET'
+  };
+  a
+  const req = https.request(options, (res) => {
+    console.log('statusCode:', res.statusCode);
+    console.log('headers:', res.headers);
+  
+    res.on('data', (d) => {
+      process.stdout.write(d);
+    });
+  });
+  
+  req.on('error', (e) => {
+    console.error(e);
+  });
+  req.end();
+
+
+
+  /*console.log(event);
 
   var queryData = event['queryStringParameters'];
   
   /*console.log(queryData);*/
 
   var options = {
-    "data": `id=4&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=2&znesekKredita=${queryData['creditAmount']}
-    &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
+    "data": `FRMInfoIzracun%3AsliderZnesek_slideValue=${queryData["creditAmount"]}
+    &FRMInfoIzracun=FRMInfoIzracun&FRMInfoIzracun%3AinfoNamenRadiobtn=
+    com.hrc.onlineloans.entity.KatalogSkupinaLastnost%405ecef7a3
+    &FRMInfoIzracun%3Aznesek_input=11.700+%E2%82%AC
+    &FRMInfoIzracun%3Aznesek_hinput=11700&FRMInfoIzracun%3AdobaOdplacila_input=${queryData["creditTime"]}+mes
+    &FRMInfoIzracun%3AdobaOdplacila_hinput=84`,
     "options": {
-      "host": "www.sberbank.si",
-      "path": "/scredits/?command=calculate",
+      "host": "www.hipkredit.si",
+      "path": "/OnlineLoans/informativniIzracun.xhtml",
       "method": "POST",
       "headers": {
         "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Type": "application/x-www-form-urlencoded",
-        "Cookie": "ASP.NET_SessionId=l3nillj4s0lj2zriyrzarz3h",
-        "Host": "www.sberbank.si",
-        "Origin": "https://www.sberbank.si",
-        "Referer": "http://www.sberbank.si/scredits/?command=calculate",
+        "Cookie": "JSESSIONID=ae841cbc65981674dfbee484cafa",
+        "Host": "www.hipkredit.si",
+        "Origin": "https://www.hipkredit.si",
+        "Referer": "https://www.hipkredit.si/OnlineLoans/informativniIzracun.xhtml",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"
       }
     }
   }
-  console.log(options.data);
+  /*console.log(options.data);*/
 
-  console.log(event);
+  /*console.log(event);*/
   const req = https.request(options.options, (res) => {
     
     let body = '';
@@ -44,8 +72,8 @@ module.exports.potrosniskiCalc = (event, context, callback) => {
         body += chunk.toString();
     });
     res.on('end', () => {
-        console.log('Successfully processed HTTPS response');
-        console.log(res.headers)
+        /*console.log('Successfully processed HTTPS response');*/
+        /*console.log(res.headers)*/
         parseString(body, function (err, result) {
           // console.dir will allow us to print the whole object in our console
           body = result['data']['resultText'];
@@ -66,7 +94,8 @@ module.exports.potrosniskiCalc = (event, context, callback) => {
             "totalAmountPaid": totalAmountPaid.replace(/(\r\n|\r|\n|€| )/g, "")
           }
                     
-
+        
+          /*console.log(responseData);*/
           callback(null, {
             statusCode: 200,
             headers:{
