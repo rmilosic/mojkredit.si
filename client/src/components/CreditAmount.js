@@ -11,7 +11,9 @@ class CreditAmount extends Component {
         console.log(this.props.valueMapper['sberbank']);
     }
    
-    
+    getMaxValue(){
+        
+    }
     minAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_amount'];
     maxAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['max_amount'];
     minTime = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_time'];

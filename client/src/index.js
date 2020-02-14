@@ -11,9 +11,9 @@ import './index.css';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
+import calcSetup from './config/calcSetup';
 
 class App extends React.Component {
-  
   
   constructor(props) {
     super(props)
@@ -29,11 +29,11 @@ class App extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': ['sberbank'],
+        'stanovanjski': ['sberbank', 'skb'],
         'avtomobilski': ['sberbank'],
         'potrošniški': ['sberbank'],
         'hitri': [],
-        gotovinski: ['sberbank']
+        'gotovinski': ['sberbank']
       },
       offerResults: [],
       creditFormHidden: false
@@ -44,6 +44,8 @@ class App extends React.Component {
     this.handleFinishClick = this.handleFinishClick.bind(this)
     this.showForm = this.showForm.bind(this)
     this.handleFinishClick = this.handleFinishClick.bind(this)
+    this.backToStart = this.backToStart.bind(this)
+
   }
 
   componentDidMount() {
@@ -55,76 +57,6 @@ class App extends React.Component {
     let activeBanks = this.state.bankSkills[creditType]
     newFormValues['activeBanks'] = activeBanks;
     this.setState({formValues: newFormValues});
-  }
-  
-
-  valueMapper = {
-    "sberbank": {
-      "creditInsurance": {
-          "mortgage": 2,
-          "insurance": 1
-      },
-      "creditAmountRange": {
-        "stanovanjski": {
-          "creditInsurance":{
-            "mortgage": {
-              "min_time": 12,
-              "max_time": 360,
-              "min_amount": 1000,
-              "max_amount": 500000
-            },
-            "insurance": {
-              "min_time": 12,
-              "max_time": 240,
-              "min_amount": 1000,
-              "max_amount": 500000
-            }
-          }
-        },
-        "potrošniški": {
-          "creditInsurance":{
-            "mortgage": {
-              "min_time": 12,
-              "max_time": 120,
-              "min_amount": 15000,
-              "max_amount": 500000
-            },
-            "insurance": {
-              "min_time": 12,
-              "max_time": 84,
-              "min_amount": 1000,
-              "max_amount": 50000
-            }
-          }
-        },
-        "avtomobilski": {
-          "creditInsurance":{
-            "insurance": {
-              "min_time": 12,
-              "max_time": 84,
-              "min_amount": 1000,
-              "max_amount": 50000
-            }
-          }
-        },
-        "gotovinski": {
-          "creditInsurance":{
-            "insurance": {
-              "min_time": 12,
-              "max_time": 84,
-              "min_amount": 1000,
-              "max_amount": 50000
-            },
-            "mortgage": {
-              "min_time": 12,
-              "max_time": 120,
-              "min_amount": 15000,
-              "max_amount": 500000
-            },
-          }
-        }
-      }
-    }
   }
 
   getAvailableBankSkills(){
@@ -156,24 +88,22 @@ class App extends React.Component {
 
     let creditAmount = this.state.formValues["creditAmount"];
     let creditType = this.state.formValues["creditType"];
-    let creditInsurance = this.valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
-    let creditTime = this.state.formValues["creditTime"];
-
-
+    let creditInsurance = calcSetup[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+    let creditTime = this.state.formValues["creditTime"]    
+    
     var urlMapper = {
       "sberbank": {
         "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
-
-      }
+      },
+      "skb": {
+        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+      }  
     };
 
-    console.log(urlMapper);
-    
     return urlMapper[bankName][creditType]
-
   }
 
   
@@ -231,14 +161,11 @@ class App extends React.Component {
   
   }
 
-  backToStart = () => {
-    this.setState({offerResults: [] });
+  backToStart(){
+    this.setState({offerResults: []});
     this.toggleFormVisibility();
   }
   
-
-  
-
   handleChange(event, elem, value){
     let formValues = this.state.formValues;
     let bankSkills = this.state.bankSkills;
@@ -321,7 +248,7 @@ class App extends React.Component {
                 creditInsurance={this.state.formValues['creditInsurance']}
                 gatherCalculations={this.gatherCalculations}
                 handleChange={this.handleChange} 
-                valueMapper={this.valueMapper} 
+                valueMapper={calcSetup} 
                 handleFinishClick={this.handleFinishClick}
                 availableBankSkills={availableBankSkills}
                 /> 

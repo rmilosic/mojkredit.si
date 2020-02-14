@@ -61,7 +61,7 @@ class CreditFormStepper extends Component {
 
   
 
-  isStepOptional = step => {
+  isStepOptional(step){
     return false;
   };
 
@@ -84,7 +84,7 @@ class CreditFormStepper extends Component {
 
   };
 
-  handleBack = () => {
+  handleBack(){
     this.setState({ activeStep: this.state['activeStep'] - 1 });
   };
 
@@ -103,7 +103,7 @@ class CreditFormStepper extends Component {
     });
   };*/
 
-  handleReset = () => {
+  handleReset(){
     this.setState({ activeStep: 0});
   };
 

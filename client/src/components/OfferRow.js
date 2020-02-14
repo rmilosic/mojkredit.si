@@ -6,17 +6,25 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
 import { Grid } from '@material-ui/core';
 
 
 class OfferRow extends Component {
 
+    imgMapper = {
+        "skb": "skb-logo-otp.png",
+        "sberbank": "sberbank-logo-png-2.png"
+    }
+
     render() {
         return(
             <Grid container>
                 <Grid item xs={12}>
-                <h1>{this.props.bankName}</h1>
+                {/*<h1>{this.props.bankName}</h1>*/}
+                <img 
+                src={process.env.PUBLIC_URL + '/' + this.imgMapper[this.props.bankName]} 
+                alt={this.props.bankName}
+                style={{"height": "2.5rem", "margin": "2rem 0rem 0.5rem 0"}} /> 
                     <TableContainer component={Paper}>
                     <Table aria-label="simple table">
                         <TableHead>
