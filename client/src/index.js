@@ -11,7 +11,8 @@ import './index.css';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
-import calcSetup from './config/calcSetup';
+import valueMapper from './config/calcSetup';
+import creditValueRangeMapper from './config/creditValueRangeMapper';
 
 class App extends React.Component {
   
@@ -21,8 +22,8 @@ class App extends React.Component {
     this.state = {
       formValues: {
         'creditType': 'stanovanjski',
-        'creditAmount': 75000,
-        'creditTime': 20,
+        'creditAmount': 10000,
+        'creditTime': 15,
         'creditAffiliation': true,
         'activeBanks': [],
         'creditInsurance': 'insurance'
@@ -31,7 +32,7 @@ class App extends React.Component {
       bankSkills: {
         'stanovanjski': ['sberbank', 'skb'],
         'avtomobilski': ['sberbank'],
-        'potrošniški': ['sberbank'],
+        'potrošniški': ['sberbank', 'skb'],
         'hitri': [],
         'gotovinski': ['sberbank']
       },
@@ -88,7 +89,7 @@ class App extends React.Component {
 
     let creditAmount = this.state.formValues["creditAmount"];
     let creditType = this.state.formValues["creditType"];
-    let creditInsurance = calcSetup[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+    let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
     let creditTime = this.state.formValues["creditTime"]    
     
     var urlMapper = {
@@ -99,7 +100,8 @@ class App extends React.Component {
         "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
       },
       "skb": {
-        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
       }  
     };
 
@@ -248,9 +250,10 @@ class App extends React.Component {
                 creditInsurance={this.state.formValues['creditInsurance']}
                 gatherCalculations={this.gatherCalculations}
                 handleChange={this.handleChange} 
-                valueMapper={calcSetup} 
+                creditValueRangeMapper={creditValueRangeMapper} 
                 handleFinishClick={this.handleFinishClick}
                 availableBankSkills={availableBankSkills}
+                activeBanks={this.state.formValues['activeBanks']}
                 /> 
            </Grid>  
            

@@ -161,6 +161,20 @@ functions:
           "creditTime": "$input.params(''creditTime'')",
           "creditInsurance": "$input.params(''creditInsurance'')"
          }'
+  skb_potrosniski:
+    handler: api/skb/potrosniski.potrosniskiCalc
+    events:
+      - http:
+          path: /skb/potrosniski
+          method: get
+          cors: true
+    request:
+      template:
+        application/json: '{ 
+          "creditAmount": "$input.params(''creditAmount'')",
+          "creditTime": "$input.params(''creditTime'')",
+          "creditInsurance": "$input.params(''creditInsurance'')"
+         }'
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

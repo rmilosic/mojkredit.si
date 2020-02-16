@@ -4,20 +4,73 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import Box from '@material-ui/core/Box';
 
-
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
+Array.max = function( array ){
+    return Math.max.apply( Math, array );
+};
 
 class CreditAmount extends Component {
     componentDidMount() {
-        console.log(this.props.valueMapper['sberbank']);
+        console.log(this.props.creditValueRangeMapper);
+    }
+
+    getCandidateValues(finalValue, creditInsurance, creditType){
+        var activeBanks = this.props.activeBanks
+        var candidateValues = []
+        // iterate banks
+        Object.entries(this.props.creditValueRangeMapper).forEach(([bank, creditTypeDict]) => {
+            if (activeBanks.includes(bank)) {
+                console.log(`activeBanks includes ${bank}`)
+                Object.entries(creditTypeDict).forEach(([availableCreditType, insuranceTypeDict]) => {
+                    
+                    if (availableCreditType === creditType){
+
+                        // select target value and append to final list
+                        // iterate insurance types
+
+                        Object.entries(insuranceTypeDict['creditInsurance']).forEach(([availableInsuranceType, valueMap]) => {
+                            // console.log(`Insurance type ${insuranceType}`)
+                            // console.log(`Insurance type ${creditInsurance}`)
+                            if (availableInsuranceType === creditInsurance){
+                                // select target value and append to final list
+                                console.log(valueMap)
+                                var targetValue = valueMap[finalValue]
+                                console.log(`Target value ${targetValue}`)
+                                candidateValues.push(targetValue)
+                            }
+                        })
+                    }
+                }) 
+            } else {
+                // console.log(`activeBanks doesnt include ${bank}`)
+            }
+        });
+        return candidateValues
+    }
+
+    getHighestMinValue(finalValue, creditInsurance, creditType){
+         // const keys = Object.keys(driversCounter);
+         var candidateValues = this.getCandidateValues(finalValue, creditInsurance, creditType)
+         var highestMinValue = Array.max(candidateValues)
+         return highestMinValue
     }
    
-    getMaxValue(){
-        
+    getLowestMaxValue(finalValue, creditInsurance, creditType){
+        // const keys = Object.keys(driversCounter);
+        var candidateValues = this.getCandidateValues(finalValue, creditInsurance, creditType)       
+        var lowestMaxValue = Array.min(candidateValues)
+        console.log(`getLowestMaxValue triggered with ${arguments}`)
+        console.log(`candidateValues ${candidateValues}`)
+        console.log(`lowestMaxValue ${lowestMaxValue}`)
+        return lowestMaxValue
     }
-    minAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_amount'];
-    maxAmount = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['max_amount'];
-    minTime = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['min_time'];
-    maxTime = this.props.valueMapper['sberbank']['creditAmountRange'][this.props.creditType]['creditInsurance'][this.props.creditInsurance]['max_time'];
+
+    maxAmount = this.getLowestMaxValue('max_amount', this.props.creditInsurance, this.props.creditType)
+    minAmount = this.getHighestMinValue('min_amount', this.props.creditInsurance, this.props.creditType)
+    maxTime = this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)
+    minTime = this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)
 
     amountMarks = [
         {

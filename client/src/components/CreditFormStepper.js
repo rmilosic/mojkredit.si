@@ -34,6 +34,7 @@ class CreditFormStepper extends Component {
     }
     this.handleNext = this.handleNext.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.handleBack = this.handleBack.bind(this);
     /*this.handleFinishClick = this.handleFinishClick.bind(this);
     this.showForm = this.showForm.bind(this);*/
   }
@@ -52,7 +53,8 @@ class CreditFormStepper extends Component {
         creditType={this.props.creditType}
         creditInsurance={this.props.creditInsurance}
         creditTime={this.props.creditTime} 
-        valueMapper={this.props.valueMapper}
+        creditValueRangeMapper={this.props.creditValueRangeMapper}
+        activeBanks={this.props.activeBanks}
         handleChange={this.props.handleChange} />;
       default:
         return 'Unknown step';
