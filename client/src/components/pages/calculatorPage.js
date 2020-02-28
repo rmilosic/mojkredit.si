@@ -1,18 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 /*import CreditForm from './components/CreditForm';*/
-import CreditFormStepper from './components/CreditFormStepper';
-import OfferRow from './components/OfferRow';
+import CreditFormStepper from '../forms/CreditFormStepper';
+import OfferRow from '../OfferRow';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 
-import './index.css';
+//import './index.css';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 
-import valueMapper from './config/calcSetup';
-import creditValueRangeMapper from './config/creditValueRangeMapper';
+import valueMapper from '../../config/calcSetup';
+import creditValueRangeMapper from '../../config/creditValueRangeMapper';
 
 class CalculatorPage extends React.Component {
   
