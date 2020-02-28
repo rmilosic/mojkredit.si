@@ -6,3 +6,4 @@ build
 
 # Serverless directories
 .serverless
+package-lock.json

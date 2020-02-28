@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Carousel from 'react-material-ui-carousel'
+import Carousel from 'react-material-ui-carousel';
 
 class BankCarousel extends Component{
 
