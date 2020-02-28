@@ -20,7 +20,6 @@ class OfferRow extends Component {
         return(
             <Grid container>
                 <Grid item xs={12}>
-                {/*<h1>{this.props.bankName}</h1>*/}
                 <img 
                 src={process.env.PUBLIC_URL + '/' + this.imgMapper[this.props.bankName]} 
                 alt={this.props.bankName}

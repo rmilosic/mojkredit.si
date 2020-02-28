@@ -1,8 +1,14 @@
+
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  font: 14px "Open Sans", Futura, sans-serif;
 }
 
+.myCarouselItem{
+  text-align: center;
+}
 ol, ul {
   padding-left: 30px;
 }
