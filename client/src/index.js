@@ -5,8 +5,6 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 
-
-//import App from './App'
 import AppRouter from './AppRouter'
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
