@@ -12,17 +12,16 @@ class AppRouter extends Component{
 
     render() {
         return (
+            <Router>
+                
+                <Switch>
+                    <Route exact path="/izracun-kredita" render={() => <CalculatorPage key={Math.random()} />}/>
+                        
+                    <Route exact path="/" render={() =>  <App key={Math.random()} />}/>
+                        
+                </Switch>
         
-        <Router>
-            
-            <Switch>
-                <Route exact path="/izracun-kredita" render={() => <CalculatorPage key={Math.random()} />}/>
-                    
-                <Route exact path="/" render={() =>  <App key={Math.random()} />}/>
-                    
-            </Switch>
-    
-        </Router>
+            </Router>
         )
     }
 }
