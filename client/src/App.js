@@ -68,7 +68,7 @@ class App extends Component {
         
         <Grid item justify="center" xs={12}>
           <Box pt={"4em"}>
-            <BankCarousel/>
+            {/*<BankCarousel/>*/}
           </Box>
         </Grid>
       
