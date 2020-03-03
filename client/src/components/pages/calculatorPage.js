@@ -88,7 +88,8 @@ class CalculatorPage extends React.Component {
     let creditAmount = this.state.formValues["creditAmount"];
     let creditType = this.state.formValues["creditType"];
     let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
-    let creditTime = this.state.formValues["creditTime"]    
+    // MULTIPLY YEARS WITH 12 TO GET MONTHS
+    let creditTime = this.state.formValues["creditTime"]*12;    
     
     var urlMapper = {
       "sberbank": {
@@ -273,7 +274,7 @@ class CalculatorPage extends React.Component {
                  <Box component="span" mr={1}> <Chip variant="outlined" color="primary" size="small" 
                 label={ 'Znesek: ' + this.state.formValues['creditAmount'] + ' €'} /></Box>
                  <Box component="span" mr={1}> <Chip variant="outlined" color="primary" size="small" 
-                label={ 'Čas: ' + this.state.formValues['creditTime'] + 'mes.'}/></Box>
+                label={ 'Čas: ' + this.state.formValues['creditTime'] + ' let'}/></Box>
                 <Chip variant="outlined" color="primary" size="small" 
                 label={ 'Zavarovanje: ' + this.state.formValues['creditInsurance']}/>
                 </Box>

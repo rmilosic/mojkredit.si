@@ -3,6 +3,7 @@ import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import Box from '@material-ui/core/Box';
+import valueMapper from '../../config/calcSetup';
 
 Array.min = function( array ){
     return Math.min.apply( Math, array );
@@ -69,8 +70,8 @@ class CreditAmount extends Component {
 
     maxAmount = this.getLowestMaxValue('max_amount', this.props.creditInsurance, this.props.creditType)
     minAmount = this.getHighestMinValue('min_amount', this.props.creditInsurance, this.props.creditType)
-    maxTime = this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)/12
-    minTime = this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)/12
+    maxTime = Math.ceil(this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)/12)
+    minTime = Math.floor(this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)/12)
 
     amountMarks = [
         {
@@ -94,6 +95,11 @@ class CreditAmount extends Component {
         },
       ];
 
+    valueLabelFormat(value) {
+        let thousandFormat = value/1000;
+        return `${thousandFormat}k`
+      }
+
     render() {
         return(
             <Grid container>
@@ -101,22 +107,24 @@ class CreditAmount extends Component {
                     <h2>Izberite znesek kredita (v Evrih)</h2>
                 </Grid>
             
-                <Grid item xs={12} sm={12} md={8}>
-                    <Box pl="2rem" pr="2rem">                    
+                <Grid item xs={12}>
+                    <Box pt="3em" pl="2em" pr="2em">                    
                     <Slider
                         value={this.props.creditAmount}
                         name="creditAmount"
-                        aria-labelledby="input-slider"
+                        aria-labelledby="discrete-slider-always"
                         step={1000}
                         min={this.minAmount}
                         marks={this.amountMarks}
                         max={this.maxAmount}
+                        valueLabelDisplay="on"
+                        valueLabelFormat={this.valueLabelFormat}
                         onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
                     />
                     </Box>        
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={4}>
+                {/*<Grid item xs={12} sm={12} md={4}>
                     <Input
                         name="creditAmount"
                         value={this.props.creditAmount}
@@ -132,7 +140,7 @@ class CreditAmount extends Component {
                         onChange={this.props.handleChange.bind(this)}
                         />
                 
-                </Grid>
+                    </Grid>*/}
 
                 
                 
@@ -141,22 +149,23 @@ class CreditAmount extends Component {
                     <Box mt="3rem"/>
                     <h2>Izberite dobo odplačila (v letih)</h2>
                 </Grid>
-                <Grid item xs={12} sm={12} md={8}>
-                    <Box pl="2rem" pr="2rem">               
+                <Grid item xs={12}>
+                    <Box pt="3em" pl="2em" pr="2em">               
                     <Slider
                         value={this.props.creditTime}
                         name="creditTime"
-                        aria-labelledby="input-slider"
+                        aria-label="custom thumb label"
                         step={1}
                         min={this.minTime}
                         max={this.maxTime}
                         marks={this.timeMarks}
+                        valueLabelDisplay="on"
                         onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
                     /> 
                     </Box>       
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={3}>
+                {/*<Grid item xs={12} sm={12} md={3}>
                     <Input
                         name="creditTime"
                         value={this.props.creditTime}
@@ -172,8 +181,7 @@ class CreditAmount extends Component {
                         onChange={this.props.handleChange.bind(this)}
                         />
                 
-                </Grid>
-
+                    </Grid>*/}
 
             </Grid>
         );
