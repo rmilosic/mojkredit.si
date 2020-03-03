@@ -90,40 +90,18 @@ class CreditFormStepper extends Component {
     this.setState({ activeStep: this.state['activeStep'] - 1 });
   };
 
-  /*handleSkip = () => {
-    if (!this.isStepOptional(this.state['activeStep'])) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    this.setActiveStep(prevActiveStep => prevActiveStep + 1);
-    this.setSkipped(prevSkipped => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(this.state['activeStep']);
-      return newSkipped;
-    });
-  };*/
 
   handleReset(){
     this.setState({ activeStep: 0});
   };
 
-  /*handleFinishClick() {
-    this.setState({ hideForm: true });
-    this.props.gatherCalculations();
-  }*/
-
-  /*showForm(){
-    this.setState({ hideForm: false });
-  }*/
 
   render() {
     return ( 
         
         <div>
           
-          <Stepper activeStep={this.state['activeStep']}>
+          <Stepper activeStep={this.state['activeStep']} alternativeLabel>
             {this.state['steps'].map((label, index) => {
               const stepProps = {};
               const labelProps = {};
@@ -136,13 +114,13 @@ class CreditFormStepper extends Component {
               return (
               <Step key={label} {...stepProps}>
                 <StepLabel {...labelProps}>{label}</StepLabel>
+                
               </Step>
               );
             })}
           </Stepper>
             
           <Grid item xs={12}>
-              <Box mt="2rem"/>
               <FormControl component="fieldset" fullWidth={true}>
                   
               {this.getStepContent(this.state['activeStep'])}
@@ -190,8 +168,6 @@ class CreditFormStepper extends Component {
             )}
             
         </div>
-         
-      
   
     )}};
 

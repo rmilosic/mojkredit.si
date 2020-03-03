@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import Carousel from 'react-material-ui-carousel';
+import { Grid } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import SberbankLogo from '../resources/sberbank-logo-png-2.png';
+import SkbLogo from '../resources/skb-logo-otp.png';
+
 
 class BankCarousel extends Component{
 
@@ -15,11 +21,11 @@ class BankCarousel extends Component{
     items = [
         {
             altName: "Sberbank",
-            imageLocation: "./sberbank-logo-png-2.png"
+            imageLocation: SberbankLogo
         },
         {
             altName: "SKB",
-            imageLocation: "./skb-logo-otp.png"
+            imageLocation: SkbLogo
         }
     ]
 
@@ -30,12 +36,21 @@ class BankCarousel extends Component{
         });
         console.log("HELLO THERE")
         return (
-
-            <Carousel 
-            className="myCarouselItem"
-            animation="fade">
-                {imageList} 
-            </Carousel>
+            <div>
+                <Grid item justify="center" xs={12}>
+                    <span style={{"text-align": "center", "font-size": "1.3em", "display": "block"}}><strong>Sodelujemo z bankami</strong></span>
+                </Grid>
+            
+                <Grid item justify="center" xs={12}>
+                <Box pt={"4em"}>
+                    <Carousel 
+                    className="myCarouselItem"
+                    animation="fade">
+                        {imageList} 
+                    </Carousel>
+                </Box>
+                </Grid>
+            </div>
         )
     }
 }

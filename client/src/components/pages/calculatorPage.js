@@ -1,9 +1,8 @@
 import React from 'react';
-/*import CreditForm from './components/CreditForm';*/
+import Container from '@material-ui/core/Container';
 import CreditFormStepper from '../forms/CreditFormStepper';
 import OfferRow from '../OfferRow';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 
 //import './index.css';
@@ -22,7 +21,7 @@ class CalculatorPage extends React.Component {
       formValues: {
         'creditType': 'stanovanjski',
         'creditAmount': 10000,
-        'creditTime': 15,
+        'creditTime': 5,
         'creditAffiliation': true,
         'activeBanks': [],
         'creditInsurance': 'insurance'
@@ -231,9 +230,8 @@ class CalculatorPage extends React.Component {
     });
 
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="md">
         <Grid container 
-        spacing={0}
         justify='center'
         alignItems='center'
         >

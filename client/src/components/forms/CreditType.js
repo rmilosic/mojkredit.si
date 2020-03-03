@@ -34,14 +34,7 @@ class CreditType extends Component {
                     return <FormControlLabel value={skill} control={<Radio />} label={this.toTitleCase(skill)} />
 
                 })}
-                {/*
-                <FormControlLabel value="mortgage" control={<Radio />} label="Stanovanjski" />
-                <FormControlLabel value="student" control={<Radio />} label="Študentski" />
-                <FormControlLabel value="quick" control={<Radio />} label="Hitri" />
-                <FormControlLabel value="cash" control={<Radio />} label="Gotovinski" />
-                <FormControlLabel value="car" control={<Radio />} label="Avtomobilski" />*/}
-
-
+                
             
             </RadioGroup>
             </FormControl>

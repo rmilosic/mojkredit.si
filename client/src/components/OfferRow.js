@@ -7,47 +7,50 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Grid } from '@material-ui/core';
+import SkbLogo from '../resources/skb-logo-otp.png';
+import SberbankLogo from '../resources/sberbank-logo-png-2.png';
 
 
 class OfferRow extends Component {
-
     imgMapper = {
-        "skb": "skb-logo-otp.png",
-        "sberbank": "sberbank-logo-png-2.png"
-    }
+        "skb": SkbLogo,
+        "sberbank": SberbankLogo
+    };
 
     render() {
+        
         return(
             <Grid container>
                 <Grid item xs={12}>
                 <img 
-                src={process.env.PUBLIC_URL + '/' + this.imgMapper[this.props.bankName]} 
+                src={this.imgMapper[this.props.bankName]}
                 alt={this.props.bankName}
                 style={{"height": "2.5rem", "margin": "2rem 0rem 0.5rem 0"}} /> 
-                    <TableContainer component={Paper}>
-                    <Table aria-label="simple table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell>Mesečna anuiteta (€)</TableCell>
-                            <TableCell align="right">Letna obrestna mera</TableCell>
-                            <TableCell align="right">Skupni stroški kredita (€)</TableCell>
-                            <TableCell align="right">Efektivna obrestna mera</TableCell>
-                            <TableCell align="right">Skupni znesek kredita (€)</TableCell>
+
+                <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>Mesečna anuiteta (€)</TableCell>
+                        <TableCell align="right">Letna obrestna mera</TableCell>
+                        <TableCell align="right">Skupni stroški kredita (€)</TableCell>
+                        <TableCell align="right">Efektivna obrestna mera</TableCell>
+                        <TableCell align="right">Skupni znesek kredita (€)</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    
+                        <TableRow key={this.props["bankName"]}>
+                        <TableCell align="right">{this.props["monthlyAnnuity"]}</TableCell>
+                        <TableCell align="right">{this.props["annualInterestRate"]}</TableCell>
+                        <TableCell align="right">{this.props["totalLoanCost"]}</TableCell>
+                        <TableCell align="right">{this.props["effectiveInterestRate"]}</TableCell>
+                        <TableCell align="right">{this.props["totalAmountPaid"]}</TableCell>
                         </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        
-                            <TableRow key={this.props["bankName"]}>
-                            <TableCell align="right">{this.props["monthlyAnnuity"]}</TableCell>
-                            <TableCell align="right">{this.props["annualInterestRate"]}</TableCell>
-                            <TableCell align="right">{this.props["totalLoanCost"]}</TableCell>
-                            <TableCell align="right">{this.props["effectiveInterestRate"]}</TableCell>
-                            <TableCell align="right">{this.props["totalAmountPaid"]}</TableCell>
-                            </TableRow>
-                        
-                        </TableBody>
-                    </Table>
-                    </TableContainer>
+                    
+                    </TableBody>
+                </Table>
+                </TableContainer>
                 </Grid>
             </Grid>
         );
