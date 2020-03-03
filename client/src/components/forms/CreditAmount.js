@@ -69,8 +69,8 @@ class CreditAmount extends Component {
 
     maxAmount = this.getLowestMaxValue('max_amount', this.props.creditInsurance, this.props.creditType)
     minAmount = this.getHighestMinValue('min_amount', this.props.creditInsurance, this.props.creditType)
-    maxTime = this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)
-    minTime = this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)
+    maxTime = this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)/12
+    minTime = this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)/12
 
     amountMarks = [
         {
@@ -107,7 +107,7 @@ class CreditAmount extends Component {
                         value={this.props.creditAmount}
                         name="creditAmount"
                         aria-labelledby="input-slider"
-                        step={100}
+                        step={1000}
                         min={this.minAmount}
                         marks={this.amountMarks}
                         max={this.maxAmount}
@@ -139,7 +139,7 @@ class CreditAmount extends Component {
                 {/* creditTime */}
                 <Grid item xs={12}>
                     <Box mt="3rem"/>
-                    <h2>Izberite dobo odplačila (v mesecih)</h2>
+                    <h2>Izberite dobo odplačila (v letih)</h2>
                 </Grid>
                 <Grid item xs={12} sm={12} md={8}>
                     <Box pl="2rem" pr="2rem">               

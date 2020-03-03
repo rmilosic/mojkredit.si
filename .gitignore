@@ -3,7 +3,9 @@ node_modules
 jspm_packages
 build
 .DS_Store
+dist
 
 # Serverless directories
 .serverless
 package-lock.json
+

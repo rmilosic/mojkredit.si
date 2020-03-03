@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
-import BankCarousel from './components/BankCarousel';
+import BankCarousel from '../BankCarousel';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
 import {withRouter} from 'react-router-dom';
 
-import './index.css';
 
 
-class App extends Component {
+class Home extends Component {
   
   constructor(props) {
     super(props)
@@ -26,21 +26,9 @@ class App extends Component {
     return (
     <div>
     
-    <Box bgcolor={"#145579"} pt={"1.5em"} pb={"2em"} pl={"1em"} pr={"1em"}>
-      <Grid container direction="row-reverse">
-          
-          <Grid  item xs={3}>
-          </Grid>
-
-          <Grid container item justify="center" xs={6} >
-            <img src={'./logo-gray.png'} alt="Logo - finster"
-            style={{"height": "2.3em"}}/>
-          </Grid>
-     
-         
-      </Grid>
-
-      <hr/>
+   
+    <Box bgcolor="primary.light" pt={"1.5em"} pb={"1.5em"} pl={"1em"} pr={"1em"}>
+    <Container maxWidth="md">
 
       <Grid item justify="center" alignContent="center" xs={12}>
           <p style={{"font-size": "1.5em", "color": "white", "text-align": "center"}}>Najhitrejša pot do kredita <br/>
@@ -53,33 +41,27 @@ class App extends Component {
       </Grid>
       
 
-      <Grid container item justify="center" xs={12}>
+      <Grid container maxWidth="md" item justify="center" xs={12}>
             <Button variant="contained" color="secondary" onClick={() => this.nextPath("/izracun-kredita")}>
               <span style={{"font-size": "1.3em"}}><strong>Pridobi informativni izračun</strong></span>
             </Button>
       </Grid>
+    </Container>  
+
     </Box>
 
-    <Box pt={"3em"}>
-      <Grid container>
-        <Grid item justify="center" xs={12}>
-          <span style={{"text-align": "center", "font-size": "1.3em", "display": "block"}}><strong>Sodelujemo z bankami</strong></span>
-        </Grid>
-        
-        <Grid item justify="center" xs={12}>
-          <Box pt={"4em"}>
-            {/*<BankCarousel/>*/}
-          </Box>
-        </Grid>
-      
-      </Grid>
-    </Box>
-    
+    <Container maxWidth="md">
+      <Box pt={"3em"}>
+          <Grid container justify="center" xs={12}>
+            <BankCarousel/>
+          </Grid>    
+      </Box>
+    </Container>
 
     </div>
     )};
 
 }
 
-export default withRouter(App);
+export default withRouter(Home);
 

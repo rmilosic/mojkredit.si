@@ -1,29 +1,25 @@
-import React, { Component }  from 'react';
+import React, {Component} from 'react';
+
 import {
     BrowserRouter as Router,
     Switch,
-    Route
-} from "react-router-dom";
+    Route,
+    Link
+  } from "react-router-dom";
 
 import CalculatorPage from './components/pages/calculatorPage';
-import App from './App';
+import Home from './components/pages/Home';
+import { withRouter } from "react-router";
 
-class AppRouter extends Component{
+function AppRouter(){
 
-    render() {
-        return (
-            <Router>
-                
-                <Switch>
-                    <Route exact path="/izracun-kredita" render={() => <CalculatorPage key={Math.random()} />}/>
-                        
-                    <Route exact path="/" render={() =>  <App key={Math.random()} />}/>
-                        
-                </Switch>
-        
-            </Router>
-        )
-    }
+    return (
+                    
+        <Switch>
+            <Route exact path="/izracun-kredita" render={() => <CalculatorPage key={Math.random()} />}/>
+            <Route exact path="/" render={() =>  <Home key={Math.random()} />}/>
+        </Switch>
+
+    )
 }
-    
-export default AppRouter;
+export default withRouter(AppRouter);
