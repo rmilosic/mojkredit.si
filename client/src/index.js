@@ -14,9 +14,9 @@ const theme = createMuiTheme({
       main: '#0d47a1',
     },
     secondary: {
-      main: '#ffa000',
+      main: '#8411A8',
     },
-    background: '#ffff',
+    background: '#fff',
   },
   typography: {
     fontFamily: "Open Sans, Roboto, sans-serif"
@@ -27,12 +27,12 @@ const Main = function(props) {
   // Pass the theme as a prop to the theme provider
   return (
 
-
-      <MuiThemeProvider theme={theme}>
+      <div>
       <CssBaseline/>
+      <MuiThemeProvider theme={theme}>
       <Layout />
       </MuiThemeProvider>
-
+      </div>
     
   );
 };

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import BankCarousel from '../BankCarousel';
-import { Grid } from '@material-ui/core';
+import PromoCarousel from '../PromoCarousel';
+import { Grid, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
@@ -27,38 +28,63 @@ class Home extends Component {
     <div>
     
    
-    <Box bgcolor="primary.light" pt={"1.5em"} pb={"1.5em"} pl={"1em"} pr={"1em"}>
-    <Container maxWidth="md">
-
-      <Grid item justify="center" alignContent="center" xs={12}>
-          <p style={{"font-size": "1.5em", "color": "white", "text-align": "center"}}>Najhitrejša pot do kredita <br/>
-          po <strong>Vaši meri</strong>!</p>
-      </Grid>
-
-      <Grid item justify="center" alignContent="center" xs={12}>
-          <p style={{"font-size": "2em", "color": "white", "text-align": "center",
-        "line-height": "1.2em"}}>V <strong>manj kot minuti</strong> za Vas brezplačno poiščemo najugodnejšo ponudbo kredita</p>
-      </Grid>
+    <Box pt={"1.5em"} pb={"1.5em"} pl={"1em"} pr={"1em"} bgcolor="#efefefe0">
+    <Container  direction="row-reverse" maxWidth="md">
       
+      <Grid container spacing={{ sm: 2, md: 4}} alignItems="center" justify="center">
+        
+        <Grid item justify="center" alignContent="center" xs={12} md={6}>
+            <Typography variant="h4" align="center"> Prihranite čas in primerjajte informativne ponudbe vseh bank na enem mestu
+              </Typography>
+        </Grid>
+        
 
-      <Grid container maxWidth="md" item justify="center" xs={12}>
+        <Grid container maxWidth="md" item justify="center" xs={12}>
+          <Box pt={"1.5em"}>
             <Button variant="contained" color="secondary" onClick={() => this.nextPath("/izracun-kredita")}>
-              <span style={{"font-size": "1.3em"}}><strong>Pridobi informativni izračun</strong></span>
+              <Typography variant="button"><strong>Informativni izračuni</strong></Typography>
             </Button>
+          </Box>
+        </Grid>
       </Grid>
     </Container>  
 
     </Box>
 
     <Container maxWidth="md">
-      <Box pt={"3em"}>
+      <Box pt={"1.5em"}>
           <Grid container justify="center" xs={12}>
             <BankCarousel/>
           </Grid>    
       </Box>
     </Container>
 
+
+    <Container maxWidth="md">
+     
+        <Grid container spacing={5}>
+          
+          <Grid item xs={12} md={6}>
+            <Box pt={"3em"}>
+              <Typography variant="h4"><strong>Blog</strong></Typography>
+              <Box pt={"1em"}/>
+              <Typography variant="h4">Kakšen kredit naj izberem?</Typography>
+              <Typography variant="caption">20 januar 2020</Typography>
+              <Typography variant="body1">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. I</Typography> 
+            </Box>  
+          </Grid>
+         
+          
+            <Grid item xs={12} md={6}>
+              <Box pt={"3em"}>
+                <PromoCarousel/>
+              </Box>
+            </Grid>  
+          
+        </Grid>  
+    </Container>
     </div>
+
     )};
 
 }

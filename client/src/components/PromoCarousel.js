@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import SberbankLogo from '../resources/sberbank-logo-png-2.png';
-import SkbLogo from '../resources/skb-logo-otp.png';
+import SberPromo from '../resources/sberbank_promo.jpg';
+import SkbPromo from '../resources/skb_promo.jpg';
 
 
 class BankCarousel extends Component{
@@ -14,18 +14,17 @@ class BankCarousel extends Component{
       }
 
     renderItem(item){
-        return <img key={item} src={item['imageLocation']} alt={item['altName']}
-        style={{"height": "2.5em"}}/>
+        return <img key={item} src={item['imageLocation']} alt={item['altName']}/>
     }
 
     items = [
         {
-            altName: "Sberbank",
-            imageLocation: SberbankLogo
+            altName: "Sberbank Promo",
+            imageLocation: SberPromo
         },
         {
-            altName: "SKB",
-            imageLocation: SkbLogo
+            altName: "Skb Promo",
+            imageLocation: SkbPromo
         }
     ]
 
@@ -34,13 +33,13 @@ class BankCarousel extends Component{
         let imageList = this.items.map( (item) => {
             return this.renderItem(item)
         });
-        console.log("HELLO THERE")
         return (
             <div>
-                <Grid item justify="center" xs={12}>
-                    <span style={{"text-align": "center", "font-size": "1.3em", "display": "block"}}><strong>Sodelujemo z bankami</strong></span>
+                <Grid item xs={12}>
+                    <Typography variant="h4"><strong>Akcije bank</strong></Typography>
                 </Grid>
-            
+
+                <Box pt={"1em"}/>
                 <Grid item justify="center" xs={12}>
                 <Box pt={"2em"}>
                     <Carousel 
