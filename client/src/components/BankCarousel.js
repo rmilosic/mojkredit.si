@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
 import SberbankLogo from '../resources/sberbank-logo-png-2.png';
 import SkbLogo from '../resources/skb-logo-otp.png';
 

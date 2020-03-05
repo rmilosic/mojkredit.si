@@ -1,15 +1,10 @@
 import React, { Component }  from 'react';
 import Container from '@material-ui/core/Container';
-import { Grid, Typography } from '@material-ui/core';
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { Grid } from '@material-ui/core';
+import CookieConsent from "react-cookie-consent";
+import { Link } from "react-router-dom";
 import Box from '@material-ui/core/Box';
-import FinsterLogo from './resources/logo-gray.png';
+//import FinsterLogo from './resources/logo-gray.png';
 import FinsterLogoBlack from './resources/logo-black.png';
 import AppRouter from './AppRouter';
 
@@ -19,10 +14,8 @@ class Layout extends Component{
         return (
 
             // NAVBAR
-
-
             <div>
-            <Router>
+            
 
             <Box pt={"1em"} pb={"1em"} pl={"1em"} pr={"1em"}>
             <Container maxWidth='md' direction="row-reverse">
@@ -67,7 +60,14 @@ class Layout extends Component{
                 
                 </Container>
         </Box>*/}
-            </Router>
+
+            
+            <CookieConsent
+                buttonText="Naprej"
+                debug={true}>
+                Ta stran uporablja piškotke. Z nadaljevanjem uporabe te strani soglašate z uporabo piškotkov.
+            </CookieConsent>
+           
             </div>
                 
         )
