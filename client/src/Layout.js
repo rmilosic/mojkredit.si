@@ -63,8 +63,7 @@ class Layout extends Component{
 
             
             <CookieConsent
-                buttonText="Naprej"
-                debug={true}>
+                buttonText="Naprej">
                 Ta stran uporablja piškotke. Z nadaljevanjem uporabe te strani soglašate z uporabo piškotkov.
             </CookieConsent>
            
