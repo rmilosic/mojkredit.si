@@ -1,10 +1,16 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
+var path = require('path');
 
 
 module.exports = {
   entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.js',
+    publicPath: '/'
+  },
   module: {
     rules: [
       {
@@ -31,6 +37,9 @@ module.exports = {
        use: ['file-loader']
       }
     ]     
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
