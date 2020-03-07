@@ -1,0 +1,14 @@
+sparkasse_stanovanjski:
+  handler: ./stanovanjski.handler
+  events:
+    - http:
+        path: /sparkasse/stanovanjski
+        method: get
+        cors: true
+  request:
+    template:
+      application/json: '{ 
+        "creditAmount": "$input.params(''creditAmount'')",
+        "creditTime": "$input.params(''creditTime'')",
+        "creditInsurance": "$input.params(''creditInsurance'')"
+        }'

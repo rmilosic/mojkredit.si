@@ -5,7 +5,7 @@ const htmlParser = require('node-html-parser');
 
 console.log('Loading function');
 
-module.exports.gotovinskiCalc = (event, context, callback) => {
+module.exports.handler = (event, context, callback) => {
 
 
   const options = {

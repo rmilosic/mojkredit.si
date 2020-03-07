@@ -1,0 +1,34 @@
+sberbank_potrosniski:
+  handler: api/sberbank/potrosniski.handler
+  events:
+    - http:
+        path: /sberbank/potrosniski
+        method: get
+
+sberbank_stanovanjski:
+  handler: api/sberbank/stanovanjski.handler
+  events:
+    - http:
+        path: /sberbank/stanovanjski
+        method: get
+        
+sberbank_avtomobilski:
+  handler: api/sberbank/avtomobilski.handler
+  events:
+    - http:
+        path: /sberbank/avtomobilski
+        method: get
+
+sberbank_hitri:
+  handler: api/sberbank/hitri.handler
+  events:
+    - http:
+        path: /sberbank/hitri
+        method: get
+
+sberbank_gotovinski:
+  handler: api/sberbank/gotovinski.handler
+  events:
+    - http:
+        path: /sberbank/gotovinski
+        method: get
