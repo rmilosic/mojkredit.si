@@ -21,10 +21,9 @@ module.exports.handler = (event, context, callback) => {
   
   console.log(queryData);
 
-  let creditTimeYears = queryData['creditTime'] / 12;
-
   // QUERYSTRING
-  let message = `intTipKredita=2&decVolumen=${Math.round(queryData['creditAmount'])}&intSteviloOdplacilLeto=${creditTimeYears}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
+  let message = `intTipKredita=1&decVolumen=${Math.round(queryData['creditAmount'])}&intSteviloOdplacil=${queryData['creditTime']}&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=`
+  
   let queryString = querystring.parse(message, null, null);
 
   var options = {
@@ -65,7 +64,6 @@ module.exports.handler = (event, context, callback) => {
       console.log(bodyDict);
       
       let fixedResponse = bodyDict['itemFix']['Data'];
-      let variableResponse = bodyDict['itemVar']['Data'];
 
       console.log("finalResult", finalResult)
       console.log("fixedResponse", fixedResponse)
@@ -76,14 +74,6 @@ module.exports.handler = (event, context, callback) => {
         'totalLoanCost': fixedResponse["expenseValueField"],
         'effectiveInterestRate': fixedResponse["eOMField"],
         'totalAmountPaid': fixedResponse["insuredSumField"]
-      };
-
-      finalResult["variable"] = {
-        'monthlyAnnuity': variableResponse["annuityField"],
-        'annualInterestRate': variableResponse["interestAmountField"],
-        'totalLoanCost': variableResponse["expenseValueField"],
-        'effectiveInterestRate': variableResponse["eOMField"],
-        'totalAmountPaid': variableResponse["insuredSumField"]
       };
 
       callback(null, {

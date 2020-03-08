@@ -30,10 +30,10 @@ class CalculatorPage extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': ['sberbank', 'skb'],
+        'stanovanjski': ['sberbank', 'skb', 'sparkasse'],
         'avtomobilski': ['sberbank'],
-        'potrošniški': ['sberbank', 'skb'],
-        'hitri': [],
+        'potrošniški': ['sberbank', 'skb', 'sparkasse'],
+        'hitri': ['sberbank', 'sparkasse'],
         'gotovinski': ['sberbank']
       },
       offerResults: [],
@@ -99,12 +99,18 @@ class CalculatorPage extends React.Component {
         "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+        "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "hitri": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/hitri?creditAmount=${creditAmount}&creditTime=${creditTime}`
       },
       "skb": {
         "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
         "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
-      }  
+      },
+      "sparkasse": {
+        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
+        "hitri": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/hitri?creditAmount=${creditAmount}&creditTime=${creditTime}`
+      }
     };
 
     return urlMapper[bankName][creditType]
@@ -131,6 +137,7 @@ class CalculatorPage extends React.Component {
           var pushData = {}
           pushData["data"] = json['data'];
           pushData["bankName"] = bankName;
+
 
           offerResults.push(pushData)
           this.setState({offerResults})
@@ -206,15 +213,22 @@ class CalculatorPage extends React.Component {
 
     var offerList = this.state["offerResults"];
     console.log(offerList)
+    
+    var omType = this.state['compareFixedInterestRate'] ? "fixed" : "variable";
+
     var offerItems = offerList.map(function(e, i){
       console.log(e)
+
+      // retrieve the right data in relation to interest rate type
+      
+
       return <OfferRowPanel key={i}  
               bankName={e["bankName"] }  
-              monthlyAnnuity={e["data"]["monthlyAnnuity"] }  
-              annualInterestRate={e["data"]["annualInterestRate"] }  
-              totalLoanCost={e["data"]["totalLoanCost"] }  
-              effectiveInterestRate={e["data"]["effectiveInterestRate"] }  
-              totalAmountPaid={e["data"]["totalAmountPaid"]}
+              monthlyAnnuity={e["data"][omType]["monthlyAnnuity"] }  
+              annualInterestRate={e["data"][omType]["annualInterestRate"] }  
+              totalLoanCost={e["data"][omType]["totalLoanCost"] }  
+              effectiveInterestRate={e["data"][omType]["effectiveInterestRate"] }  
+              totalAmountPaid={e["data"][omType]["totalAmountPaid"]}
               />
     });
 

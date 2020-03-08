@@ -1,0 +1,5 @@
+{ 
+    "creditAmount" : "$input.params(''creditAmount'')", 
+    "creditTime": "$input.params(''creditTime'')",
+    "creditInsurance": "$input.params(''creditInsurance'')"
+}

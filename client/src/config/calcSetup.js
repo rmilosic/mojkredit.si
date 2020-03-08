@@ -12,6 +12,12 @@ const valueMapper = {
             "mortgage": 0,
             "insurance": 2
         }
+    },
+    "sparkasse": {
+        "creditInsurance": {
+            "mortgage": 0,
+            "insurance": 1
+        }
     }
 }
 

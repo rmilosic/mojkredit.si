@@ -6,7 +6,7 @@ const querystring = require('querystring');
 
 console.log('Loading function');
 
-module.exports.gotovinskiCalc = (event, context, callback) => {
+module.exports.handler = (event, context, callback) => {
 
 
   const keepAliveAgent = new https.Agent(

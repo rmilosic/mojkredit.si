@@ -1,0 +1,14 @@
+addiko_gotovinski:
+    handler: ./gotovinski.handler
+    events:
+      - http:
+          path: /addiko/gotovinski
+          method: get
+          cors: true
+    request:
+      template:
+        application/json: '{ 
+          "creditAmount": "$input.params(''creditAmount'')",
+          "creditTime": "$input.params(''creditTime'')",
+          "creditInsurance": "$input.params(''creditInsurance'')"
+         }'
