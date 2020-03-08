@@ -10,7 +10,10 @@ module.exports.handler = (event, context, callback) => {
   // VrstaOM = 1 : FIKSNA
   // VrstaOM = 2 : SPREMENLJIVA
 
-  var finalResult = {}
+  var finalResult = {
+    fixed: null,
+    variable: null
+  }
 
   function pushData(type, result){
     finalResult[type] = result;

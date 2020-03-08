@@ -1,28 +1,13 @@
 skb_stanovanjski:
-  handler: ./stanovanjski.handler
+  handler: api/skb/stanovanjski.handler
   events:
     - http:
         path: /skb/stanovanjski
         method: get
-        cors: true
-  request:
-    template:
-      application/json: '{ 
-        "creditAmount": "$input.params(''creditAmount'')",
-        "creditTime": "$input.params(''creditTime'')",
-        "creditInsurance": "$input.params(''creditInsurance'')"
-        }'
+        
 skb_potrosniski:
-  handler: ./potrosniski.handler
+  handler: api/skb/potrosniski.handler
   events:
     - http:
         path: /skb/potrosniski
         method: get
-        cors: true
-  request:
-    template:
-      application/json: '{ 
-        "creditAmount": "$input.params(''creditAmount'')",
-        "creditTime": "$input.params(''creditTime'')",
-        "creditInsurance": "$input.params(''creditInsurance'')"
-        }'

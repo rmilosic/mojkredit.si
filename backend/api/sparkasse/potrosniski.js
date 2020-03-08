@@ -21,10 +21,9 @@ module.exports.handler = (event, context, callback) => {
   
   console.log(queryData);
 
-  let creditTimeYears = event['creditTime'] / 12;
-
   // QUERYSTRING
-  let message = `intTipKredita=2&decVolumen=${Math.round(event['creditAmount'])}&intSteviloOdplacilLeto=${creditTimeYears}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
+  
+  let message = `intTipKredita=3&decVolumen=${event['creditAmount']}&intSteviloOdplacil=${event['creditTime']}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
   let queryString = querystring.parse(message, null, null);
 
   var options = {

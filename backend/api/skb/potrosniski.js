@@ -9,6 +9,13 @@ console.log('Loading function');
 
 module.exports.handler = (event, context, callback) => {
 
+
+  // return object
+  var finalResult = {
+    fixed: null,
+    variable: null
+  }
+
   console.log(event);
 
   var queryData = event.queryStringParameters;
@@ -16,7 +23,7 @@ module.exports.handler = (event, context, callback) => {
   console.log(queryData);
 
   // QUERYSTRING
-  let message  = `loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${queryData['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${queryData['creditTime']}&loan_offer%5BproductCode%5D=11`;
+  let message  = `loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${event['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${event['creditTime']}&loan_offer%5BproductCode%5D=11`;
 
   let queryString = querystring.parse(message, null, null);
 
@@ -42,6 +49,40 @@ module.exports.handler = (event, context, callback) => {
 
   // console.log(event);
 
+
+  function extractData(htmlSection, omType){
+    
+    let returnData = {};
+    
+    htmlSection.querySelectorAll(".infResultHeader").map((elem) => {
+      elem.querySelectorAll("table tr td").map((elem) => {
+
+        var splitFields = elem.structuredText.split("\n");
+        returnData[splitFields[0]] = splitFields[1]
+        })
+    })
+
+    htmlSection.querySelectorAll(".infResultContent").map((elem) => {
+      elem.querySelectorAll("tr").slice(1, -1).map((elem) => {
+        var _key = elem.querySelectorAll("td")[0].rawText.replace(':', '');
+        var _value = elem.querySelectorAll("td")[1].rawText
+        returnData[_key] = _value
+        })
+    })
+    
+    console.log(returnData);
+    var responseData = {
+      "monthlyAnnuity": returnData['Mesečna anuiteta'].split(" ")[0],
+      "annualInterestRate": returnData['Obrestna mera'],
+      "totalLoanCost": returnData['Skupni stroški kredita'].split(" ")[0],
+      "effectiveInterestRate": returnData['Efektivna obrestna mera (EOM)'],
+      "totalAmountPaid": returnData['Skupni znesek, ki ga mora plačati potrošnik'].split(" ")[0],
+    }
+
+    finalResult[omType] = responseData;
+    
+  }
+
   const req = https.request(options.options, (res) => {
     
     let body = '';
@@ -53,35 +94,20 @@ module.exports.handler = (event, context, callback) => {
     res.on('end', () => {
 
       let bodyDict = JSON.parse(body);
-      let htmlData = htmlParser.parse(bodyDict['data'].toString())
+      let htmlData = htmlParser.parse(bodyDict['data'].toString());
       
-      let returnData = {};
-      htmlData.querySelectorAll(".infResultHeader").map((elem) => {
-        elem.querySelectorAll("table tr td").map((elem) => {
+      console.log("html", htmlData)
 
-          var splitFields = elem.structuredText.split("\n");
-          returnData[splitFields[0]] = splitFields[1]
-          })
-      })
+      // Both fixed and variable OM divs
+      let resultDivs = htmlData.querySelectorAll(".infResult");
 
-      htmlData.querySelectorAll(".infResultContent").map((elem) => {
-        elem.querySelectorAll("tr").slice(1, -1).map((elem) => {
-          var _key = elem.querySelectorAll("td")[0].rawText.replace(':', '');
-          var _value = elem.querySelectorAll("td")[1].rawText
-          returnData[_key] = _value
-          })
-      })
+      // Get fixed OM data
+      let fixedSection = resultDivs[0];
+      let variableSection = resultDivs[1];
 
-      console.log(returnData);
-      var responseData = {
-        "monthlyAnnuity": returnData['Mesečna anuiteta'].split(" ")[0],
-        "annualInterestRate": returnData['Obrestna mera'],
-        "totalLoanCost": returnData['Skupni stroški kredita'].split(" ")[0],
-        "effectiveInterestRate": returnData['Efektivna obrestna mera (EOM)'],
-        "totalAmountPaid": returnData['Skupni znesek, ki ga mora plačati potrošnik'].split(" ")[0],
-      }
+      extractData(fixedSection, "fixed");
+      extractData(variableSection, "variable");
                     
-      console.log(responseData);
 
       callback(null, {
         statusCode: 200,
@@ -92,7 +118,7 @@ module.exports.handler = (event, context, callback) => {
         body: JSON.stringify({
           "message": 'Executed successfully',
           "input": event,
-          "data": responseData
+          "data": finalResult
         })
       })
     });

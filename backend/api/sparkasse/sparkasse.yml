@@ -1,14 +1,20 @@
 sparkasse_stanovanjski:
-  handler: ./stanovanjski.handler
+  handler: api/sparkasse/stanovanjski.handler
   events:
     - http:
         path: /sparkasse/stanovanjski
         method: get
-        cors: true
-  request:
-    template:
-      application/json: '{ 
-        "creditAmount": "$input.params(''creditAmount'')",
-        "creditTime": "$input.params(''creditTime'')",
-        "creditInsurance": "$input.params(''creditInsurance'')"
-        }'
+
+sparkasse_potrosniski:
+  handler: api/sparkasse/potrosniski.handler
+  events:
+    - http:
+        path: /sparkasse/potrosniski
+        method: get
+
+sparkasse_hitri:
+  handler: api/sparkasse/hitri.handler
+  events:
+    - http:
+        path: /sparkasse/potrosniski
+        method: get
