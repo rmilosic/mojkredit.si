@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
 import Box from '@material-ui/core/Box';
-import valueMapper from '../../config/calcSetup';
 
 Array.min = function( array ){
     return Math.min.apply( Math, array );

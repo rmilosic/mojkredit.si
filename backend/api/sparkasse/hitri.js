@@ -22,7 +22,7 @@ module.exports.handler = (event, context, callback) => {
   console.log(queryData);
 
   // QUERYSTRING
-  let message = `intTipKredita=1&decVolumen=${Math.round(event['creditAmount'])}&intSteviloOdplacil=${event['creditTime']}&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=`
+  let message = `intTipKredita=1&decVolumen=${Math.round(queryData['creditAmount'])}&intSteviloOdplacil=${queryData['creditTime']}&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=`
   
   let queryString = querystring.parse(message, null, null);
 

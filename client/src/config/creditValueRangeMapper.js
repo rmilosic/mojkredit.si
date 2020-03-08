@@ -94,7 +94,57 @@ const creditValueRangeMapper = {
                 }
             }
         },
-    }
+    },
+    "sparkasse": {
+        "stanovanjski": {
+            "creditInsurance":{
+                "mortgage": {
+                    "min_time": 12,
+                    "max_time": 300,
+                    "min_amount": 15000,
+                    "max_amount": 300000
+                },
+                "insurance": {
+                    "min_time": 12,
+                    "max_time": 300,
+                    "min_amount": 15000,
+                    "max_amount": 300000
+                }
+            }
+        },
+        "potrošniški": {
+            "creditInsurance":{
+                "mortgage": {
+                    "min_time": 6,
+                    "max_time": 84,
+                    "min_amount": 1500,
+                    "max_amount": 35000
+                },
+                "insurance": {
+                    "min_time": 6,
+                    "max_time": 84,
+                    "min_amount": 1500,
+                    "max_amount": 35000
+                }
+            }
+        },
+        "hitri": {
+            "creditInsurance":{
+                "insurance": {
+                    "min_time": 6,
+                    "max_time": 60,
+                    "min_amount": 1000,
+                    "max_amount": 12000
+                },
+                "mortgage": {
+                    "min_time": 6,
+                    "max_time": 60,
+                    "min_amount": 1000,
+                    "max_amount": 12000
+                },
+            }
+        }
+    },
 }
 
 

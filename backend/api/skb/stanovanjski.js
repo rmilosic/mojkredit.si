@@ -18,8 +18,10 @@ module.exports.handler = (event, context, callback) => {
     variable: null
   }
 
+  var queryData = event.queryStringParameters;
+
   // QUERYSTRING
-  let message  = `loan_offer%5Binsurance%5D=${event['creditInsurance']}&loan_offer%5BloanReason%5D=2&loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${event['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${event['creditTime']}&loan_offer%5BrealestateValue%5D=2.000%2C00&loan_offer%5BproductCode%5D=31`;
+  let message  = `loan_offer%5Binsurance%5D=${queryData['creditInsurance']}&loan_offer%5BloanReason%5D=2&loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${queryData['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${queryData['creditTime']}&loan_offer%5BrealestateValue%5D=2.000%2C00&loan_offer%5BproductCode%5D=31`;
   let queryString = querystring.parse(message, null, null);
 
   var options = {

@@ -4,6 +4,7 @@ sparkasse_stanovanjski:
     - http:
         path: /sparkasse/stanovanjski
         method: get
+        cors: true
 
 sparkasse_potrosniski:
   handler: api/sparkasse/potrosniski.handler
@@ -11,10 +12,12 @@ sparkasse_potrosniski:
     - http:
         path: /sparkasse/potrosniski
         method: get
+        cors: true
 
 sparkasse_hitri:
   handler: api/sparkasse/hitri.handler
   events:
     - http:
-        path: /sparkasse/potrosniski
+        path: /sparkasse/hitri
         method: get
+        cors: true

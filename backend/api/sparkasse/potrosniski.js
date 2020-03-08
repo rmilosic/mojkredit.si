@@ -23,7 +23,7 @@ module.exports.handler = (event, context, callback) => {
 
   // QUERYSTRING
   
-  let message = `intTipKredita=3&decVolumen=${event['creditAmount']}&intSteviloOdplacil=${event['creditTime']}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
+  let message = `intTipKredita=3&decVolumen=${queryData['creditAmount']}&intSteviloOdplacil=${queryData['creditTime']}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
   let queryString = querystring.parse(message, null, null);
 
   var options = {

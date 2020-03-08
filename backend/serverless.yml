@@ -23,10 +23,6 @@ org: milosicr
 provider:
   name: aws
   runtime: nodejs12.x
-  httpApi:
-    cors:
-      allowedOrigins:
-        - https://finster.si
 
 # you can overwrite defaults here
   stage: dev

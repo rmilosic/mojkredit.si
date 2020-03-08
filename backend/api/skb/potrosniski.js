@@ -23,7 +23,7 @@ module.exports.handler = (event, context, callback) => {
   console.log(queryData);
 
   // QUERYSTRING
-  let message  = `loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${event['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${event['creditTime']}&loan_offer%5BproductCode%5D=11`;
+  let message  = `loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${queryData['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${queryData['creditTime']}&loan_offer%5BproductCode%5D=11`;
 
   let queryString = querystring.parse(message, null, null);
 

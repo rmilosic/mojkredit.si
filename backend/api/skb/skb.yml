@@ -4,10 +4,12 @@ skb_stanovanjski:
     - http:
         path: /skb/stanovanjski
         method: get
-        
+        cors: true
+
 skb_potrosniski:
   handler: api/skb/potrosniski.handler
   events:
     - http:
         path: /skb/potrosniski
         method: get
+        cors: true

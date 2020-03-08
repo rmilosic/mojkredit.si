@@ -15,6 +15,8 @@ module.exports.handler = (event, context, callback) => {
     variable: null
   }
 
+  var queryData = event.queryStringParameters;
+
   function pushData(type, result){
     finalResult[type] = result;
   }
@@ -37,8 +39,8 @@ module.exports.handler = (event, context, callback) => {
 
   function calculateFixed () {
     var fixed_post_options = {
-      "data": `id=17&nacinZavarovanja=${event['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=1&znesekKredita=${event['creditAmount']}
-    &odplacilnaDoba=${event['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
+      "data": `id=17&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=1&znesekKredita=${queryData['creditAmount']}
+    &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
       "options": post_options
     }
 
@@ -100,8 +102,8 @@ module.exports.handler = (event, context, callback) => {
 
   function calculateVariable () {
     var variable_post_options = {
-      "data": `id=17&nacinZavarovanja=${event['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=1&znesekKredita=${event['creditAmount']}
-         &odplacilnaDoba=${event['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
+      "data": `id=17&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=2&znesekKredita=${queryData['creditAmount']}
+         &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
       "options": post_options
     }
 

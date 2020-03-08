@@ -7,12 +7,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Grid, Typography } from '@material-ui/core';
 import SkbLogo from '../resources/skb-logo-otp.png';
 import SberbankLogo from '../resources/sberbank-logo-png-2.png';
+import SparkasseLogo from '../resources/sparkasse-logo.png';
+
 
 
 class OfferRowPanel extends Component {
     imgMapper = {
         "skb": SkbLogo,
-        "sberbank": SberbankLogo
+        "sberbank": SberbankLogo,
+        "sparkasse": SparkasseLogo
     };
 
     render() {
