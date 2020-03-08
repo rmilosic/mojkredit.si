@@ -1,0 +1,39 @@
+sberbank_potrosniski:
+  handler: api/sberbank/potrosniski.handler
+  events:
+    - http:
+        path: /sberbank/potrosniski
+        method: get
+        cors: true
+
+sberbank_stanovanjski:
+  handler: api/sberbank/stanovanjski.handler
+  events:
+    - http:
+        path: /sberbank/stanovanjski
+        method: get
+        cors: true
+        
+sberbank_avtomobilski:
+  handler: api/sberbank/avtomobilski.handler
+  events:
+    - http:
+        path: /sberbank/avtomobilski
+        method: get
+        cors: true
+
+sberbank_hitri:
+  handler: api/sberbank/hitri.handler
+  events:
+    - http:
+        path: /sberbank/hitri
+        method: get
+        cors: true
+
+sberbank_gotovinski:
+  handler: api/sberbank/gotovinski.handler
+  events:
+    - http:
+        path: /sberbank/gotovinski
+        method: get
+        cors: true
