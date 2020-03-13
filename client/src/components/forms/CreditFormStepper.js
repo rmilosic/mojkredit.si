@@ -123,49 +123,25 @@ class CreditFormStepper extends Component {
           <Grid item xs={12}>
               <FormControl component="fieldset" fullWidth={true}>
                   
-              {this.getStepContent(this.state['activeStep'])}
+                {this.getStepContent(this.state['activeStep'])}
             
               </FormControl>
             
             </Grid>
-          
-          
-          {this.state['activeStep'] === this.state['steps'].length - 1  ? (
-              
-            <Grid item xs={12}>
-              <Box mt="2rem"/>
-              <Button onClick={this.handleReset}>
-                Ponastavi
-              </Button>
-              <Button variant="contained" color="primary" onClick={this.props.handleFinishClick}>Izračunaj</Button>
-            </Grid>
-            ) : (
-            <Grid item xs={12}>
-              <Box mt="2rem"/>
 
-              <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
+            <Grid item xs={12}>
+              <Box mt="2rem"/>
+              <Button onClick={this.handleBack}>
                 Nazaj
               </Button>
-              {this.isStepOptional(this.state['activeStep']) && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleSkip}
-                >
-                  Skip
-                </Button>
+              {this.state['activeStep'] === this.state['steps'].length - 1  ? (
+              <Button variant="contained" color="primary" onClick={this.props.handleFinishClick}>Izračunaj</Button>
+              ) : (
+              <Button variant="contained" color="primary" onClick={this.handleNext}>
+                Naprej
+              </Button>
               )}
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleNext}
-                  >
-                    {this.state['activeStep'] === this.state['steps'].length - 1 ? 'Finish' : 'Naprej'}
-                  </Button>
-                </Grid>
-
-            )}
+            </Grid>
             
         </div>
   

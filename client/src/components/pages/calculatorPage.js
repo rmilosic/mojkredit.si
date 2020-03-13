@@ -12,6 +12,7 @@ import CreditFormStepper from '../forms/CreditFormStepper';
 import OfferRowPanel from '../OfferRowPanel';
 import valueMapper from '../../config/calcSetup';
 import creditValueRangeMapper from '../../config/creditValueRangeMapper';
+import SelectFormProperties from '../forms/SelectFormProperties';
 
 
 class CalculatorPage extends React.Component {
@@ -212,17 +213,21 @@ class CalculatorPage extends React.Component {
     var availableBankSkills = this.getAvailableBankSkills();
 
     var offerList = this.state["offerResults"];
-    console.log(offerList)
     
     var omType = this.state['compareFixedInterestRate'] ? "fixed" : "variable";
 
-    var offerItems = offerList.map(function(e, i){
+    var offerItems = offerList.filter(function(e, i){
       console.log(e)
-
+      console.log("omtype", e[omType]);
       // retrieve the right data in relation to interest rate type
-      
-
-      return <OfferRowPanel key={i}  
+      if(e["data"][omType] != null){
+        return true;
+      }
+        return false;
+      })
+      .map(function (e, i){
+        console.log("omtype", e[omType]);
+        return <OfferRowPanel key={i}  
               bankName={e["bankName"] }  
               monthlyAnnuity={e["data"][omType]["monthlyAnnuity"] }  
               annualInterestRate={e["data"][omType]["annualInterestRate"] }  
@@ -230,7 +235,7 @@ class CalculatorPage extends React.Component {
               effectiveInterestRate={e["data"][omType]["effectiveInterestRate"] }  
               totalAmountPaid={e["data"][omType]["totalAmountPaid"]}
               />
-    });
+      });
 
     return (
       <Container maxWidth="md">
@@ -239,7 +244,6 @@ class CalculatorPage extends React.Component {
         alignItems='center'
         >
           
-
           {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
           { !this.state.creditFormHidden &&
             
@@ -262,7 +266,7 @@ class CalculatorPage extends React.Component {
           }
           
           {/* CHECK IF WE HAVE ANY OFFER RESULTS */}
-          { offerItems.length > 0 ?  
+          { this.state["creditFormHidden"] ?  
             <div>
               {/* DISPLAY SELECTED FORM VALUES */}
               <Grid item xs={12} sm={12}>
@@ -274,15 +278,13 @@ class CalculatorPage extends React.Component {
               </Grid>
               <Grid container>
                 <Grid item xs={7}>
+                  {/* import component with reselection of properties */}
                   <Box mt="1.5rem">
-                  <Box component="span" mr={1}> <Chip variant="outlined" color="primary" size="small" 
-                  label={ 'Vrsta: ' + this.state.formValues['creditType']} /> </Box>
-                  <Box component="span" mr={1}> <Chip variant="outlined" color="primary" size="small" 
-                  label={ 'Znesek: ' + this.state.formValues['creditAmount'] + ' €'} /></Box>
-                  <Box component="span" mr={1}> <Chip variant="outlined" color="primary" size="small" 
-                  label={ 'Čas: ' + this.state.formValues['creditTime'] + ' let'}/></Box>
-                  <Chip variant="outlined" color="primary" size="small" 
-                  label={ 'Zavarovanje: ' + this.state.formValues['creditInsurance']}/>
+                    <SelectFormProperties 
+                    creditType={this.state.formValues['creditType']}
+                    creditAmount={this.state.formValues['creditAmount']}
+                    creditTime={this.state.formValues['creditTime']}
+                    creditInsurance={this.state.formValues['creditInsurance']} />
                   </Box>
                 </Grid>
                 
@@ -304,10 +306,14 @@ class CalculatorPage extends React.Component {
               
               <Grid item xs={12} sm={12}>
                   {/* DISPLAY OFFER ITEMS */}
-                  <div>{offerItems}</div>
+                  
+                  { (offerItems.length) > 0 ? 
+                  <div>{offerItems}</div> 
+                  : "No results found for your search"
+                  }
               </Grid> 
               </div>
-          : null
+          :  null 
         }
 
         </Grid>

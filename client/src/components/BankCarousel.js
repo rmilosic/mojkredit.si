@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import SberbankLogo from '../resources/sberbank-logo-png-2.png';
 import SkbLogo from '../resources/skb-logo-otp.png';
-
+import SparkasseLogo from '../resources/sparkasse-logo.png';
 
 class BankCarousel extends Component{
 
@@ -25,6 +25,10 @@ class BankCarousel extends Component{
         {
             altName: "SKB",
             imageLocation: SkbLogo
+        },
+        {
+            altName: "Sparkasse",
+            imageLocation: SparkasseLogo
         }
     ]
 
