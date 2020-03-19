@@ -1,6 +1,8 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack')
+
 var path = require('path');
 
 
@@ -35,6 +37,18 @@ module.exports = {
       {
        test: /\.(png|svg|jpg|gif)$/,
        use: ['file-loader']
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
+        ]
       }
     ]     
   },
@@ -50,5 +64,9 @@ module.exports = {
     new CopyPlugin([
       { from: './src/_redirects', to: './' },
     ]),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+      })
   ]
 };

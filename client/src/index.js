@@ -1,7 +1,11 @@
 // Import the wrapper component, and the the creator function
 import React  from 'react';
 import ReactDOM from 'react-dom';
+// styles for material-ui
 import styles from './index.css';
+
+
+
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import Layout from './Layout';
