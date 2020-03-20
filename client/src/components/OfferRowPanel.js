@@ -22,9 +22,8 @@ class OfferRowPanel extends Component {
     render() {
         
         return(
-            <Grid container>
-                <Grid item xs={12}>
-
+                
+                <div>
                 <img 
                 src={this.imgMapper[this.props.bankName]}
                 alt={this.props.bankName}
@@ -54,10 +53,9 @@ class OfferRowPanel extends Component {
                        
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-      
 
-                 </Grid>
-            </Grid>
+                </div>
+      
         );
     }
 }
