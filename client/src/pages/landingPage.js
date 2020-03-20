@@ -1,21 +1,10 @@
-import React from 'react';
-
-// styles for bootstrap
-import stackInterfaceCSS from '../../resources/css/stack-interface.css';
-import iconsMindCSS from '../../resources/css/iconsmind.css';
-import bootstrapCSS from '../../resources/css/bootstrap.css';
-import themeCSS from '../../resources/css/theme.css';
-import customCSS from '../../resources/css/custom.css';
-import fontRalewayCSS from '../../resources/css/font-raleway.css';
-
-// import scripts
-import parallaxScript from '../../resources/js/parallax.js';
-import smoothScrollScript from '../../resources/js/smooth-scroll.min.js';
-import customScripts from '../../resources/js/scripts.js';
+import React  from 'react';
 
 // import images
-import finsterLight from '../../resources/img/finster.svg';
-import langingPageGraphic from '../../resources/img/landing-graphic.svg';
+import finsterLight from '../resources/img/finster.svg';
+import finsterDark from '../resources/img/finster-dark.svg';
+
+import langingPageGraphic from '../resources/img/landing-graphic.svg';
 
 
 function LandingPage() {
@@ -29,9 +18,8 @@ function LandingPage() {
                         <div className="row">
                             <div className="col-3 col-md-2">
                                 <a href="#"> 
-                                    {/* FINSTER LOGOS */}
-                                    <img className="logo logo-dark" alt="logo" src={finsterLight}/> 
-                                    <img className="logo logo-light" alt="logo" src={finsterLight}/> 
+                                    <img className="logo logo-dark" alt="logo" src={finsterDark}/> 
+                                    {/* <img className="logo logo-light" alt="logo" src={finsterLight}/>  */}
                                 </a>
                             </div>
                             <div className="col-9 col-md-10 text-right">
@@ -41,14 +29,15 @@ function LandingPage() {
                         </div>
                     </div>
                 </div>
+            </div>
                 <nav id="menu1" className="bar bar-1 hidden-xs bar--absolute bar--transparent">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-1 col-md-2 hidden-xs">
+                            <div className="col-lg-1 col-md-2 ">
                                 <div className="bar__module">
                                     <a href="#"> 
-                                        <img className="logo logo-dark" alt="logo" src={finsterLight}/> 
                                         <img className="logo logo-light" alt="logo" src={finsterLight}/> 
+                                        {/* <img className="logo logo-light" alt="logo" src={finsterLight}/>  */}
                                     </a>
                                 </div>
                             </div>
@@ -66,7 +55,7 @@ function LandingPage() {
                         </div>
                     </div>
                 </nav>
-            </div>
+            
         </div>
 
         {/* MAIN COMPONENT */}

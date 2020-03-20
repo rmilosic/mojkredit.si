@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
-import BankCarousel from '../BankCarousel';
-import PromoCarousel from '../PromoCarousel';
+import BankCarousel from '../components/BankCarousel';
+import PromoCarousel from '../components/PromoCarousel';
 import { Grid, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';

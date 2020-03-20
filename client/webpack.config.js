@@ -18,17 +18,11 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"        
-        }
+        use: ["babel-loader"]
       },
       {
         test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader"
-          }
-        ]
+        use: ["html-loader"]
       },
       {
         test: /\.css$/i,
@@ -49,6 +43,11 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.ya?ml$/,
+        type: 'json', // Required by Webpack v4
+        use: 'yaml-loader'
       }
     ]     
   },

@@ -7,9 +7,9 @@ import {
     Link
   } from "react-router-dom";
 
-import CalculatorPage from './components/pages/calculatorPage';
+import CalculatorPage from './pages/calculatorPage';
 // import Home from './components/pages/Home';
-import LandingPage from './components/pages/landingPage';
+import LandingPage from './pages/landingPage';
 import { withRouter } from "react-router";
 
 function AppRouter(){
