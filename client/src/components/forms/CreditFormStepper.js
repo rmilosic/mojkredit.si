@@ -61,7 +61,6 @@ class CreditFormStepper extends Component {
     }
   }
 
-  
 
   isStepOptional(step){
     return false;
@@ -131,7 +130,7 @@ class CreditFormStepper extends Component {
 
             <Grid item xs={12}>
               <Box mt="2rem"/>
-              <Button onClick={this.handleBack}>
+              <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
                 Nazaj
               </Button>
               {this.state['activeStep'] === this.state['steps'].length - 1  ? (

@@ -20,8 +20,9 @@ class CreditType extends Component {
 
     render() {
         return(
-            <Grid container>
-            <Grid item xs={12} spacing={5}>
+            
+            <div>
+            <Grid item xs={12} >
             <h1>Izberite vrsto kredita</h1>
             </Grid>
 
@@ -39,7 +40,8 @@ class CreditType extends Component {
             </RadioGroup>
             </FormControl>
             </Grid>
-            </Grid>
+
+            </div>
         );
     }
 }

@@ -1,19 +1,22 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { Grid } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import FormGroup from '@material-ui/core/FormGroup';
+import { Grid, FormControl, Box } from '@material-ui/core';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import Radio from '@material-ui/core/Radio';
+import CreditFormStepper from '../components/forms/CreditFormStepper';
+import OfferRowPanel from '../components/OfferRowPanel';
+import valueMapper from '../config/calcSetup';
+import creditValueRangeMapper from '../config/creditValueRangeMapper';
 
-import CreditFormStepper from '../forms/CreditFormStepper';
-import OfferRowPanel from '../OfferRowPanel';
-import valueMapper from '../../config/calcSetup';
-import creditValueRangeMapper from '../../config/creditValueRangeMapper';
-import SelectFormProperties from '../forms/SelectFormProperties';
+// images
+import finsterDark from '../resources/img/finster-dark.svg';
+// import finsterLight from '../resources/img/finster.svg';
 
+
+// custom config
+import urlConfigYaml from '../config/urlMapper.yml';
 
 class CalculatorPage extends React.Component {
   
@@ -31,10 +34,9 @@ class CalculatorPage extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': ['sberbank', 'skb', 'sparkasse'],
-        'avtomobilski': ['sberbank'],
-        'potrošniški': ['sberbank', 'skb', 'sparkasse'],
-        'hitri': ['sberbank', 'sparkasse'],
+        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit'],
+        'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit'],
+        'hitri': ['sberbank', 'sparkasse', 'unicredit'],
         'gotovinski': ['sberbank']
       },
       offerResults: [],
@@ -53,8 +55,13 @@ class CalculatorPage extends React.Component {
 
   componentDidMount() {
     this.setActiveBanks(this.state.formValues['creditType']);
+    // console.log(urlConfigYaml);
   }
 
+  /** 
+  * Set state with active banks 
+  * @param{String} creditType  type of credit
+  */
   setActiveBanks(creditType){
     let newFormValues = this.state.formValues;
     let activeBanks = this.state.bankSkills[creditType]
@@ -62,6 +69,10 @@ class CalculatorPage extends React.Component {
     this.setState({formValues: newFormValues});
   }
 
+  /** 
+  * Get available bank skills
+  * @return {Array} skillsList  list of skills
+  */
   getAvailableBankSkills(){
     let skillsList = []
     for (const [key, value] of Object.entries(this.state.bankSkills)) {
@@ -72,54 +83,53 @@ class CalculatorPage extends React.Component {
     return skillsList;
   }
   
+  /** 
+  * Handle calculator finish click
+  */
   handleFinishClick() {
     this.toggleFormVisibility();
     this.gatherCalculations();
   }
 
+  /** 
+  * Show creditform stepper
+  */
   showForm(){
     this.setState({ creditFormHidden: false });
   }
 
+  /** 
+  * Toggle visibility of creditform stepper
+  */
   toggleFormVisibility(){
     let formState = this.state.creditFormHidden;
     let newFormState = ( formState ? false : true )
     this.setState({ creditFormHidden: newFormState });
   }
 
+  /** 
+  * Build a url of a given bank with 
+  * @param {String} bankName  Name of the bank
+  * @return   url
+  */
   getUrl(bankName){
 
     let creditAmount = this.state.formValues["creditAmount"];
     let creditType = this.state.formValues["creditType"];
     let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+    
     // MULTIPLY YEARS WITH 12 TO GET MONTHS
     let creditTime = this.state.formValues["creditTime"]*12;    
     
-    var urlMapper = {
-      "sberbank": {
-        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "avtomobilski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/avtomobilski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "gotovinski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/gotovinski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "hitri": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sberbank/hitri?creditAmount=${creditAmount}&creditTime=${creditTime}`
-      },
-      "skb": {
-        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/skb/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
-      },
-      "sparkasse": {
-        "stanovanjski": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/stanovanjski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "potrošniški": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/potrosniski?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`,
-        "hitri": `https://pcbu27f2x0.execute-api.eu-west-1.amazonaws.com/dev/sparkasse/hitri?creditAmount=${creditAmount}&creditTime=${creditTime}`
-      }
-    };
-
-    return urlMapper[bankName][creditType]
+    return urlConfigYaml[bankName][creditType] + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
   }
 
-  
-
-  fetchExample(bankName){
+  /** 
+  * fetch calculator response for a given bank
+  * @param {String} bankName bank name
+  * @return {Promise} 
+  */
+  fetchResponse(bankName){
     
     let offerResults = this.state["offerResults"];
 
@@ -151,22 +161,35 @@ class CalculatorPage extends React.Component {
     });
   }
   
-  
+  /** 
+  * Gather calculations for all active banks
+  */
   gatherCalculations(){
     console.log('Triggered gatherCalculations');
 
     if (this.state.formValues['activeBanks']){
       let activeBanks = this.state.formValues['activeBanks']
-      let fetchResult = activeBanks.map((bank) => this.fetchExample(bank));
+      let fetchResult = activeBanks.map((bank) => this.fetchResponse(bank));
     } 
   
   }
 
+  /**
+   * Reset the form back to beginning
+   */
   backToStart(){
+    // empty results
     this.setState({offerResults: []});
+    // make stepper visible again
     this.toggleFormVisibility();
   }
   
+  /**
+   * handle change in form stepper
+   * @param {*} event 
+   * @param {*} elem 
+   * @param {*} value 
+   */
   handleChange(event, elem, value){
     let formValues = this.state.formValues;
     let bankSkills = this.state.bankSkills;
@@ -191,15 +214,17 @@ class CalculatorPage extends React.Component {
       name = elem
     }
 
-
-    console.log("\nName: "+name);
-    console.log("New value: "+newValue);
+    // console.log("\nName: "+name);
+    // console.log("New value: "+newValue);
 
     formValues[name] = newValue;
     
     this.setState({formValues, bankSkills})
   }
 
+  /**
+   * Handle change in interest rate type comparison
+   */
   handleComparisonChange = () => {
     let comparisonState = this.state['compareFixedInterestRate'];
     let newComparisonState = comparisonState ? false : true;
@@ -210,15 +235,20 @@ class CalculatorPage extends React.Component {
 
   render() {
 
+    // get available bank sills
     var availableBankSkills = this.getAvailableBankSkills();
 
+    // get offer result list
     var offerList = this.state["offerResults"];
     
+    // set type of interest rate
     var omType = this.state['compareFixedInterestRate'] ? "fixed" : "variable";
 
+    // filter offer items for given type of interest rate
     var offerItems = offerList.filter(function(e, i){
-      console.log(e)
-      console.log("omtype", e[omType]);
+      // console.log(e)
+      // console.log("omtype", e[omType]);
+      
       // retrieve the right data in relation to interest rate type
       if(e["data"][omType] != null){
         return true;
@@ -243,6 +273,13 @@ class CalculatorPage extends React.Component {
         justify='center'
         alignItems='center'
         >
+          {/* Display logo */}
+          
+          <Grid item xs={12} sm={10} md={8}>
+            <Box pt={"2em"}/>
+            <a href="/"><img style={{"height": "2.5em"}} src={finsterDark}/></a>
+            <Box pt={"0.5em"} />
+          </Grid>
           
           {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
           { !this.state.creditFormHidden &&
@@ -276,9 +313,10 @@ class CalculatorPage extends React.Component {
                       Nazaj na izračun
                 </Button> 
               </Grid>
-              <Grid container>
-                <Grid item xs={7}>
-                  {/* import component with reselection of properties */}
+              
+              
+              {/* <Grid item xs={7}>
+                  // import component with reselection of properties 
                   <Box mt="1.5rem">
                     <SelectFormProperties 
                     creditType={this.state.formValues['creditType']}
@@ -286,22 +324,24 @@ class CalculatorPage extends React.Component {
                     creditTime={this.state.formValues['creditTime']}
                     creditInsurance={this.state.formValues['creditInsurance']} />
                   </Box>
-                </Grid>
+                </Grid> */}
                 
-                {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON */}
-                <Grid item xs={5}>
-                  <FormGroup row>
-                    <FormControlLabel
-                      control={
-                        <Switch checked={this.state['compareFixedInterestRate']} 
-                        value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"} 
-                        onChange={this.handleComparisonChange} />
-                      }
-                      label={this.state['compareFixedInterestRate'] ? "Fiksna OM" : "Spremenljiva OM"}
-                    />
-                  </FormGroup>
-                </Grid>
+              {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON */}
+              <Grid item xs={12}>
+                  
+                <FormControl required={true}>
+                  <RadioGroup aria-label="interestRateType" row 
+                    name="interestRateType" 
+                    value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"}  
+                    onChange={this.handleComparisonChange}>
+                      
+                      
+                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
+                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
 
+                  </RadioGroup>
+                </FormControl>
+               
               </Grid>
               
               <Grid item xs={12} sm={12}>

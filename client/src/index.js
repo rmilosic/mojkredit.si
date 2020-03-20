@@ -1,7 +1,21 @@
 // Import the wrapper component, and the the creator function
 import React  from 'react';
 import ReactDOM from 'react-dom';
-import styles from './index.css';
+
+// styles for bootstrap
+import stackInterfaceCSS from './resources/css/stack-interface.css';
+import iconsMindCSS from './resources/css/iconsmind.css';
+import bootstrapCSS from './resources/css/bootstrap.css';
+import themeCSS from './resources/css/theme.css';
+import customCSS from './resources/css/custom.css';
+import fontRalewayCSS from './resources/css/font-raleway.css';
+
+// import scripts
+import parallaxScript from './resources/js/parallax.js';
+import smoothScrollScript from './resources/js/smooth-scroll.min.js';
+import customScripts from './resources/js/scripts.js';
+
+
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import Layout from './Layout';

@@ -7,8 +7,9 @@ import {
     Link
   } from "react-router-dom";
 
-import CalculatorPage from './components/pages/calculatorPage';
-import Home from './components/pages/Home';
+import CalculatorPage from './pages/calculatorPage';
+// import Home from './components/pages/Home';
+import LandingPage from './pages/landingPage';
 import { withRouter } from "react-router";
 
 function AppRouter(){
@@ -17,7 +18,7 @@ function AppRouter(){
                     
         <Switch>
             <Route exact path="/izracun-kredita" render={() => <CalculatorPage key={Math.random()} />}/>
-            <Route exact path="/" render={() =>  <Home key={Math.random()} />}/>
+            <Route exact path="/" render={() =>  <LandingPage key={Math.random()} />}/>
         </Switch>
 
     )
