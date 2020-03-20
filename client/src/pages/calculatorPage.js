@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import { Grid, FormControl, Box } from '@material-ui/core';
+import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -269,99 +269,136 @@ class CalculatorPage extends React.Component {
 
     return (
       <Container maxWidth="md">
-        <Grid container 
-        justify='center'
-        alignItems='center'
-        >
+        <Grid container>
           {/* Display logo */}
-          
           <Grid item xs={12} sm={10} md={8}>
             <Box pt={"2em"}/>
-            <a href="/"><img style={{"height": "2.5em"}} src={finsterDark}/></a>
+              <a href="/"><img style={{"height": "2.5em"}} src={finsterDark}/></a>
             <Box pt={"0.5em"} />
           </Grid>
-          
-          {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
-          { !this.state.creditFormHidden &&
-            
-            <Grid item xs={12} sm={10} md={8}>
-              <CreditFormStepper 
-                creditType={this.state.formValues['creditType']}
-                creditAmount={this.state.formValues['creditAmount']}
-                creditTime={this.state.formValues['creditTime']}
-                creditAffiliation={this.state.formValues['creditAffiliation']}
-                creditInsurance={this.state.formValues['creditInsurance']}
-                gatherCalculations={this.gatherCalculations}
-                handleChange={this.handleChange} 
-                creditValueRangeMapper={creditValueRangeMapper} 
-                handleFinishClick={this.handleFinishClick}
-                availableBankSkills={availableBankSkills}
-                activeBanks={this.state.formValues['activeBanks']}
-                /> 
-           </Grid>    
-           
-          }
-          
-          {/* CHECK IF WE HAVE ANY OFFER RESULTS */}
-          { this.state["creditFormHidden"] ?  
-            <div>
-              {/* DISPLAY SELECTED FORM VALUES */}
-              <Grid item xs={12} sm={12}>
-              <Button onClick={this.backToStart} 
-                variant="contained"
-                color="primary">
-                      Nazaj na izračun
-                </Button> 
-              </Grid>
-              
-              
-              {/* <Grid item xs={7}>
-                  // import component with reselection of properties 
-                  <Box mt="1.5rem">
-                    <SelectFormProperties 
-                    creditType={this.state.formValues['creditType']}
-                    creditAmount={this.state.formValues['creditAmount']}
-                    creditTime={this.state.formValues['creditTime']}
-                    creditInsurance={this.state.formValues['creditInsurance']} />
-                  </Box>
-                </Grid> */}
-                
-              {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON */}
-              <Grid item xs={12}>
-                  
-                <FormControl required={true}>
-                  <RadioGroup aria-label="interestRateType" row 
-                    name="interestRateType" 
-                    value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"}  
-                    onChange={this.handleComparisonChange}>
-                      
-                      
-                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
-                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
-
-                  </RadioGroup>
-                </FormControl>
-               
-              </Grid>
-              
-              <Grid item xs={12} sm={12}>
-                  {/* DISPLAY OFFER ITEMS */}
-                  
-                  { (offerItems.length) > 0 ? 
-                  <div>{offerItems}</div> 
-                  : "No results found for your search"
-                  }
-              </Grid> 
-              </div>
-          :  null 
-        }
-
         </Grid>
+          
+        {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
+        { !this.state.creditFormHidden ? (
+            <Grid container justify="center">
+              <Grid item xs={12} sm={10} md={8}>
+                <CreditFormStepper 
+                  creditType={this.state.formValues['creditType']}
+                  creditAmount={this.state.formValues['creditAmount']}
+                  creditTime={this.state.formValues['creditTime']}
+                  creditAffiliation={this.state.formValues['creditAffiliation']}
+                  creditInsurance={this.state.formValues['creditInsurance']}
+                  gatherCalculations={this.gatherCalculations}
+                  handleChange={this.handleChange} 
+                  creditValueRangeMapper={creditValueRangeMapper} 
+                  handleFinishClick={this.handleFinishClick}
+                  availableBankSkills={availableBankSkills}
+                  activeBanks={this.state.formValues['activeBanks']}
+                  /> 
+              </Grid>
+            </Grid>
+          
+        ) : (
+            <div>
+
+                {/* BACK AND CHANGE OM TYPE */}
+                {/* <Grid container>
+                  
+                  <Grid item xs={12} sm={10} md={8}> */}
+                    {/* <Button onClick={this.backToStart} 
+                      variant="contained"
+                      color="primary">
+                            Nazaj na izračun
+                    </Button>  */}
+                  {/* </Grid>
+                  <Grid item xs={12} sm={10} md={8}>
+                    <FormControl required={true}>
+                      <RadioGroup aria-label="interestRateType" row 
+                        name="interestRateType" 
+                        value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"}  
+                        onChange={this.handleComparisonChange}>
+                          
+                          
+                        <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
+                        <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
+
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid> */}
+                            
+              
+                {/* </Grid> */}
+                
+                {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON  */}
+                <Grid container spacing={2} justify="center">
+
+                  <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={12}>
+                      <Hidden smDown>
+                      <Box pt={"4em"}/>
+                      </Hidden>
+                      <Button onClick={this.backToStart} 
+                          variant="outlined"
+                          color="secondary"
+                          fullWidth={true}>
+                                Nazaj na izračun
+                      </Button>
+                    </Grid>
+                   
+                    <Grid item xs={12} md={12}>
+                      <Box pt={"1em"}/>
+                      
+                      <FormControl required={true}>
+                        {/* XS SM ROW */}
+                        <Hidden mdUp>
+                          <Typography variant="caption"><strong>Tip obrestne mere</strong></Typography>
+                          <RadioGroup aria-label="interestRateType"  
+                            name="interestRateType" 
+                            value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"}  
+                            onChange={this.handleComparisonChange}
+                            row>
+                              
+                            
+                            <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
+                            <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+
+                          </RadioGroup>
+                        </Hidden>
+                        
+                        {/* SM UP */}
+                        <Hidden smDown>
+                          <RadioGroup aria-label="interestRateType"  
+                            name="interestRateType" 
+                            value={this.state['compareFixedInterestRate'] ? "fiksnaOM" : "spremenljivaOM"}  
+                            onChange={this.handleComparisonChange}>
+                              
+                            <span><strong>Tip obrestne mere</strong></span>
+                            <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
+                            <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+
+                          </RadioGroup>
+                        </Hidden>
+                        
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+              
+                  <Grid item xs={12} sm={10} md={9}>
+                    {/* DISPLAY OFFER ITEMS */}
+                    
+                    { (offerItems.length) > 0 ? 
+                    <div>{offerItems}</div> 
+                    : <Typography variant="h3">No results found for your search</Typography>
+                    }
+                  </Grid> 
+              </Grid>
+            </div>
+        )}
+
       </Container>
-    )
 
+    );
   }
-
 }
 
 export default CalculatorPage;
