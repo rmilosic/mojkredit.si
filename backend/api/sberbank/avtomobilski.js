@@ -1,7 +1,7 @@
 'use strict';
 var parseString = require('xml2js').parseString;
 const https = require('https');
-const htmlParser = require('node-html-parser');
+var functions = require('./functions');
 
 console.log('Loading function');
 
@@ -59,24 +59,10 @@ module.exports.handler = (event, context, callback) => {
           // console.dir will allow us to print the whole object in our console
           body = result['data']['resultText'];
           
-          var parsedBodyRoot = htmlParser.parse(body.toString())
-
-          var monthlyAnnuity = parsedBodyRoot.querySelectorAll(".calculation-item")[0].querySelectorAll("div")[1].rawText
-          var annualInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[6].querySelectorAll("div")[1].rawText
-          var totalLoanCost = parsedBodyRoot.querySelectorAll(".calculation-item")[10].querySelectorAll("div")[1].rawText
-          var effectiveInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[11].querySelectorAll("div")[1].rawText
-          var totalAmountPaid = parsedBodyRoot.querySelectorAll(".calculation-item")[12].querySelectorAll("div")[1].rawText
+          // external function
+          var parseResult = functions.extractLoanDataGeneric(body)
           
-
-          var result = {
-            "monthlyAnnuity": monthlyAnnuity.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "annualInterestRate": annualInterestRate.replace(/(\r\n|\r|\n)/g, ""),
-            "totalLoanCost": totalLoanCost.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "effectiveInterestRate": effectiveInterestRate.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "totalAmountPaid": totalAmountPaid.replace(/(\r\n|\r|\n|€| )/g, "")
-          }
-          
-          pushData("fixed", result);
+          pushData("fixed", parseResult);
 
           callback(null, {
             statusCode: 200,
@@ -124,23 +110,10 @@ module.exports.handler = (event, context, callback) => {
           // console.dir will allow us to print the whole object in our console
           body = result['data']['resultText'];
           
-          var parsedBodyRoot = htmlParser.parse(body.toString())
-
-          var monthlyAnnuity = parsedBodyRoot.querySelectorAll(".calculation-item")[0].querySelectorAll("div")[1].rawText
-          var annualInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[6].querySelectorAll("div")[1].rawText
-          var totalLoanCost = parsedBodyRoot.querySelectorAll(".calculation-item")[10].querySelectorAll("div")[1].rawText
-          var effectiveInterestRate = parsedBodyRoot.querySelectorAll(".calculation-item")[11].querySelectorAll("div")[1].rawText
-          var totalAmountPaid = parsedBodyRoot.querySelectorAll(".calculation-item")[12].querySelectorAll("div")[1].rawText
+          // external function
+          var parseResult = functions.extractLoanDataGeneric(body);
           
-          var result = {
-            "monthlyAnnuity": monthlyAnnuity.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "annualInterestRate": annualInterestRate.replace(/(\r\n|\r|\n)/g, ""),
-            "totalLoanCost": totalLoanCost.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "effectiveInterestRate": effectiveInterestRate.replace(/(\r\n|\r|\n|€| )/g, ""),
-            "totalAmountPaid": totalAmountPaid.replace(/(\r\n|\r|\n|€| )/g, "")
-          }
-          
-          pushData("variable", result);
+          pushData("variable", parseResult);
           calculateFixed();
           
         });

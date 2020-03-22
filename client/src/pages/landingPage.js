@@ -3,8 +3,11 @@ import React  from 'react';
 // import images
 import finsterLight from '../resources/img/finster.svg';
 import finsterDark from '../resources/img/finster-dark.svg';
+import timelinePNG from '../resources/img/timeline-lp.png';
 
-import langingPageGraphic from '../resources/img/landing-graphic.svg';
+import langingPageGraphic from '../resources/img/landing-graphic-2.svg';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Typography, Box, Button, Link } from '@material-ui/core';
 
 
 function LandingPage() {
@@ -44,12 +47,12 @@ function LandingPage() {
                             <div className="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
                                 <div className="bar__module">
                                     <ul className="menu-horizontal text-left">
-                                        <li> <a href="#opis-resitve">KAKO DELUJE FINSTER</a> </li>
-                                        <li> <a href="#za-banke">ZA BANKE</a> </li>
+                                        <li> <a href="#opis-resitve">O NAS</a> </li>
+                                        <li> <a href="#za-banke">OPIS REŠITEV</a> </li>
                                     </ul>
                                 </div>
                                 <div className="bar__module">
-                                    <a className="btn btn--sm type--uppercase" href="#kontakt"> <span className="btn__text">POŠLJI POVPRAŠEVANJE</span> </a>
+                                    <a className="btn btn--sm type--uppercase" href="#kontakt"> <span className="btn__text">KONTAKT</span> </a>
                                 </div>
                             </div>
                         </div>
@@ -65,18 +68,26 @@ function LandingPage() {
                 <div className="container">
                     <div className="row justify-content-between">
                         <div className="col-lg-5 col-md-7">
-                            <div className="mt--2">
+                            <div className="mt--3">
                                 {/* MAIN MESSAGE */}
-                                <h1><span>Hitro in učinkovito do bančnega kredita po vaši meri.</span></h1>
-                                <p className="lead"> Prihranite čas in primerjajte informativne ponudbe vseh bank na enem mestu</p>
+                                <h1>Razvijamo rešitve za optimizacijo procesov izdaje in pridobitve kreditov.</h1>
+                                {/* <p className="lead"> Prihranite čas in primerjajte informativne ponudbe vseh bank na enem mestu</p> */}
                                 
                                 {/* CTA */}
-                                <a className="btn btn--primary type--uppercase" href="/izracun-kredita"> 
-                                <span className="btn__text"> IZRAČUN KREDITA</span> </a> 
+                                {/* <a className="btn btn--primary type--uppercase" href="/izracun-kredita"> 
+                                <span className="btn__text"> IZRAČUN KREDITA</span> </a>  */}
                                 {/* <span className="block type--fine-print"><br/> </span>  */}
                             </div> 
+
+                            <div className="row text-center">
+                                <div className="col-sm-10 col-lg-10 justify-content-center">
+                                    <span>
+                                        <a href="#opis-resitve"><ExpandMoreIcon fontSize="large" style={{fontSize: 7 + 'em'}}/></a>
+                                    </span> 
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-lg-7 col-md-5 col-12"> <img alt="Image" src={langingPageGraphic}/> </div>
+                        <div className="col-lg-7 col-md-5 col-12"> <img alt="Finster idea" style={{height: 40 + 'em'}} src={langingPageGraphic}/> </div>
                     </div>
                 </div>
             </section>
@@ -85,77 +96,124 @@ function LandingPage() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-10 col-lg-8">
-                            <h2>Kako deluje Finster?</h2>
+                            <Typography variant="h3">Finster je</Typography>
                         </div>
                     </div>
-                </div>
-            </section>
-            <a id="usersfeature" className="in-page-link"></a>
-            <section className="text-center bg--secondary space--xxs">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Clock-Back icon--lg"></i>
-                                <h4>Do kredita v 2 tednih</h4>
-                                <p><span>Z digitalizacijo celotnega postopka in uporabo sodobnih tehnologij Finster zmanjša čas do pridobitve kredita na le nekaj ur za manjše kredite do maksimalno 2 tednov za kredite z bolj kompleksnimi zavarovanji (npr. stanovanjski krediti)</span><br/></p> <a href="#userstitle">Več informacij</a> </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Magnifi-Glass2 icon--lg"></i>
-                                <h4>Povečaj svoj pregled&nbsp;</h4>
-                                <p>Standardiziran postopek naredi proces bolj pregleden, saj lahko ponudniki kreditov predstavijo svojo ponudbo na bolj ekstenziven in pregleden način, sorazmerno s posamičnimi fazami cikla, kupci pa namesto večjega števila vzporednih ciklov, izpeljejo le enega.&nbsp;<br/></p> <a href="#userstitle">
-                        Več informacij
-                    </a> </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Coins icon--lg"></i>
-                                <h4>Izogni se odvečnim stroškom</h4>
-                                <p>Finster eliminira oportunistične stroške s tem, ko omogoči pridobivanje ponudb različnih bank v sklopu samo enega postopka, ter omogoča sklenitev pogodbe z izbrano banko kar preko spleta.&nbsp;<br/></p> <a href="#userstitle">
-                        Več informacij
-                    </a> </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <a id="za-banke" className="in-page-link"></a>
-            <section className="text-center space--xs">
-                <div className="container">
+                    <Box mt={"3em"}/>
                     <div className="row">
                         <div className="col-md-10 col-lg-8">
-                            <h1>Za banke</h1>
+                            <p>
+                            <Typography variant="subtitle1"><i>disruptivna lendtech rešitev, ki s pomočjo standardiziranih rešitev za digitalizacijo kreditnega procesa in agregacijo ponudbe in povpraševanja na trgu kreditov, optimizira ter izboljša poslovanje obeh vpletenih strank - kreditodajalcev in kreditojemalcev.</i></Typography>
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            {/* tabs */}
+            <section class="text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabs-container" data-content-align="left">
+                                <ul class="tabs">
+                                    {/* KREDITOJEMALCI */}
+                                    <li class="active">
+                                        <div class="tab__title text-center"> <i class="icon icon--sm block icon-Business-ManWoman"></i> <span class="h5">Kreditojemalci</span> </div>
+                                        <div class="tab__content">
+                                            
+                                            <section className="text-center bg--secondary space--xxs">
+                                                <div className="container">
+                                                    <div className="row">
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Clock-Back icon--lg"></i>
+                                                                <Typography variant="h5">Postopki so dolgotrajni</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Od začetka povpraševanja do črpanja kredita mine v povprečju 59 dni. Povpraševalec po kreditu mora spletne informativne izračune primerjati ročno in za pridobitev individualnih ponudb fizično obiskati vsako izmed bank. Po izbiri ponudbe mora ponovno obiskati banko za podpis pogodbe in ureditev ostale dokumentacije.</Typography>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Arrow-Squiggly icon--lg"></i>
+                                                                <Typography variant="h5">Postopki so nepregledni</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Ob povpraševanju pri različnih bankah se uporabnik sooča z neskladnimi postopki. Banke lahko za izračun kreditne sposobnosti, določitev pogojev ter posledično podajo individualne ponudbe zahtevajo različne podatke in dokumentacijo. Vse navedeno oteži pridobitev kredita, ki uporabniku najbolj ustreza.</Typography>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Coins icon--lg"></i>
+                                                                <Typography variant="h5">Oportunistični stroški</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Ponudbe bank se lahko razlikujejo glede na njihovo vsakokratno politiko kreditiranja in morebitne akcije. Ravno tako lahko ponudbe vsebujejo različne dodatne stroške, ki znatno vplivajo na končni strošek kredita. Po naših izračunih se lahko že pri kreditih z nižjim zneskom informativni izračuni razlikujejo za 5%. Razlike pri višjih zneskih in individualnih ponudbah so pa praviome še večje.</Typography>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </li>
+                                    {/* KREDITODAJALCI */}
+                                    <li>
+                                        <div class="tab__title text-center"> <i class="icon icon--sm block icon-Bank"></i> <span class="h5">Kreditodajalci</span> </div>
+                                        <div class="tab__content">
+                                            <section className="text-center bg--secondary space--xxs">
+                                                <div className="container">
+                                                    <div className="row">
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Add-UserStar icon--lg"></i>
+                                                                <Typography variant="h5">Nedostopnost celotnega potencialnega trga</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Banke s kreditnimi produkti praviloma in pretežno dosegajo zgolj trg lastnih komitentov. Sodeč po raziskavi trga, ki smo jo izvedli, kar 70% uporabnikov ne pridobiva ponudb bank, pri katerih niso komitenti. Banka tako tudi s konkurenčno ali kvalitetnejšo ponudbo ne more doseči celotnega trga.</Typography>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Euro icon--lg"></i>
+                                                                <Typography variant="h5">Neefektivno oglaševanje</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Oglaševanje v pretežni meri ne naslavlja oseb, ki so v aktivni fazi iskanja produkta, ki ga kreditodajalec ponuja. Veliko sredstev je namenjenih splošnemu naslavljanju celotne populacije (reklamni panoji, plakati, tv in radio oglasi), kar rezultira v visokih stroških in nizki konverziji. </Typography>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Info-Window icon--lg"></i>
+                                                                <Typography variant="h5">Obremenjenost analognih procesov in virov</Typography>
+                                                                <Box pt="2em"/>
+                                                                <Typography variant="p">Kreditodajalci s svojimi zalednimi postopki in orodji ne dohajajo izrazitih trendov digitalnega razvoja, kot je to značilno za fintech področje. Digitalizacija je ključnega pomena za nadaljnji razvoj, konkuriranje na trgu ter razbremenitev procesov in virov. Posledično se lahko znižajo tudi stroški in poviša marža.</Typography>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <section className="switchable feature-large space--sm">
-                <div className="container">
-                    <div className="row justify-content-between">
-                        <div className="col-md-6 col-lg-5">
-                            <div className="switchable__text">
-                                <h2>Perfect for bootstrapped startups</h2>
-                                <p className="lead"> Launching an attractive and scalable website quickly and affordably is important for modern startups — Stack offers massive value without looking 'bargain-bin'. </p>
-                            </div>
+            
+            {/* TIMELINE */}
+            <section class="text-center bg--primary">
+                <div class="container">
+                    {/* kje smo */}
+                    <div className="row">
+                        <div className="col-md-12 mb--1">
+                            <Typography variant="h3" color="white">Kje smo in kam gremo?</Typography>
                         </div>
-                        <div className="col-md-6">
-                            <div className="boxed boxed--lg boxed--border">
-                                <div className="feature feature-2"> <i className="icon color--primary icon-Globe-2 icon--lg"></i>
-                                    <div className="feature__body">
-                                        <h5>Neposredni dostop do celotnega trga</h5>
-                                        <p> Finster bankam omogoči, da dostopajo do širšega trga, saj je ravno neučinkovitost, zamudnost in nepreglednost postopkov en izmed glavnih dejavnikov za tovrstno ravnanje uporabnikov. </p>
-                                    </div>
-                                </div>
-                                <div className="feature feature-2"> <i className="icon color--primary icon-Numbering-List icon--lg"></i>
-                                    <div className="feature__body">
-                                        <h5>Efektivna predstavitev produktov</h5>
-                                        <p>Finster ponuja izpostavitev uporabnikom, ki so v aktivni fazi iskanja, in sicer na način, da izpostavi ponudbe v kategoriji produktov, po katerih uporabnik v danem trenutku tudi povprašuje.&nbsp;&nbsp;<br/></p>
-                                    </div>
-                                </div>
-                                <div className="feature feature-2"> <i className="icon color--primary material-icons icon--lg">trending_up</i>
-                                    <div className="feature__body">
-                                        <h5>Poenostavitev procesov&nbsp; in razbremenitev virov</h5>
-                                        <p>Z digitalnim pristopom platforme Finster in podpornimi storitvami lahko bankam ponudimo razbremenitev, kar rezultira v nižjih stroških.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="col-md-12 mb--1">
+                            <Typography variant="h5" color="white">Zbirnik informativnih izračunov je že v razvoju!</Typography>
+                        </div>
+
+                        <div className="col-md-12 mb--1">
+                            <a href="/izracun-kreditov"><Button variant="contained" color="secondary">Ogled zbirnika</Button></a>
+                        </div>
+
+                        
+                    </div>
+                        
+                    <div className="row">
+                        <div className="col-md-12">
+                            <img alt="timeline" src={timelinePNG}/>
                         </div>
                     </div>
                 </div>

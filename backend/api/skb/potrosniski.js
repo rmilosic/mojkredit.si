@@ -3,6 +3,7 @@ var parseString = require('xml2js').parseString;
 const https = require('https');
 const htmlParser = require('node-html-parser');
 const querystring = require('querystring');
+var functions = require('./functions');
 
 
 console.log('Loading function');
@@ -16,11 +17,12 @@ module.exports.handler = (event, context, callback) => {
     variable: null
   }
 
-  console.log(event);
+  function pushData(type, result){
+    finalResult[type] = result;
+  }
 
   var queryData = event.queryStringParameters;
   
-  console.log(queryData);
 
   // QUERYSTRING
   let message  = `loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${queryData['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${queryData['creditTime']}&loan_offer%5BproductCode%5D=11`;
@@ -50,39 +52,6 @@ module.exports.handler = (event, context, callback) => {
   // console.log(event);
 
 
-  function extractData(htmlSection, omType){
-    
-    let returnData = {};
-    
-    htmlSection.querySelectorAll(".infResultHeader").map((elem) => {
-      elem.querySelectorAll("table tr td").map((elem) => {
-
-        var splitFields = elem.structuredText.split("\n");
-        returnData[splitFields[0]] = splitFields[1]
-        })
-    })
-
-    htmlSection.querySelectorAll(".infResultContent").map((elem) => {
-      elem.querySelectorAll("tr").slice(1, -1).map((elem) => {
-        var _key = elem.querySelectorAll("td")[0].rawText.replace(':', '');
-        var _value = elem.querySelectorAll("td")[1].rawText
-        returnData[_key] = _value
-        })
-    })
-    
-    console.log(returnData);
-    var responseData = {
-      "monthlyAnnuity": returnData['Mesečna anuiteta'].split(" ")[0],
-      "annualInterestRate": returnData['Obrestna mera'],
-      "totalLoanCost": returnData['Skupni stroški kredita'].split(" ")[0],
-      "effectiveInterestRate": returnData['Efektivna obrestna mera (EOM)'],
-      "totalAmountPaid": returnData['Skupni znesek, ki ga mora plačati potrošnik'].split(" ")[0],
-    }
-
-    finalResult[omType] = responseData;
-    
-  }
-
   const req = https.request(options.options, (res) => {
     
     let body = '';
@@ -105,10 +74,12 @@ module.exports.handler = (event, context, callback) => {
       let fixedSection = resultDivs[0];
       let variableSection = resultDivs[1];
 
-      extractData(fixedSection, "fixed");
-      extractData(variableSection, "variable");
-                    
-
+      var fixedResult = functions.extractLoanDataGeneric(fixedSection);
+      var variableResult = functions.extractLoanDataGeneric(variableSection);
+      
+      pushData("fixed", fixedResult)
+      pushData("variable", variableResult)
+    
       callback(null, {
         statusCode: 200,
         headers:{

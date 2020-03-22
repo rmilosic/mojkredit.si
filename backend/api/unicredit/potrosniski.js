@@ -8,46 +8,57 @@ var functions = require('./functions');
 
 console.log('Loading function');
 
-
 module.exports.handler = (event, context, callback) => {
 
   console.log(event);
-  
+
   // return object
   var finalResult = {
     fixed: null,
     variable: null
   }
-
+  
   function pushData(type, result){
     finalResult[type] = result;
   }
 
   var queryData = event.queryStringParameters;
+  
+  console.log(queryData);
 
-  // QUERYSTRING
-  let message  = `loan_offer%5Binsurance%5D=${queryData['creditInsurance']}&loan_offer%5BloanReason%5D=2&loan_offer%5BinterestType%5D=1&loan_offer%5BloanAmount%5D=${queryData['creditAmount']}&loan_offer%5BpayoffPeriod%5D=${queryData['creditTime']}&loan_offer%5BrealestateValue%5D=2.000%2C00&loan_offer%5BproductCode%5D=31`;
-  let queryString = querystring.parse(message, null, null);
-
+  
+  // let queryString = querystring.parse(message, null, null);
+  var postData = querystring.stringify({
+      "id":9,"amount": queryData["creditAmount"],"period": queryData["creditTime"],"isClient": true,"amountMin":500,"amountMax":30000,"periodMin":3,"periodMax":84,"carValue":0,"carYear":null,"annuityMin":30,"annuityMax":11000,"calcByAnnuity":false,"amountDef":1304.39,"carDeposit":0,"carValueMin":null,"carValueMax":null,"uomMonths":null,"incomeMin":600,"incomeMax":3500,"outcomeMin":0,"outcomeMax":3500,"withAccount":null,"withInsurance":null,"clientIncome":null,"clientOutcome":null,"eligibilityScore":null,
+      "segments":[
+        {"idOm":1,"isClient":false,"showAccount":1,"showInsurance":2},
+        {"idOm":1,"isClient":true,"showAccount":0,"showInsurance":1},
+        {"idOm":0,"isClient":false,"showAccount":1,"showInsurance":2},
+        {"idOm":0,"isClient":true,"showAccount":0,"showInsurance":1}
+      ]
+    })
   var options = {
-    "data": querystring.encode(queryString),
+    "data": postData,
     "options": {
-      "host": "www.skb.si",
-      "path": "/_loan_offer_ajax/31",
+      "host": "krediti.unicreditbank.si",
+      "path": "/api/LoanEomGet",
       "method": "POST",
       "headers": {
         "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         //"Cookie": "ASP.NET_SessionId=l3nillj4s0lj2zriyrzarz3h",
-        "Host": "www.skb.si",
-        "Origin": "https://www.skb.si",
-        "Referer": "https://www.skb.si/sl/osebne-finance/krediti/stanovanjski-kredit/informativni-izracun",
+        "Host": "krediti.unicreditbank.si",
+        "Content-Length": Buffer.byteLength(postData),
+        "Origin": "https://krediti.unicreditbank.si",
+        "Referer": "https://krediti.unicreditbank.si/izracun-potrosniski-kredit",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"
       }
     }
   }
   console.log(options.data);
+
+  // console.log(event);
 
 
   const req = https.request(options.options, (res) => {
@@ -61,24 +72,24 @@ module.exports.handler = (event, context, callback) => {
     res.on('end', () => {
 
       let bodyDict = JSON.parse(body);
-      let htmlData = htmlParser.parse(bodyDict['data'].toString())
       
-
-
-      // Both fixed and variable OM divs
-      let resultDivs = htmlData.querySelectorAll(".infResult");
-
-      // Get fixed OM data
-      let fixedSection = resultDivs[0];
-      let variableSection = resultDivs[1];
-
-
-      var fixedResult = functions.extractLoanDataGeneric(fixedSection);
-      var variableResult = functions.extractLoanDataGeneric(variableSection);
       
+      let loanOfferList = bodyDict["eom"];
+      console.log(loanOfferList);
+      // interestRateType: 1 == FIXED 
+      // interestRateType: 0 == VARIABLE
+
+      let fixedResponse = loanOfferList[0];
+      let variableResponse = loanOfferList[1];
+
+      
+      var fixedResult = functions.extractLoanDataGeneric(fixedResponse);
+      var variableResult = functions.extractLoanDataGeneric(variableResponse);
+
       pushData("fixed", fixedResult)
       pushData("variable", variableResult)
 
+    
       callback(null, {
         statusCode: 200,
         headers:{
