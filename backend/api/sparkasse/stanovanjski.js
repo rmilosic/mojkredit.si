@@ -3,6 +3,7 @@ var parseString = require('xml2js').parseString;
 const https = require('https');
 const htmlParser = require('node-html-parser');
 const querystring = require('querystring');
+var functions = require('./functions');
 
 
 console.log('Loading function');
@@ -15,6 +16,10 @@ module.exports.handler = (event, context, callback) => {
   var finalResult = {
     fixed: null,
     variable: null
+  }
+
+  function pushData(type, result){
+    finalResult[type] = result;
   }
 
   var queryData = event.queryStringParameters;
@@ -67,24 +72,11 @@ module.exports.handler = (event, context, callback) => {
       let fixedResponse = bodyDict['itemFix']['Data'];
       let variableResponse = bodyDict['itemVar']['Data'];
 
-      console.log("finalResult", finalResult)
-      console.log("fixedResponse", fixedResponse)
+      var fixedResult = functions.extractLoanDataGeneric(fixedResponse, queryData["creditAmount"]);
+      var variableResult = functions.extractLoanDataGeneric(variableResponse, queryData["creditAmount"]);
 
-      finalResult["fixed"] = {
-        'monthlyAnnuity': fixedResponse["annuityField"],
-        'annualInterestRate': fixedResponse["interestAmountField"],
-        'totalLoanCost': fixedResponse["expenseValueField"],
-        'effectiveInterestRate': fixedResponse["eOMField"],
-        'totalAmountPaid': fixedResponse["insuredSumField"]
-      };
-
-      finalResult["variable"] = {
-        'monthlyAnnuity': variableResponse["annuityField"],
-        'annualInterestRate': variableResponse["interestAmountField"],
-        'totalLoanCost': variableResponse["expenseValueField"],
-        'effectiveInterestRate': variableResponse["eOMField"],
-        'totalAmountPaid': variableResponse["insuredSumField"]
-      };
+      pushData("fixed", fixedResult)
+      pushData("variable", variableResult)
 
       callback(null, {
         statusCode: 200,

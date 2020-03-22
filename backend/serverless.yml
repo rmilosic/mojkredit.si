@@ -51,7 +51,7 @@ provider:
 # you can add packaging information here
 package:
   include:
-    - api/sberbank.js
+#    - api/sberbank.js
     - api/**
 #  exclude:
 #    - exclude-me.js
@@ -62,6 +62,7 @@ functions:
   - ${file(./api/sberbank/sberbank.yml)}
   - ${file(./api/skb/skb.yml)}
   - ${file(./api/sparkasse/sparkasse.yml)}
+  - ${file(./api/unicredit/unicredit.yml)}
 
 
   

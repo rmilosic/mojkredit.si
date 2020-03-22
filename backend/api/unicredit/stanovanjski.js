@@ -26,25 +26,35 @@ module.exports.handler = (event, context, callback) => {
   
   console.log(queryData);
 
-  // QUERYSTRING
+  var creditYears = queryData["creditTime"] / 12;
   
-  let message = `intTipKredita=3&decVolumen=${queryData['creditAmount']}&intSteviloOdplacil=${queryData['creditTime']}&VelikostStanovanja=&MojaPlaca=&MesecneObveznosti=&DrugeMesecneObveznosti=&PartnerPlaca=&PartnerMesecneObveznosti=&PartnerDrugeMesecneObveznosti=`
-  let queryString = querystring.parse(message, null, null);
-
+  // let queryString = querystring.parse(message, null, null);
+  var postData = querystring.stringify({
+    "id":1,"amount": queryData["creditAmount"],"period": creditYears, "isClient":true,"amountMin":1000,"amountMax":750000,"periodMin":5,"periodMax":30,"carValue":0,"carYear":null,"annuityMin":50,"annuityMax":14000,"calcByAnnuity":false,"amountDef":70000,"carDeposit":0,"carValueMin":null,"carValueMax":null,"uomMonths":120,"incomeMin":600,"incomeMax":3500,"outcomeMin":0,"outcomeMax":3500,"withAccount":null,"withInsurance":null,"clientIncome":null,"clientOutcome":null,"eligibilityScore":null,
+    "segments":[
+      {"idOm":1,"isClient":false,"showAccount":1,"showInsurance":2},
+      {"idOm":1,"isClient":true,"showAccount":0,"showInsurance":1},
+      {"idOm":0,"isClient":false,"showAccount":1,"showInsurance":2},
+      {"idOm":0,"isClient":true,"showAccount":0,"showInsurance":1},
+      {"idOm":2,"isClient":false,"showAccount":1,"showInsurance":2},
+      {"idOm":2,"isClient":true,"showAccount":0,"showInsurance":1}]
+    }
+  );
   var options = {
-    "data": querystring.encode(queryString),
+    "data": postData,
     "options": {
-      "host": "sparkasse.si",
-      "path": "/sl-si/ajax/kr_izracun_odplacilo",
+      "host": "krediti.unicreditbank.si",
+      "path": "/api/LoanEomGet",
       "method": "POST",
       "headers": {
         "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         //"Cookie": "ASP.NET_SessionId=l3nillj4s0lj2zriyrzarz3h",
-        "Host": "sparkasse.si",
-        "Origin": "https://sparkasse.si",
-        "Referer": "https://sparkasse.si/sl-si/prebivalstvo/krediti/kreditni-kalkulatorji",
+        "Host": "krediti.unicreditbank.si",
+        "Content-Length": Buffer.byteLength(postData),
+        "Origin": "https://krediti.unicreditbank.si",
+        "Referer": "https://krediti.unicreditbank.si/izracun-stanovanjski-kredit",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"
       }
     }
@@ -66,16 +76,18 @@ module.exports.handler = (event, context, callback) => {
 
       let bodyDict = JSON.parse(body);
       
-      console.log(bodyDict);
       
-      let fixedResponse = bodyDict['itemFix']['Data'];
-      let variableResponse = bodyDict['itemVar']['Data'];
+      let loanOfferList = bodyDict["eom"];
+      console.log(loanOfferList);
+      // interestRateType: 1 == FIXED 
+      // interestRateType: 0 == VARIABLE
 
-      console.log("finalResult", finalResult)
-      console.log("fixedResponse", fixedResponse)
+      let fixedResponse = loanOfferList[0];
+      let variableResponse = loanOfferList[1];
 
-      var fixedResult = functions.extractLoanDataGeneric(fixedResponse, queryData["creditAmount"]);
-      var variableResult = functions.extractLoanDataGeneric(variableResponse, queryData["creditAmount"]);
+      
+      var fixedResult = functions.extractLoanDataGeneric(fixedResponse);
+      var variableResult = functions.extractLoanDataGeneric(variableResponse);
 
       pushData("fixed", fixedResult)
       pushData("variable", variableResult)

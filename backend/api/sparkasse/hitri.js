@@ -3,7 +3,7 @@ var parseString = require('xml2js').parseString;
 const https = require('https');
 const htmlParser = require('node-html-parser');
 const querystring = require('querystring');
-
+var functions = require('./functions');
 
 console.log('Loading function');
 
@@ -15,6 +15,9 @@ module.exports.handler = (event, context, callback) => {
   var finalResult = {
     fixed: null,
     variable: null
+  }
+  function pushData(type, result){
+    finalResult[type] = result;
   }
 
   var queryData = event.queryStringParameters;
@@ -68,13 +71,12 @@ module.exports.handler = (event, context, callback) => {
       console.log("finalResult", finalResult)
       console.log("fixedResponse", fixedResponse)
 
-      finalResult["fixed"] = {
-        'monthlyAnnuity': fixedResponse["annuityField"],
-        'annualInterestRate': fixedResponse["interestAmountField"],
-        'totalLoanCost': fixedResponse["expenseValueField"],
-        'effectiveInterestRate': fixedResponse["eOMField"],
-        'totalAmountPaid': fixedResponse["insuredSumField"]
-      };
+      var fixedResult = functions.extractLoanDataGeneric(fixedResponse, queryData["creditAmount"]);
+      // N/A variable
+      // var variableResult = functions.extractLoanDataGeneric(variableResponse, queryData["creditAmount"]);
+
+      
+      pushData("fixed", fixedResult)
 
       callback(null, {
         statusCode: 200,
