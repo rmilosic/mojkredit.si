@@ -205,7 +205,7 @@ function LandingPage() {
                         </div>
 
                         <div className="col-md-12 mb--1">
-                            <a href="/izracun-kreditov"><Button variant="contained" color="secondary">Ogled zbirnika</Button></a>
+                            <a href="/izracun-kredita"><Button variant="contained" color="secondary">Ogled zbirnika</Button></a>
                         </div>
 
                         
