@@ -59,7 +59,7 @@ module.exports = {
       template: "./src/index.html",
       filename: "./index.html"
     }),
-    new FaviconsWebpackPlugin('./src/resources/black-path-favicon.png'),
+    new FaviconsWebpackPlugin('./src/resources/img/favicon.png'),
     new CopyPlugin([
       { from: './src/_redirects', to: './' },
     ]),
