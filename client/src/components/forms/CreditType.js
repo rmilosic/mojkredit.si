@@ -22,9 +22,9 @@ class CreditType extends Component {
         return(
             
             <div>
-            <Grid item xs={12} >
+            {/* <Grid item xs={12} >
             <h1>Izberite vrsto kredita</h1>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
             

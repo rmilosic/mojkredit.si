@@ -68,6 +68,16 @@ const theme = createMuiTheme({
         background: '#fff',
       }
     },
+    MuiExpansionPanel: {
+      root: {
+        background: 'white',
+      }
+    },
+    MuiCardContent:{
+      root: {
+        background: 'white',
+      }
+    },
     MuiList: {
       root: {
         width: '100%'

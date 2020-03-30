@@ -12,9 +12,9 @@ class CreditInsurance extends Component {
     render() {
         return(
             <Grid container>
-            <Grid item xs={12} spacing={5}>
+            {/* <Grid item xs={12} spacing={5}>
             <h1>Izberite način zavarovanja kredita</h1>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
             <RadioGroup aria-label="creditInsurance" name="creditInsurance" value={this.props.creditInsurance} onChange={this.props.handleChange}>

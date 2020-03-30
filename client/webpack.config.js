@@ -63,9 +63,9 @@ module.exports = {
     new CopyPlugin([
       { from: './src/_redirects', to: './' },
     ]),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery"
-      })
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
   ]
 };
