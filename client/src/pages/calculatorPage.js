@@ -31,6 +31,7 @@ class CalculatorPage extends React.Component {
       bankSkills: {
         'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
         'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
+        // TODO: FIX ŠTUDENTSKI KREDIT PRIKAZOVANJE
         'študentski': ['gorenjska'],
         'hitri': ['sberbank', 'sparkasse', 'unicredit'],
         'gotovinski': ['sberbank']
@@ -116,11 +117,11 @@ class CalculatorPage extends React.Component {
     
     // MULTIPLY YEARS WITH 12 TO GET MONTHS
     let creditTime = this.state.formValues["creditTime"]*12;  
-    
 
-    // return urlConfigYaml[bankName][creditType] + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    // TODO remove ŠUMNIKI FROM bankName for URL generation!!
+
     let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
-    console.log(call_url)
+    
     return call_url
   }
 

@@ -9,13 +9,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class CreditType extends Component {
 
-    toTitleCase(str) {
-        return str.replace(
-            /\w\S*/g,
-            function(txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            }
-        );
+    toTitleCase(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     }
 
     render() {
