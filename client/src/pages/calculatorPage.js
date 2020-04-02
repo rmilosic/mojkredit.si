@@ -2,10 +2,9 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 
-
 // custom compnents
 import CreditFormStepper from '../components/forms/CreditFormStepper';
-import valueMapper from '../config/calcSetup';
+import valueMapper from '../config/calcSetup.yml';
 import creditValueRangeMapper from '../config/creditValueRangeMapper';
 import FormResults from '../components/FormResults';
 
@@ -13,9 +12,6 @@ import FormResults from '../components/FormResults';
 import finsterDark from '../resources/img/finster-dark.svg';
 // import finsterLight from '../resources/img/finster.svg';
 
-
-// custom config
-import urlConfigYaml from '../config/urlMapper.yml';
 
 class CalculatorPage extends React.Component {
   
@@ -33,8 +29,9 @@ class CalculatorPage extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit'],
-        'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit'],
+        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
+        'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
+        'študentski': ['gorenjska'],
         'hitri': ['sberbank', 'sparkasse', 'unicredit'],
         'gotovinski': ['sberbank']
       },
@@ -114,12 +111,17 @@ class CalculatorPage extends React.Component {
 
     let creditAmount = this.state.formValues["creditAmount"];
     let creditType = this.state.formValues["creditType"];
+    
     let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
     
     // MULTIPLY YEARS WITH 12 TO GET MONTHS
-    let creditTime = this.state.formValues["creditTime"]*12;    
+    let creditTime = this.state.formValues["creditTime"]*12;  
     
-    return urlConfigYaml[bankName][creditType] + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+
+    // return urlConfigYaml[bankName][creditType] + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    console.log(call_url)
+    return call_url
   }
 
   

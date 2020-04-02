@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production"
+    "start": "webpack-dev-server --open --mode development --env.ENVIRONMENT=development",
+    "stage": "webpack-dev-server --open --mode development --env.ENVIRONMENT=production",
+    "build": "webpack --mode production --env.ENVIRONMENT=production"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-loader": "^3.0.3",
     "favicons-webpack-plugin": "^2.1.0",

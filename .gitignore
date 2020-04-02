@@ -9,3 +9,6 @@ dist
 .serverless
 package-lock.json
 
+# secret files
+.env
+.env.development

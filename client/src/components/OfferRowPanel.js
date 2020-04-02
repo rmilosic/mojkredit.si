@@ -9,6 +9,7 @@ import SkbLogo from '../resources/img/skb-logo-otp.png';
 import SberbankLogo from '../resources/img/sberbank-logo-png-2.png';
 import SparkasseLogo from '../resources/img/sparkasse-logo.png';
 import UnicreditLogo from '../resources/img/unicredit-logo.jpg';
+import GorenjskaLogo from '../resources/img/gorenjska-logo.jpg';
 
 
 class OfferRowPanel extends Component {
@@ -16,7 +17,8 @@ class OfferRowPanel extends Component {
         "skb": SkbLogo,
         "sberbank": SberbankLogo,
         "sparkasse": SparkasseLogo,
-        "unicredit": UnicreditLogo
+        "unicredit": UnicreditLogo,
+        "gorenjska": GorenjskaLogo
     };
 
     render() {
