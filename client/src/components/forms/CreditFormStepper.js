@@ -14,6 +14,7 @@ import CreditType from './CreditType'
 /*import CreditAffiliation from './CreditAffiliation'*/
 import CreditAmount from './CreditAmount'
 import CreditInsurance from './CreditInsurance'
+import { Card, CardContent, CardActionArea } from '@material-ui/core';
 
 
 const getSteps = function() {
@@ -61,6 +62,19 @@ class CreditFormStepper extends Component {
     }
   }
 
+  getStepTitle = (step) => {
+    switch (step) {
+      case 0:
+        return "Izberite vrsto kredita";
+      case 1:
+        return "Izberite način zavarovanja";
+      case 2:
+        return null;
+      default:
+        return 'Unknown step';
+    }
+  }
+  
 
   isStepOptional(step){
     return false;
@@ -118,29 +132,33 @@ class CreditFormStepper extends Component {
               );
             })}
           </Stepper>
-            
-          <Grid item xs={12}>
-              <FormControl component="fieldset" fullWidth={true}>
-                  
-                {this.getStepContent(this.state['activeStep'])}
-            
-              </FormControl>
-            
-            </Grid>
+          
 
-            <Grid item xs={12}>
-              <Box mt="2rem"/>
-              <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
-                Nazaj
-              </Button>
-              {this.state['activeStep'] === this.state['steps'].length - 1  ? (
-              <Button variant="contained" color="primary" onClick={this.props.handleFinishClick}>Izračunaj</Button>
-              ) : (
-              <Button variant="contained" color="primary" onClick={this.handleNext}>
-                Naprej
-              </Button>
-              )}
-            </Grid>
+
+          <Card>
+            <CardContent>
+               <Typography variant="h4">{this.getStepTitle(this.state['activeStep'])}</Typography> 
+               <Box mb={3}>
+                  {this.getStepContent(this.state['activeStep'])}
+               </Box>
+                <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
+                  Nazaj
+                </Button>
+                {this.state['activeStep'] === this.state['steps'].length - 1  ? (
+                <Button variant="contained" color="primary" onClick={this.props.handleFinishClick}>Izračunaj</Button>
+                ) : (
+                <Button variant="contained" color="primary" onClick={this.handleNext}>
+                  Naprej
+                </Button>
+                )}
+            </CardContent>
+
+          </Card>
+          
+              
+            
+
+            
             
         </div>
   

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+
 
 Array.min = function( array ){
     return Math.min.apply( Math, array );
@@ -102,7 +104,7 @@ class CreditAmount extends Component {
         return(
             <Grid container>
                 <Grid item xs={12}>
-                    <h2>Izberite znesek kredita (v Evrih)</h2>
+                    <Typography variant="h4">Izberite znesek kredita (v Evrih)</Typography>
                 </Grid>
             
                 <Grid item xs={12}>
@@ -121,31 +123,11 @@ class CreditAmount extends Component {
                     />
                     </Box>        
                 </Grid>
-
-                {/*<Grid item xs={12} sm={12} md={4}>
-                    <Input
-                        name="creditAmount"
-                        value={this.props.creditAmount}
-                        margin='none'
-                        inputProps={{
-                            step: 1000,
-                            min: this.minAmount,
-                            max: this.maxAmount,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider',
-                        }}
-                        fullwidth={true}
-                        onChange={this.props.handleChange.bind(this)}
-                        />
-                
-                    </Grid>*/}
-
-                
                 
                 {/* creditTime */}
                 <Grid item xs={12}>
                     <Box mt="3rem"/>
-                    <h2>Izberite dobo odplačila (v letih)</h2>
+                    <Typography variant="h4">Izberite dobo odplačila (v letih)</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Box pt="3em" pl="2em" pr="2em">               
@@ -163,23 +145,6 @@ class CreditAmount extends Component {
                     </Box>       
                 </Grid>
 
-                {/*<Grid item xs={12} sm={12} md={3}>
-                    <Input
-                        name="creditTime"
-                        value={this.props.creditTime}
-                        margin='none'
-                        inputProps={{
-                            step: 1,
-                            min: this.minTime,
-                            max: this.maxTime,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider',
-                        }}
-                        fullwidth={true}
-                        onChange={this.props.handleChange.bind(this)}
-                        />
-                
-                    </Grid>*/}
 
             </Grid>
         );

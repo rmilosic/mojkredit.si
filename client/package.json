@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production"
+    "start": "webpack-dev-server --open --mode development --env.ENVIRONMENT=development",
+    "stage": "webpack-dev-server --open --mode development --env.ENVIRONMENT=production",
+    "build": "webpack --mode production --env.ENVIRONMENT=production"
   },
   "keywords": [],
   "author": "",
@@ -14,11 +15,13 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-loader": "^3.0.3",
     "favicons-webpack-plugin": "^2.1.0",

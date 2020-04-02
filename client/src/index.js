@@ -13,7 +13,9 @@ import fontRalewayCSS from './resources/css/font-raleway.css';
 // import scripts
 import parallaxScript from './resources/js/parallax.js';
 import smoothScrollScript from './resources/js/smooth-scroll.min.js';
-import customScripts from './resources/js/scripts.js';
+import stackScripts from './resources/js/scripts.js';
+import customScripts from './resources/js/custom.js';
+
 
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -47,7 +49,7 @@ history.listen(location => {
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0d47a1',
+      main: '#4a90e2',
     },
     secondary: {
       main: '#8411A8',
@@ -57,6 +59,35 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: "Open Sans, Roboto, sans-serif"
   },
+  overrides: {
+    MuiMenuItem: {
+      root: {
+        background: '#fff',
+      },
+      selected: {
+        background: '#fff',
+      }
+    },
+    MuiExpansionPanel: {
+      root: {
+        background: 'white',
+      }
+    },
+    MuiCardContent:{
+      root: {
+        background: 'white',
+      }
+    },
+    MuiList: {
+      root: {
+        width: '100%'
+      },
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0
+      }
+    }
+  }
 });
 
 const Main = function(props) {
