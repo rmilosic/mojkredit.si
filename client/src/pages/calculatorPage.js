@@ -5,7 +5,8 @@ import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 // custom compnents
 import CreditFormStepper from '../components/forms/CreditFormStepper';
 import valueMapper from '../config/calcSetup.yml';
-import creditValueRangeMapper from '../config/creditValueRangeMapper';
+// import creditValueRangeMapper from '../config/creditValueRangeMapper';
+import creditRangeMap from '../config/creditRangeMap.yml';
 import FormResults from '../components/FormResults';
 
 // images
@@ -119,8 +120,14 @@ class CalculatorPage extends React.Component {
     let creditTime = this.state.formValues["creditTime"]*12;  
 
     // TODO remove ŠUMNIKI FROM bankName for URL generation!!
-
-    let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    replaceChars = (txt) => {
+      let replaceList={ "č":"c", "š":"s", "ž":"z" };
+      txt.replace(/č|ž|š/g,function(match) {return replaceList[match];})
+      return txt
+    }
+    let correctBankName = replaceChars(bankName);
+    console.log("correct bank name ", correctBankName);
+    let call_url = `${process.env.LAMBDA_HOST}/${correctBankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
     
     return call_url
   }
@@ -197,7 +204,7 @@ class CalculatorPage extends React.Component {
                   creditAffiliation={this.state.formValues['creditAffiliation']}
                   creditInsurance={this.state.formValues['creditInsurance']}
                   handleChange={this.handleChange} 
-                  creditValueRangeMapper={creditValueRangeMapper} 
+                  creditValueRangeMapper={creditRangeMap} 
                   handleFinishClick={this.handleFinishClick}
                   availableBankSkills={availableBankSkills}
                   activeBanks={this.state.formValues['activeBanks']}
