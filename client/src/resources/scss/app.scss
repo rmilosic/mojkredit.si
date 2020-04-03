@@ -1,0 +1,19 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+$theme-colors: (
+    "primary": #90CA79,
+    "secondary": #8fd5dc,
+    "dark": #3b384f,
+    "light": #939598,
+    "info": tomato,
+    "danger": teal
+);
+
+section {
+    padding: 4em 0 4em 0;
+    margin: 4em 0 0 0;
+}
+
+/* import bootstrap to set changes */
+@import "../../../bootstrap-4.3.1/scss/bootstrap.scss";
