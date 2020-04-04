@@ -1,0 +1,30 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+$theme-colors: (
+    "primary": #90CA79,
+    "secondary": #8fd5dc,
+    "dark": #3b384f,
+    "light": #939598,
+    "info": tomato,
+    "danger": teal
+);
+
+
+/* import bootstrap to set changes */
+@import "../../../bootstrap-4.3.1/scss/bootstrap.scss";
+
+body {
+    background-color: #fafafa;
+    font-family: Montserrat, "Open Sans", "Noto Sans", "Roboto", Arial, "Segoe UI" !important;
+
+}
+
+button:focus {
+    outline: 0;
+}
+
+section {
+    padding-top:  2em;
+    margin: 4em 0 0 0;
+}

@@ -104,6 +104,13 @@ class CalculatorPage extends React.Component {
     this.setState({ creditFormHidden: newFormState });
   }
 
+
+  replaceChars = (txt) => {
+    let replaceList={ "č":"c", "š":"s", "ž":"z" };
+    txt.replace(/č|ž|š/g,function(match) {return replaceList[match];})
+    return txt
+  }
+
   /** 
   * Build a url of a given bank with 
   * @param {String} bankName  Name of the bank
@@ -120,12 +127,8 @@ class CalculatorPage extends React.Component {
     let creditTime = this.state.formValues["creditTime"]*12;  
 
     // TODO remove ŠUMNIKI FROM bankName for URL generation!!
-    replaceChars = (txt) => {
-      let replaceList={ "č":"c", "š":"s", "ž":"z" };
-      txt.replace(/č|ž|š/g,function(match) {return replaceList[match];})
-      return txt
-    }
-    let correctBankName = replaceChars(bankName);
+    
+    let correctBankName = this.replaceChars(bankName);
     console.log("correct bank name ", correctBankName);
     let call_url = `${process.env.LAMBDA_HOST}/${correctBankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
     

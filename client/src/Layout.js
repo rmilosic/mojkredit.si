@@ -1,15 +1,6 @@
 import React, { Component }  from 'react';
-import Container from '@material-ui/core/Container';
-import { Grid } from '@material-ui/core';
 import CookieConsent from "react-cookie-consent";
-import { Link } from "react-router-dom";
-import Box from '@material-ui/core/Box';
-//import FinsterLogo from './resources/logo-gray.png';
-import FinsterLogoBlack from './resources/logo-black.png';
-import finsterLight from './resources/img/finster.svg';
-
 import AppRouter from './AppRouter';
-import Navigation from './components/navigation.js'
 
 class Layout extends Component{
 

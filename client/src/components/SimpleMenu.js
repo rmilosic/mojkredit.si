@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import MenuIcon from '@material-ui/icons/Menu';
 
 export default function SimpleMenu() {
     
@@ -23,7 +24,7 @@ export default function SimpleMenu() {
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        <i className="icon icon--sm stack-interface stack-menu"></i>
+        <MenuIcon/>
       </Button>
       <Menu
         id="simple-menu"
@@ -36,8 +37,8 @@ export default function SimpleMenu() {
         {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem> */}
         
-        <MenuItem styles={{"background-color": "white"}} onClick={handleClose}><a href="#o-nas">O NAS</a></MenuItem> 
-        <MenuItem styles={{"background-color": "white"}} onClick={handleClose}><a href="#opis-resitev">OPIS REŠITEV</a></MenuItem> 
+        <MenuItem styles={{"background-color": "white"}} onClick={handleClose}><a href="#opis-resitev">Opis rešitev</a></MenuItem> 
+        <MenuItem styles={{"background-color": "white"}} onClick={handleClose}><a href="#kontakt">Kontakt</a></MenuItem> 
       </Menu>
     </div>
   );

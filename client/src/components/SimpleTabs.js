@@ -8,10 +8,19 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed'
+
 // icons
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import RestoreIcon from '@material-ui/icons/Restore';
+import SwapCallsIcon from '@material-ui/icons/SwapCalls';
+import MoneyOffIcon from '@material-ui/icons/MoneyOff';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
+import { Container, Card, Col, Row } from 'react-bootstrap';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -49,6 +58,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
 export default function SimpleTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -57,116 +68,147 @@ export default function SimpleTabs() {
     setValue(newValue);
   };
 
+  const iconStyle = {
+    margin: "0.5em",
+    fontSize: "2.5em"
+  }
+  
+  const tabMapper = {
+    "Uporabniki": [
+      {
+        "title": "Postopki so dolgotrajni",
+        "content": "Od začetka povpraševanja do črpanja kredita mine v povprečju 59 dni. Povpraševalec po kreditu mora spletne informativne izračune primerjati ročno in za pridobitev individualnih ponudb fizično obiskati vsako izmed bank. Po izbiri ponudbe mora ponovno obiskati banko za podpis pogodbe in ureditev ostale dokumentacije.",
+        "icon": <RestoreIcon style={iconStyle}/>
+      },
+      {
+        "title": "Postopki so nepregledni",
+        "content": "Ob povpraševanju pri različnih bankah se uporabnik sooča z neskladnimi postopki. Banke lahko za izračun kreditne sposobnosti, določitev pogojev ter posledično podajo individualne ponudbe zahtevajo različne podatke in dokumentacijo. Vse navedeno oteži pridobitev kredita, ki uporabniku najbolj ustreza.",
+        "icon": <SwapCallsIcon style={iconStyle}/>
+      },
+      {
+        "title": "Oportunistični stroški",
+        "content": "Ponudbe bank se lahko razlikujejo glede na njihovo vsakokratno politiko kreditiranja in morebitne akcije. Ravno tako lahko ponudbe vsebujejo različne dodatne stroške, ki znatno vplivajo na končni strošek kredita. Po naših izračunih se lahko že pri kreditih z nižjim zneskom informativni izračuni razlikujejo za 5%. Razlike pri višjih zneskih in individualnih ponudbah so pa praviome še večje.",
+        "icon": <MoneyOffIcon style={iconStyle}/>
+      }
+    ],
+    "Banke": [
+      {
+        "title": "Nedostopnost celotnega potencialnega trga",
+        "content": "Banke s kreditnimi produkti praviloma in pretežno dosegajo zgolj trg lastnih komitentov. Sodeč po raziskavi trga, ki smo jo izvedli, kar 70% uporabnikov ne pridobiva ponudb bank, pri katerih niso komitenti. Banka tako tudi s konkurenčno ali kvalitetnejšo ponudbo ne more doseči celotnega trga.",
+        "icon": <GroupAddIcon style={iconStyle}/>
+      },
+      {
+        "title": "Neefektivno oglaševanje",
+        "content": "Oglaševanje v pretežni meri ne naslavlja oseb, ki so v aktivni fazi iskanja produkta, ki ga kreditodajalec ponuja. Veliko sredstev je namenjenih splošnemu naslavljanju celotne populacije (reklamni panoji, plakati, tv in radio oglasi), kar rezultira v visokih stroških in nizki konverziji.",
+        "icon": <WhatshotIcon style={iconStyle}/>
+      },
+      {
+        "title": "Obremenjenost analognih procesov in virov",
+        "content": "Kreditodajalci s svojimi zalednimi postopki in orodji ne dohajajo izrazitih trendov digitalnega razvoja, kot je to značilno za fintech področje. Digitalizacija je ključnega pomena za nadaljnji razvoj, konkuriranje na trgu ter razbremenitev procesov in virov. Posledično se lahko znižajo tudi stroški in poviša marža.",
+        "icon": <TrendingUpIcon style={iconStyle}/>
+      }
+    ]
+  };
+
+  function renderTabs (type) {
+    
+    var elements = tabMapper[type];
+    
+    var components = elements.map(function(el) {
+     return(
+            <Col className="pb-2" xs={12} md={10} lg={4}>
+              <Card style={{backgroundColor: '#fffff'}}>
+                <Container fluid>
+                  {/* ROW CARDS */}
+                  <Row>
+                    <Col>
+                      <Box pt={2} pb={2}>
+                        {el.icon}
+                        <Box pt={2} pb={2}>
+                          <h4><strong>{el.title}</strong></h4>
+                        </Box>
+                        <Box pt={2} pb={2}>
+                          <p>{el["content"]}</p>
+                        </Box>
+                      </Box>
+                    </Col>
+                  </Row>
+                  
+                  
+                </Container>
+              </Card>
+            </Col>
+        )
+      })
+      return components;
+    }
+
   return (
       
-      <div>
-      <div className="container">
-        <div className="row justify-content-center pb-5">
+    <div>
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs={12} className="text-white">
             <Tabs 
-            value={value} 
-            indicatorColor="primary"
-            onChange={handleChange} 
-            aria-label="simple tabs example" 
-            centered>
-            <Tab label="Kreditojemalci" icon={<EmojiPeopleIcon />} {...a11yProps(0)} />
-            <Tab label="Kreditodajalci"  icon={<AccountBalanceIcon/>} {...a11yProps(1)} />
-          </Tabs>
-         
-        </div>
+              value={value} 
+              indicatorColor="primary"
+              onChange={handleChange} 
+              textColor="inherit"
+              aria-label="simple tabs example" 
+                centered>
+                <Tab className="bg-dark" label="Uporabniki" icon={<EmojiPeopleIcon />} {...a11yProps(0)} />
+                <Tab className="bg-dark" label="Banke"  icon={<AccountBalanceIcon/>} {...a11yProps(1)} />
+            </Tabs>
+          </Col>
+        </Row>
+      </Container>
 
-      </div>
+      <Container>
+
+        <Box pt={10}/>
+        <Row>
+          <Col>
+            <TabPanel value={value} index={0}>
+            <Row className="justify-content-center">
+              
+                
+                  {renderTabs("Uporabniki")}
+            </Row>
+            </TabPanel>
+            
+            <TabPanel value={value} index={1}>
+              <Row className="justify-content-center">
+              
+              
+                {renderTabs("Banke")}
+              </Row>
+            </TabPanel>
+            
+
+          </Col>
+        </Row>
+      </Container>
       
+        <Container className="bg-dark"  fluid>
+          <Row className="justify-content-center mt-4 p-4" >
+            <Container>
+              <Col>
+                  <TabPanel value={value} index={0}>
+                    <ResponsiveEmbed aspectRatio="16by9">
+                      <iframe width="auto" height="400px" src="https://www.youtube.com/embed/FncROQV2f2c" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    </ResponsiveEmbed>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <ResponsiveEmbed aspectRatio="16by9">
+                      <iframe width="auto" height="400px" src="https://www.youtube.com/embed/qCdg4ZbU-8c" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    </ResponsiveEmbed>
+                  </TabPanel>
+              </Col>
+            </Container>
+          </Row>
 
-      {/* KREDITOJEMALCI */}
-      <TabPanel value={value} index={0}>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Clock-Back icon--lg"></i>
-                    <Typography variant="h5">Postopki so dolgotrajni</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Od začetka povpraševanja do črpanja kredita mine v povprečju 59 dni. Povpraševalec po kreditu mora spletne informativne izračune primerjati ročno in za pridobitev individualnih ponudb fizično obiskati vsako izmed bank. Po izbiri ponudbe mora ponovno obiskati banko za podpis pogodbe in ureditev ostale dokumentacije.</Typography>
-                </div>
-            </div>
-            <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Arrow-Squiggly icon--lg"></i>
-                    <Typography variant="h5">Postopki so nepregledni</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Ob povpraševanju pri različnih bankah se uporabnik sooča z neskladnimi postopki. Banke lahko za izračun kreditne sposobnosti, določitev pogojev ter posledično podajo individualne ponudbe zahtevajo različne podatke in dokumentacijo. Vse navedeno oteži pridobitev kredita, ki uporabniku najbolj ustreza.</Typography>
-                </div>
-            </div>
-            <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Coins icon--lg"></i>
-                    <Typography variant="h5">Oportunistični stroški</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Ponudbe bank se lahko razlikujejo glede na njihovo vsakokratno politiko kreditiranja in morebitne akcije. Ravno tako lahko ponudbe vsebujejo različne dodatne stroške, ki znatno vplivajo na končni strošek kredita. Po naših izračunih se lahko že pri kreditih z nižjim zneskom informativni izračuni razlikujejo za 5%. Razlike pri višjih zneskih in individualnih ponudbah so pa praviome še večje.</Typography>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg--primary py-5">
-          <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-sm-12 col-lg-8">
-                {/* <CardMedia component="video" height="140" image="https://vimeo.com/401596300" /> */}
-                
-                  <div class="embed-responsive embed-responsive-16by9">
-                    
-                    <iframe src="https://player.vimeo.com/video/401596116" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                    
-                  </div>
-          
-                </div>  
-            </div>
-          </div>
-        </div>
-        
-      </TabPanel>
+      </Container>
 
-      {/* KREDITODAJALCI */}
-      <TabPanel value={value} index={1}>
-        <div className="container">
-        <div className="row">
-          <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Add-UserStar icon--lg"></i>
-                    <Typography variant="h5">Nedostopnost celotnega potencialnega trga</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Banke s kreditnimi produkti praviloma in pretežno dosegajo zgolj trg lastnih komitentov. Sodeč po raziskavi trga, ki smo jo izvedli, kar 70% uporabnikov ne pridobiva ponudb bank, pri katerih niso komitenti. Banka tako tudi s konkurenčno ali kvalitetnejšo ponudbo ne more doseči celotnega trga.</Typography>
-                </div>
-            </div>
-            <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Euro icon--lg"></i>
-                    <Typography variant="h5">Neefektivno oglaševanje</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Oglaševanje v pretežni meri ne naslavlja oseb, ki so v aktivni fazi iskanja produkta, ki ga kreditodajalec ponuja. Veliko sredstev je namenjenih splošnemu naslavljanju celotne populacije (reklamni panoji, plakati, tv in radio oglasi), kar rezultira v visokih stroških in nizki konverziji. </Typography>
-                </div>
-            </div>
-            <div className="col-sm-12 col-lg-4 mb-4">
-                <div className="feature feature-3 boxed boxed--lg boxed--border"> <i className="icon icon-Info-Window icon--lg"></i>
-                    <Typography variant="h5">Obremenjenost analognih procesov in virov</Typography>
-                    <Box pt="2em"/>
-                    <Typography variant="p">Kreditodajalci s svojimi zalednimi postopki in orodji ne dohajajo izrazitih trendov digitalnega razvoja, kot je to značilno za fintech področje. Digitalizacija je ključnega pomena za nadaljnji razvoj, konkuriranje na trgu ter razbremenitev procesov in virov. Posledično se lahko znižajo tudi stroški in poviša marža.</Typography>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg--primary py-5">
-          <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-sm-12 col-lg-8">
-                {/* <CardMedia component="video" height="140" image="https://vimeo.com/401596300" /> */}
-                
-                  <div class="embed-responsive embed-responsive-16by9">
-                    
-                    <iframe src="https://player.vimeo.com/video/401596300" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                    
-                  </div>
-          
-                </div>  
-            </div>
-          </div>
-        </div>
-      </TabPanel>
       </div>
   );
 }
