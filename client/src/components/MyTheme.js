@@ -12,14 +12,14 @@ export const MyTheme = createMuiTheme({
       background: '#fafafa',
     },
     typography: {
-      fontFamily: ""
+      fontFamily: "\"Montserrat\", \"Open Sans\", \"Noto Sans\", \"Roboto\", \"Arial\", \"Segoe UI\" !important",
     },
     overrides: {
       MuiMenuItem: {
         root: {
-          background: '#fff',
-        },
-        selected: {
+          "&$selected": {
+            background: "#fff"
+          },
           background: '#fff',
         }
       },
@@ -41,6 +41,11 @@ export const MyTheme = createMuiTheme({
           paddingTop: 0,
           paddingBottom: 0
         }
-      }
+      },
+      MuiTabs: {
+        indicator: {
+          display: 'none',
+        }
+      },
     }
   });

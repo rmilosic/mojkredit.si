@@ -10,10 +10,21 @@ $theme-colors: (
     "danger": teal
 );
 
-section {
-    padding: 4em 0 4em 0;
-    margin: 4em 0 0 0;
-}
 
 /* import bootstrap to set changes */
 @import "../../../bootstrap-4.3.1/scss/bootstrap.scss";
+
+body {
+    background-color: #fafafa;
+    font-family: Montserrat, "Open Sans", "Noto Sans", "Roboto", Arial, "Segoe UI" !important;
+
+}
+
+button:focus {
+    outline: 0;
+}
+
+section {
+    padding-top:  2em;
+    margin: 4em 0 0 0;
+}

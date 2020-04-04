@@ -19,11 +19,12 @@ import Layout from './Layout';
 // import themeCSS from './resources/css/theme.css';
 // import customCSS from './resources/css/custom.css';
 // import fontRalewayCSS from './resources/css/font-raleway.css';
-import MyStles from './resources/scss/app.scss';
 
+require('typeface-montserrat');
 // Theming
-import 'typeface-montserrat';
-import MyTheme from './components/MyTheme';
+import {MyTheme} from './components/MyTheme.js';
+import MyStyles from './resources/scss/app.scss';
+
 // import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
 // import scripts
