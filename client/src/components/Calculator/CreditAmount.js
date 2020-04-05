@@ -14,7 +14,7 @@ Array.max = function( array ){
 
 class CreditAmount extends Component {
     componentDidMount() {
-        console.log(this.props.creditValueRangeMapper);
+        // empty
     }
 
     getCandidateValues(finalValue, creditInsurance, creditType){

@@ -5,8 +5,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 
-import OfferRowPanel from '../components/OfferRowPanel';
-import Backdrop from '../components/Backdrop';
+import OfferRowPanel from './OfferRowPanel';
+import Backdrop from './Backdrop';
 
 function FormResults(props) {
     const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
