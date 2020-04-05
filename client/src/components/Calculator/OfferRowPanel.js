@@ -5,11 +5,11 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { Grid, Typography, Box } from '@material-ui/core';
-import SkbLogo from '../resources/img/skb-logo-otp.png';
-import SberbankLogo from '../resources/img/sberbank-logo-png-2.png';
-import SparkasseLogo from '../resources/img/sparkasse-logo.png';
-import UnicreditLogo from '../resources/img/unicredit-logo.jpg';
-import GorenjskaLogo from '../resources/img/gorenjska-logo.jpg';
+import SkbLogo from '../../resources/img/skb-logo-otp.png';
+import SberbankLogo from '../../resources/img/sberbank-logo-png-2.png';
+import SparkasseLogo from '../../resources/img/sparkasse-logo.png';
+import UnicreditLogo from '../../resources/img/unicredit-logo.jpg';
+import GorenjskaLogo from '../../resources/img/gorenjska-logo.jpg';
 
 
 class OfferRowPanel extends Component {

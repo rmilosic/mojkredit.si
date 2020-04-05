@@ -3,14 +3,14 @@ import Container from '@material-ui/core/Container';
 import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 
 // custom compnents
-import CreditFormStepper from '../components/forms/CreditFormStepper';
-import valueMapper from '../config/calcSetup.yml';
+import CreditFormStepper from './CreditFormStepper';
+import valueMapper from './utils/calcSetup.yml';
 // import creditValueRangeMapper from '../config/creditValueRangeMapper';
-import creditRangeMap from '../config/creditRangeMap.yml';
-import FormResults from '../components/FormResults';
+import creditRangeMap from './utils/creditRangeMap.yml';
+import FormResults from './FormResults';
 
 // images
-import finsterDark from '../resources/img/finster-dark.svg';
+import finsterDark from '../../resources/img/finster-dark.svg';
 // import finsterLight from '../resources/img/finster.svg';
 
 
@@ -22,8 +22,8 @@ class CalculatorPage extends React.Component {
     this.state = {
       formValues: {
         'creditType': 'stanovanjski',
-        'creditAmount': 10000,
-        'creditTime': 5,
+        'creditAmount': null,
+        'creditTime': null,
         'creditAffiliation': true,
         'activeBanks': [],
         'creditInsurance': 'insurance'
@@ -107,8 +107,8 @@ class CalculatorPage extends React.Component {
 
   replaceChars = (txt) => {
     let replaceList={ "č":"c", "š":"s", "ž":"z" };
-    txt.replace(/č|ž|š/g,function(match) {return replaceList[match];})
-    return txt
+    var new_text = txt.replace(/č|ž|š/g, function(match) {return replaceList[match];})
+    return new_text
   }
 
   /** 
@@ -128,9 +128,8 @@ class CalculatorPage extends React.Component {
 
     // TODO remove ŠUMNIKI FROM bankName for URL generation!!
     
-    let correctBankName = this.replaceChars(bankName);
-    console.log("correct bank name ", correctBankName);
-    let call_url = `${process.env.LAMBDA_HOST}/${correctBankName}/${creditType}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    let creditTypeCorrect = this.replaceChars(creditType);
+    let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
     
     return call_url
   }
@@ -162,7 +161,9 @@ class CalculatorPage extends React.Component {
 
     // select and assign active banks to state when changing creditType
     if (event.target.name === 'creditType') {
-      this.setActiveBanks(event.target.value);  
+      this.setActiveBanks(event.target.value);
+
+      // trigger function to set min max values for time and amount of credit
     }
 
     if (event.target.name) {

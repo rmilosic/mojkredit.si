@@ -9,7 +9,7 @@ import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 
 
-import Layout from './Layout';
+import Layout from './components/Layout';
 
 // styles for bootstrap
 // import 'bootstrap/dist/css/bootstrap.min.css';

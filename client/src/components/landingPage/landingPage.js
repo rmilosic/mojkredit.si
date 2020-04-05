@@ -3,15 +3,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Box } from '@material-ui/core';
 
 // import components
-import SimpleTabs from '../components/SimpleTabs';
-import SimpleMenu from '../components/SimpleMenu';
-import ContactForm from '../components/landingPage/ContactForm';
+import SimpleTabs from './SimpleTabs';
+import SimpleMenu from './SimpleMenu';
+import ContactForm from './ContactForm';
 
 // import images
-import finsterLight from '../resources/img/finster-light-new.svg';
+import finsterLight from '../../resources/img/finster-light-new.svg';
 // import finsterDark from '../resources/img/finster-dark.svg';
-import timelinePNG from '../resources/img/timeline-new.svg';
-import langingPageGraphic from '../resources/img/landing-graphic-phone.svg';
+import timelinePNG from '../../resources/img/timeline-new.svg';
+import langingPageGraphic from '../../resources/img/landing-graphic-phone.svg';
 
 
 import { 
