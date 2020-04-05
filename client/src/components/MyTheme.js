@@ -28,6 +28,12 @@ export const MyTheme = createMuiTheme({
           background: 'white',
         }
       },
+      MuiExpansionPanelSummary: {
+        content: {
+          display: 'block',
+          margin: 0
+        }
+      },
       MuiCardContent:{
         root: {
           background: 'white',

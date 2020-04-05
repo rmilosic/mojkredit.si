@@ -1,5 +1,8 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import { 
+  Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+from 'react-bootstrap';
+
 import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 
 // custom compnents
@@ -10,9 +13,7 @@ import creditRangeMap from './utils/creditRangeMap.yml';
 import FormResults from './FormResults';
 
 // images
-import finsterDark from '../../resources/img/finster-dark.svg';
-// import finsterLight from '../resources/img/finster.svg';
-
+import finsterLight from '../../resources/img/finster-light-new.svg';
 
 class CalculatorPage extends React.Component {
   
@@ -185,48 +186,58 @@ class CalculatorPage extends React.Component {
 
     return (
       // LOGO
-     
-      <Container maxWidth="md">
-        <Grid container>
-            {/* Display logo */}
-            <Grid item xs={12} sm={10} md={8}>
-              <Box pt={"2em"}/>
-                <a href="/"><img style={{"height": "2.5em"}} src={finsterDark}/></a>
-              <Box pt={"0.5em"} />
-            </Grid>
-        </Grid>
-        
+      <div>
+      <Container fluid>
+        <Row>
+            <Navbar className="shadow-sm bg-white">
+                <Col xs={6} md={3} lg={2}>
+                    <Navbar.Brand href="/izracun-kredita">
+                        <Image 
+                            src={finsterLight}
+                            alt="Finster Logo"
+                            fluid
+                        />
+                    </Navbar.Brand>
+                </Col>
+            </Navbar>
+          </Row>
+      </Container>
+      
+              
+      <Container>  
         {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
         { !this.state.creditFormHidden ? (
           
-            <Grid container justify="center">
-              <Grid item xs={12} sm={10} md={8}>
-                <CreditFormStepper 
-                  creditType={this.state.formValues['creditType']}
-                  creditAmount={this.state.formValues['creditAmount']}
-                  creditTime={this.state.formValues['creditTime']}
-                  creditAffiliation={this.state.formValues['creditAffiliation']}
-                  creditInsurance={this.state.formValues['creditInsurance']}
-                  handleChange={this.handleChange} 
-                  creditValueRangeMapper={creditRangeMap} 
-                  handleFinishClick={this.handleFinishClick}
-                  availableBankSkills={availableBankSkills}
-                  activeBanks={this.state.formValues['activeBanks']}
-                  /> 
-              </Grid>
-            </Grid>
+        <Row className="justify-content-center">
+          <Col xs={12} sm={10} md={8}>
+
+              <CreditFormStepper 
+                creditType={this.state.formValues['creditType']}
+                creditAmount={this.state.formValues['creditAmount']}
+                creditTime={this.state.formValues['creditTime']}
+                creditAffiliation={this.state.formValues['creditAffiliation']}
+                creditInsurance={this.state.formValues['creditInsurance']}
+                handleChange={this.handleChange} 
+                creditValueRangeMapper={creditRangeMap} 
+                handleFinishClick={this.handleFinishClick}
+                availableBankSkills={availableBankSkills}
+                activeBanks={this.state.formValues['activeBanks']}
+                /> 
+          </Col>
+        </Row>
+             
           
         ) : (
-          
-            <FormResults 
-            backToStart={this.backToStart}
-            activeBanks={this.state.formValues['activeBanks']}
-            getUrl={this.getUrl}
-             />
 
+              <FormResults 
+              backToStart={this.backToStart}
+              activeBanks={this.state.formValues['activeBanks']}
+              getUrl={this.getUrl}
+              />
         )}
       
       </Container>
+      </div>
       
     );
   }

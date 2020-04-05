@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Grid, FormControl, Box, Typography, Hidden, IconButton } from '@material-ui/core';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import { 
+    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+  from 'react-bootstrap';
 
+// import components
 import OfferRowPanel from './OfferRowPanel';
 import Backdrop from './Backdrop';
+
+// import icons
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import TuneIcon from '@material-ui/icons/Tune';
 
 function FormResults(props) {
     const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
@@ -106,73 +113,88 @@ function FormResults(props) {
     return (
 
     <div>
-                
-        {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON  */}
-        <Grid container spacing={2} justify="center">
+        
 
-            <Grid item xs={12} md={3}>
-            <Grid item xs={12} md={12}>
-                <Hidden smDown>
-                <Box pt={"4em"}/>
-                </Hidden>
-                <Button onClick={props.backToStart} 
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth={true}>
-                        Nazaj na izračun
-                </Button>
-            </Grid>
+        <Row>
+            {/* Desktop config */}
+            <Col className="d-none d-lg-block mt-lg-5" lg={4}>
+                {/* <Row className="bg-white shadow-sm">
+b                    config
+                </Row> */}
+            </Col>
+
+            {/* Mobile and tablet results */}
+            <Col xs={12} lg={8}>
+
+                {/* heading and config toggle */}
+                <Row className="justify-content-between pt-4">
+                    <Col>
+                        <h4>Rezultati</h4>
+                    </Col>
+                    <Col xs={2} className="text-right">
+                        <div onClick={props.backToStart}>
+                            <IconButton>
+                                <RotateLeftIcon/>
+                            </IconButton> 
+                        </div>
+                    </Col>
+                    <Col xs={2} className="d-lg-none-right">
+                        <div>
+                            <IconButton>
+                                <TuneIcon/>
+                            </IconButton> 
+                        </div>
+                        
+                        
+                    </Col>
+                </Row>
+
+                {/* toggle interest rate */}
+                <Row>
+                    <Col>
+                        <FormControl required={true}>
+                            <RadioGroup aria-label="interestRateType"  
+                            name="interestRateType" 
+                            value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
+                            onChange={handleComparisonChange}
+                            row>
+                                
+                            
+                            <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
+                            <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
+
+                            </RadioGroup>
+                        
+                        </FormControl>
+                    </Col>
+                </Row>
+                
+                {/* DISPLAY OFFER ITEMS */}
+                { processingResolve ? (
+                    <Backdrop/>
+                ) : (
             
-            <Grid item xs={12} md={12}>
-                <Box pt={"1em"}/>
-                
-                <FormControl required={true}>
-                {/* XS SM ROW */}
-                <Hidden mdUp>
-                    <Typography variant="caption"><strong>Tip obrestne mere</strong></Typography>
-                    <RadioGroup aria-label="interestRateType"  
-                    name="interestRateType" 
-                    value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
-                    onChange={handleComparisonChange}
-                    row>
-                        
-                    
-                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
-                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+                    (offerItems.length) > 0 ? 
+                    <Row className="justify-content-center">
+                        <Col xs={12}>{offerItems}</Col>
+                    </Row>
+                    : (
+                    <Row className="justify-content-center">
+                        <Col xs={12}>
+                            <h2>Za izbrane parametre nismo našli rezultatov</h2>
+                        </Col>
+                    </Row>
+                    )
+                )}
 
-                    </RadioGroup>
-                </Hidden>
-                
-                {/* SM UP */}
-                <Hidden smDown>
-                    <RadioGroup aria-label="interestRateType"  
-                    name="interestRateType" 
-                    value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
-                    onChange={handleComparisonChange}>
-                        
-                    <span><strong>Tip obrestne mere</strong></span>
-                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
-                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+            </Col>
+        </Row>
+        
 
-                    </RadioGroup>
-                </Hidden>
-                
-                </FormControl>
-            </Grid>
-            </Grid>
         
-            <Grid item xs={12} sm={10} md={9}>
-            {/* DISPLAY OFFER ITEMS */}
-            { processingResolve ? (
-                <Backdrop/>
-            ) : (
+
         
-                (offerItems.length) > 0 ? 
-                <div>{offerItems}</div> 
-                : <Typography variant="h3">No results found for your search</Typography>
-            )}
-            </Grid> 
-        </Grid>
+            
     </div>
 )};
 

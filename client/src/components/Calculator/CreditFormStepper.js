@@ -111,7 +111,8 @@ class CreditFormStepper extends Component {
         
         <div>
           
-          <Stepper activeStep={this.state['activeStep']} alternativeLabel>
+
+          <Stepper className="mt-3" activeStep={this.state['activeStep']} alternativeLabel>
             {this.state['steps'].map((label, index) => {
               const stepProps = {};
               const labelProps = {};
@@ -134,7 +135,7 @@ class CreditFormStepper extends Component {
 
           <Card>
             <CardContent>
-               <Typography variant="h4">{this.getStepTitle(this.state['activeStep'])}</Typography> 
+               <h4 className="py-2">{this.getStepTitle(this.state['activeStep'])}</h4> 
                <Box mb={3}>
                   {this.getStepContent(this.state['activeStep'])}
                </Box>

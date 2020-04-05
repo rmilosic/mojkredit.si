@@ -17,11 +17,7 @@ class CreditType extends Component {
         return(
             
             <div>
-            {/* <Grid item xs={12} >
-            <h1>Izberite vrsto kredita</h1>
-            </Grid> */}
-
-            <Grid item xs={12}>
+            
             
             <FormControl required={true}>
             <RadioGroup aria-label="creditType" name="creditType" value={this.props.creditType} onChange={this.props.handleChange}>
@@ -34,7 +30,6 @@ class CreditType extends Component {
             
             </RadioGroup>
             </FormControl>
-            </Grid>
 
             </div>
         );

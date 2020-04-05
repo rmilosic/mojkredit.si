@@ -4,6 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
+import { 
+    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+  from 'react-bootstrap';
+
 
 Array.min = function( array ){
     return Math.min.apply( Math, array );
@@ -102,51 +106,54 @@ class CreditAmount extends Component {
 
     render() {
         return(
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant="h4">Izberite znesek kredita (v Evrih)</Typography>
-                </Grid>
-            
-                <Grid item xs={12}>
-                    <Box pt="3em" pl="2em" pr="2em">                    
-                    <Slider
-                        value={this.props.creditAmount}
-                        name="creditAmount"
-                        aria-labelledby="discrete-slider-always"
-                        step={1000}
-                        min={this.minAmount}
-                        marks={this.amountMarks}
-                        max={this.maxAmount}
-                        valueLabelDisplay="on"
-                        valueLabelFormat={this.valueLabelFormat}
-                        onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
-                    />
-                    </Box>        
-                </Grid>
+            <div>
+                <Row>
+                    <Col>
+                        <h5 className="pb-5">Izberite znesek kredita (v Evrih)</h5>
+                    </Col>
+                </Row>
+                    
+                <Row>
+                    <Col className="px-5">
+                        <Slider
+                            value={this.props.creditAmount}
+                            name="creditAmount"
+                            aria-labelledby="discrete-slider-always"
+                            step={1000}
+                            min={this.minAmount}
+                            marks={this.amountMarks}
+                            max={this.maxAmount}
+                            valueLabelDisplay="on"
+                            valueLabelFormat={this.valueLabelFormat}
+                            onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
+                        />
+                    </Col>
+                </Row>
+
                 
                 {/* creditTime */}
-                <Grid item xs={12}>
-                    <Box mt="3rem"/>
-                    <Typography variant="h4">Izberite dobo odplačila (v letih)</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box pt="3em" pl="2em" pr="2em">               
-                    <Slider
-                        value={this.props.creditTime}
-                        name="creditTime"
-                        aria-label="custom thumb label"
-                        step={1}
-                        min={this.minTime}
-                        max={this.maxTime}
-                        marks={this.timeMarks}
-                        valueLabelDisplay="on"
-                        onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
-                    /> 
-                    </Box>       
-                </Grid>
-
-
-            </Grid>
+                <Row>
+                    <Col>
+                        <h5 className="pb-5">Izberite dobo odplačila (v letih)</h5>
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col className="px-5">
+                        <Slider
+                            value={this.props.creditTime}
+                            name="creditTime"
+                            aria-label="custom thumb label"
+                            step={1}
+                            min={this.minTime}
+                            max={this.maxTime}
+                            marks={this.timeMarks}
+                            valueLabelDisplay="on"
+                            onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
+                        />
+                    </Col> 
+                </Row>
+        </div>
         );
     }
 }
