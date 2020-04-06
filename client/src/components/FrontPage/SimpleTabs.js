@@ -194,7 +194,18 @@ export default function SimpleTabs() {
 
           </Col>
         </Row>
+
+        <Row className="justify-content-center my-4">
+          <Col>
+            <h4>
+              Katere rešitve razvijamo...
+            </h4>
+          </Col>
+        </Row>
+
       </Container>
+
+      
       
         <Container className="bg-dark"  fluid>
           <Row className="justify-content-center mt-4 p-4" >
