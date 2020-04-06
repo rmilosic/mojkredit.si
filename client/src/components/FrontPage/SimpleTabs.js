@@ -147,6 +147,13 @@ export default function SimpleTabs() {
       
     <div>
       <Container>
+        <Row className="justify-content-center mb-4">
+          <Col>
+            <h4>
+              Prepoznali smo naslednje izzive
+            </h4>
+          </Col>
+        </Row>
         <Row className="justify-content-center">
           <Col xs={12} className="text-white">
             <Tabs 
