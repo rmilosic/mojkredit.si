@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import { 
+  Nav, Navbar, Container, Row, Col, Image, Form } 
+from 'react-bootstrap';
 
-import CreditType from './CreditType'
-/*import CreditAffiliation from './CreditAffiliation'*/
-import CreditAmount from './CreditAmount'
-import CreditInsurance from './CreditInsurance'
+import CreditType from './CreditType';
+import CreditAmount from './CreditAmount';
+import CreditTime from './CreditTime';
+import CreditInsurance from './CreditInsurance';
 import { Card, CardContent } from '@material-ui/core';
+
 
 
 const getSteps = function() {
@@ -42,36 +44,64 @@ class CreditFormStepper extends Component {
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} 
-        availableBankSkills={this.props.availableBankSkills} />;
+        return (
+        <div> 
+          <Row>
+            <Col>
+                <h4>Izberite vrsto kredita</h4>
+            </Col>
+          </Row>
+          <CreditType creditType={this.props.creditType} handleChange={this.props.handleChange} availableBankSkills={this.props.availableBankSkills}/>
+         </div>
+        );
       case 1:
-        return <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />;
+        return (
+          <div> 
+            <Row>
+            <Col>
+                <h4>Vrsta zavarovanja</h4>
+            </Col>
+            </Row>
+            <CreditInsurance creditInsurance={this.props.creditInsurance} handleChange={this.props.handleChange} />
+          </div>
+        );
       case 2:
-        return <CreditAmount creditAmount={this.props.creditAmount} 
-        creditType={this.props.creditType}
-        creditInsurance={this.props.creditInsurance}
-        creditTime={this.props.creditTime} 
-        creditValueRangeMapper={this.props.creditValueRangeMapper}
-        activeBanks={this.props.activeBanks}
-        handleChange={this.props.handleChange} />;
+        return (
+          <div>
+            <Row>
+            <Col>
+                <h4 className="pb-4">Znesek kredita (v Evrih)</h4>
+            </Col>
+            </Row>
+            <CreditAmount 
+            creditAmount={this.props.creditAmount} 
+            creditType={this.props.creditType}
+            creditInsurance={this.props.creditInsurance}
+            activeBanks={this.props.activeBanks}
+            handleChange={this.props.handleChange}
+            setCreditAmount={this.props.setCreditAmount}
+            inputType="slider" />
+
+            <Row>
+            <Col>
+                <h4 className="pb-4">Čas odplačila (v letih)</h4>
+            </Col>
+            </Row>  
+            <CreditTime 
+            creditType={this.props.creditType}
+            creditInsurance={this.props.creditInsurance}
+            creditTime={this.props.creditTime} 
+            activeBanks={this.props.activeBanks}
+            handleChange={this.props.handleChange} 
+            setCreditTime={this.props.setCreditTime}
+            inputType="slider" />
+          </div>
+          );
       default:
         return 'Unknown step';
     }
   }
 
-  getStepTitle = (step) => {
-    switch (step) {
-      case 0:
-        return "Izberite vrsto kredita";
-      case 1:
-        return "Izberite način zavarovanja";
-      case 2:
-        return null;
-      default:
-        return 'Unknown step';
-    }
-  }
-  
 
   isStepOptional(step){
     return false;
@@ -111,7 +141,6 @@ class CreditFormStepper extends Component {
         
         <div>
           
-
           <Stepper className="mt-3" activeStep={this.state['activeStep']} alternativeLabel>
             {this.state['steps'].map((label, index) => {
               const stepProps = {};
@@ -135,10 +164,7 @@ class CreditFormStepper extends Component {
 
           <Card>
             <CardContent>
-               <h4 className="py-2">{this.getStepTitle(this.state['activeStep'])}</h4> 
-               <Box mb={3}>
                   {this.getStepContent(this.state['activeStep'])}
-               </Box>
                 <Button disabled={this.state['activeStep'] === 0} onClick={this.handleBack}>
                   Nazaj
                 </Button>

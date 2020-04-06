@@ -23,6 +23,11 @@ export const MyTheme = createMuiTheme({
           background: '#fff',
         }
       },
+      MuiDrawer: {
+        paperAnchorRight: {
+          background: 'white',
+        }
+      },
       MuiExpansionPanel: {
         root: {
           background: 'white',

@@ -1,12 +1,19 @@
-import React, { Component } from 'react';
+import React, {useEffect} from 'react';
 import Slider from '@material-ui/core/Slider';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-
+import Input from '@material-ui/core/Input';
+import FilledInput from '@material-ui/core/FilledInput';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 import { 
-    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+    Row, Col } 
   from 'react-bootstrap';
+
+
+import {getMinValue, getMaxValue} from './utils';
 
 
 Array.min = function( array ){
@@ -16,146 +23,89 @@ Array.max = function( array ){
     return Math.max.apply( Math, array );
 };
 
-class CreditAmount extends Component {
-    componentDidMount() {
-        // empty
-    }
+export default function CreditAmount(props) {
 
-    getCandidateValues(finalValue, creditInsurance, creditType){
-        var activeBanks = this.props.activeBanks
-        var candidateValues = []
-        // iterate banks
-        Object.entries(this.props.creditValueRangeMapper).forEach(([bank, creditTypeDict]) => {
-            if (activeBanks.includes(bank)) {
-                console.log(`activeBanks includes ${bank}`)
-                Object.entries(creditTypeDict).forEach(([availableCreditType, insuranceTypeDict]) => {
-                    
-                    if (availableCreditType === creditType){
 
-                        // select target value and append to final list
-                        // iterate insurance types
+    var creditAmount = props.creditAmount;
+    
+    var maxAmount = getMaxValue('max_amount', props.creditInsurance, props.creditType, props.activeBanks)
+    var minAmount = getMinValue('min_amount', props.creditInsurance, props.creditType, props.activeBanks)
 
-                        Object.entries(insuranceTypeDict['creditInsurance']).forEach(([availableInsuranceType, valueMap]) => {
-                            // console.log(`Insurance type ${insuranceType}`)
-                            // console.log(`Insurance type ${creditInsurance}`)
-                            if (availableInsuranceType === creditInsurance){
-                                // select target value and append to final list
-                                console.log(valueMap)
-                                var targetValue = valueMap[finalValue]
-                                console.log(`Target value ${targetValue}`)
-                                candidateValues.push(targetValue)
-                            }
-                        })
-                    }
-                }) 
-            } else {
-                // console.log(`activeBanks doesnt include ${bank}`)
-            }
-        });
-        return candidateValues
-    }
+    useEffect(() => {
 
-    getHighestMinValue(finalValue, creditInsurance, creditType){
-         // const keys = Object.keys(driversCounter);
-         var candidateValues = this.getCandidateValues(finalValue, creditInsurance, creditType)
-         var highestMinValue = Array.max(candidateValues)
-         return highestMinValue
-    }
-   
-    getLowestMaxValue(finalValue, creditInsurance, creditType){
-        // const keys = Object.keys(driversCounter);
-        var candidateValues = this.getCandidateValues(finalValue, creditInsurance, creditType)       
-        var lowestMaxValue = Array.min(candidateValues)
-        console.log(`getLowestMaxValue triggered with ${arguments}`)
-        console.log(`candidateValues ${candidateValues}`)
-        console.log(`lowestMaxValue ${lowestMaxValue}`)
-        return lowestMaxValue
-    }
+       if (creditAmount == null) {
+            creditAmount = minAmount;
+            props.setCreditAmount(minAmount);
+       }
 
-    maxAmount = this.getLowestMaxValue('max_amount', this.props.creditInsurance, this.props.creditType)
-    minAmount = this.getHighestMinValue('min_amount', this.props.creditInsurance, this.props.creditType)
-    maxTime = Math.ceil(this.getLowestMaxValue('max_time', this.props.creditInsurance, this.props.creditType)/12)
-    minTime = Math.floor(this.getHighestMinValue('min_time', this.props.creditInsurance, this.props.creditType)/12)
+    }, []);
 
-    amountMarks = [
+    
+    var amountMarks = [
         {
-          value: this.minAmount,
-          label: this.minAmount,
+          value: minAmount,
+          label: minAmount,
         },
         {
-          value: this.maxAmount,
-          label: this.maxAmount,
+          value: maxAmount,
+          label: maxAmount,
         },
       ];
 
-      timeMarks = [
-        {
-          value: this.minTime,
-          label: this.minTime,
-        },
-        {
-          value: this.maxTime,
-          label: this.maxTime,
-        },
-      ];
 
-    valueLabelFormat(value) {
+    function valueLabelFormat(value) {
         let thousandFormat = value/1000;
         return `${thousandFormat}k`
-      }
-
-    render() {
-        return(
-            <div>
-                <Row>
-                    <Col>
-                        <h5 className="pb-5">Izberite znesek kredita (v Evrih)</h5>
-                    </Col>
-                </Row>
-                    
-                <Row>
-                    <Col className="px-5">
-                        <Slider
-                            value={this.props.creditAmount}
-                            name="creditAmount"
-                            aria-labelledby="discrete-slider-always"
-                            step={1000}
-                            min={this.minAmount}
-                            marks={this.amountMarks}
-                            max={this.maxAmount}
-                            valueLabelDisplay="on"
-                            valueLabelFormat={this.valueLabelFormat}
-                            onChange={ (event, value) => this.props.handleChange(event, "creditAmount", value)}
-                        />
-                    </Col>
-                </Row>
-
-                
-                {/* creditTime */}
-                <Row>
-                    <Col>
-                        <h5 className="pb-5">Izberite dobo odplačila (v letih)</h5>
-                    </Col>
-                </Row>
-                
-                <Row>
-                    <Col className="px-5">
-                        <Slider
-                            value={this.props.creditTime}
-                            name="creditTime"
-                            aria-label="custom thumb label"
-                            step={1}
-                            min={this.minTime}
-                            max={this.maxTime}
-                            marks={this.timeMarks}
-                            valueLabelDisplay="on"
-                            onChange={ (event, value) => this.props.handleChange(event, "creditTime", value)}
-                        />
-                    </Col> 
-                </Row>
-        </div>
-        );
     }
-}
+
+    return (
+        <div>
+        { props.inputType == 'slider' ? (
+         
+            <Row className="px-3 py-3">
+                <Col>
+                    <Slider
+                        value={creditAmount}
+                        name="creditAmount"
+                        aria-labelledby="discrete-slider-always"
+                        step={1000}
+                        min={minAmount}
+                        marks={amountMarks}
+                        max={maxAmount}
+                        valueLabelDisplay="on"
+                        valueLabelFormat={valueLabelFormat}
+                        onChange={ (event, value) => props.handleChange(event, "creditAmount", value)}
+                    />
+                </Col>
+            </Row>
+            ) : null
+        }
+
+        {  props.inputType == 'field' ? (
+            <Row>
+            <Col>
+                <FormControl>
+
+                    {/* TODO: input validation */}
+                    <Input
+                        id="standard-adornment-weight"
+                        value={creditAmount}
+                        name="creditAmount"
+                        type="number"
+                        onChange={props.handleChange}
+                        endAdornment={<InputAdornment position="end">Eur</InputAdornment>}
+                        aria-describedby="standard-weight-helper-text"
+                        inputProps={{
+                        'aria-label': 'eur',
+                        }}
+                    />
+                </FormControl>
+            </Col>
+        </Row>
+        ) : 
+            null
+        }
+        </div>
+    );
+};
       
-export default CreditAmount;

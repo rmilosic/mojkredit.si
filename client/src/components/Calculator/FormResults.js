@@ -10,18 +10,67 @@ import {
 // import components
 import OfferRowPanel from './OfferRowPanel';
 import Backdrop from './Backdrop';
+import RightDrawer from './RightDrawer';
+import valueMapper from './utils/calcSetup.yml';
+import {replaceChars} from './utils';
+import SideConfig from './SideConfig';
 
 // import icons
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import TuneIcon from '@material-ui/icons/Tune';
 
 function FormResults(props) {
+
+    // state management
     const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
     const [processingResolve, setProcessingResolve] = useState(true);
     const [offerList, setOfferList] = useState([]);
 
+    const [drawer, setDrawer] = React.useState(false);
     // var offerListRef = offerList;
+
+
+    useEffect( () => {
+        gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
+        // set type of interest rate
+    }, []);
+
     
+    // TODO: document
+    function toggleDrawer (event){
+        console.log("toggledrawer triggered");
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+          return;
+        }
+
+        var drawerState = drawer;
+        console.log("drawerstate", drawerState);
+        setDrawer(!drawerState);
+        console.log("setdrawerstate", !drawerState);
+    };
+    
+
+    /** 
+     * Build a url of a given bank with 
+     * @param {String} bankName  Name of the bank
+     * @return   url
+     */
+    function getUrl(bankName, creditAmount, creditType, creditTime, creditInsurance){
+
+        // let creditAmount = this.state.formValues["creditAmount"];
+        // let creditType = this.state.formValues["creditType"];
+        
+        // let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+        
+        let mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
+        // MULTIPLY YEARS WITH 12 TO GET MONTHS
+        let fixedCreditTime = creditTime*12;  
+        
+        let creditTypeCorrect = replaceChars(creditType);
+        let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${mappedCreditInsurance}&creditTime=${fixedCreditTime}`
+        
+        return call_url
+    }
 
 
     /** 
@@ -29,10 +78,10 @@ function FormResults(props) {
      * @param {String} bankName bank name
      * @return {Promise} 
      */
-    function fetchResponse(bankName){
+    function fetchResponse(bankName, creditAmount, creditType, creditTime, creditInsurance){
         
-        
-        var url = props.getUrl(bankName);
+        console.log(`Retrieveing result for bank ${bankName}`)
+        var url = getUrl(bankName, creditAmount, creditType, creditTime, creditInsurance);
 
         let request = fetch(url, {
             method: 'GET',
@@ -53,7 +102,7 @@ function FormResults(props) {
             });
             }
         })
-        .catch((error) =>{
+        .catch((error) => {
             console.error(error);
         });
 
@@ -64,21 +113,20 @@ function FormResults(props) {
     /** 
      * Gather calculations for all active banks
      */
-    async function gatherCalculations(activeBanks){
-        console.log('Triggered gatherCalculations');
-        
+    async function gatherCalculations(activeBanks, creditAmount, creditType, creditTime, creditInsurance){
+        // console.log('Triggered gatherCalculations');
+        if (!processingResolve) {
+            setProcessingResolve(true);
+        }
+        setOfferList([]);
+
         // TODO: handle wait
-        await Promise.all(activeBanks.map((bank) => fetchResponse(bank))).then(
+        await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then(
         );
         setProcessingResolve(processingResolve => !processingResolve)
-
     };
 
-    useEffect(() => {
-        gatherCalculations(props.activeBanks);
-        // set type of interest rate
-    }, []);
-
+    
 
     var omType = compareFixedInterestRate ? "fixed" : "variable";
     var offerItems = offerList.filter(function(e, i){
@@ -110,17 +158,39 @@ function FormResults(props) {
         setCompareFixedInterestRate(newComparisonState);
     }
 
+    const handleSubmit = (event) => {
+        gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
+    }
+
     return (
 
-    <div>
+        <div>
         
 
         <Row>
             {/* Desktop config */}
             <Col className="d-none d-lg-block mt-lg-5" lg={4}>
-                {/* <Row className="bg-white shadow-sm">
-b                    config
-                </Row> */}
+                
+                <div className="bg-white shadow-sm">
+                <Container>
+                    <SideConfig 
+                        creditType={props.creditType}
+                        creditAmount={props.creditAmount}
+                        creditTime={props.creditTime}
+                        creditAffiliation={props.creditAffiliation}
+                        creditInsurance={props.creditInsurance}
+                        handleChange={props.handleChange} 
+                        handleFinishClick={props.handleFinishClick}
+                        availableBankSkills={props.availableBankSkills}
+                        activeBanks={props.activeBanks} />
+
+                    <Row className="mt-3 justify-content-center">
+                        <Col>
+                            <Button variant="primary" onClick={handleSubmit} block>Potrdi</Button>
+                        </Col>
+                    </Row>
+                </Container>
+                </div>
             </Col>
 
             {/* Mobile and tablet results */}
@@ -131,7 +201,7 @@ b                    config
                     <Col>
                         <h4>Rezultati</h4>
                     </Col>
-                    <Col xs={2} className="text-right">
+                    <Col xs={2} >
                         <div onClick={props.backToStart}>
                             <IconButton>
                                 <RotateLeftIcon/>
@@ -139,7 +209,7 @@ b                    config
                         </div>
                     </Col>
                     <Col xs={2} className="d-lg-none-right">
-                        <div>
+                        <div onClick={toggleDrawer}>
                             <IconButton>
                                 <TuneIcon/>
                             </IconButton> 
@@ -189,11 +259,23 @@ b                    config
 
             </Col>
         </Row>
-        
 
-        
-
-        
+        {<RightDrawer 
+        state={drawer} 
+        toggleDrawer={toggleDrawer}
+        creditType={props.creditType}
+        creditAmount={props.creditAmount}
+        creditTime={props.creditTime}
+        creditAffiliation={props.creditAffiliation}
+        creditInsurance={props.creditInsurance}
+        handleChange={props.handleChange} 
+        creditValueRangeMapper={props.creditValueRangeMapper} 
+        handleFinishClick={props.handleFinishClick}
+        availableBankSkills={props.availableBankSkills}
+        activeBanks={props.activeBanks}
+        gatherCalculations={gatherCalculations}
+        />} 
+    
             
     </div>
 )};
