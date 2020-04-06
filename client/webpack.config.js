@@ -95,7 +95,7 @@ module.exports = env => {
         template: "./src/index.html",
         filename: "./index.html"
       }),
-      new FaviconsWebpackPlugin('./src/resources/img/favicon.svg'),
+      new FaviconsWebpackPlugin('./src/resources/img/favicon2.svg'),
       new CopyPlugin([
         { from: './src/_redirects', to: './' },
       ]),

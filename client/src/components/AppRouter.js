@@ -9,7 +9,7 @@ import {
 
 import CalculatorPage from './Calculator/calculatorPage';
 // import Home from './components/pages/Home';
-import LandingPage from './LandingPage/landingPage';
+import LandingPage from './FrontPage/landingPage';
 import { withRouter } from "react-router";
 
 function AppRouter(){
