@@ -21,7 +21,7 @@ module.exports.handler = (event, context, callback) => {
     finalResult[type] = result;
   }
 
-  queryData = event.queryStringParameters;
+  var queryData = event.queryStringParameters;
 
   const post_options = {
     "host": "www.sberbank.si",
