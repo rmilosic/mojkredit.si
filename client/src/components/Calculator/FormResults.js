@@ -1,20 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Grid, FormControl, Box, Typography, Hidden, IconButton } from '@material-ui/core';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import { 
+    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+  from 'react-bootstrap';
 
+// import components
 import OfferRowPanel from './OfferRowPanel';
 import Backdrop from './Backdrop';
+import RightDrawer from './RightDrawer';
+import valueMapper from './utils/calcSetup.yml';
+import {replaceChars} from './utils';
+import SideConfig from './SideConfig';
+
+// import icons
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import TuneIcon from '@material-ui/icons/Tune';
 
 function FormResults(props) {
+
+    // state management
     const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
     const [processingResolve, setProcessingResolve] = useState(true);
     const [offerList, setOfferList] = useState([]);
 
+    const [drawer, setDrawer] = React.useState(false);
     // var offerListRef = offerList;
+
+
+    useEffect( () => {
+        gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
+        // set type of interest rate
+    }, []);
+
     
+    // TODO: document
+    function toggleDrawer (event){
+        console.log("toggledrawer triggered");
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+          return;
+        }
+
+        var drawerState = drawer;
+        console.log("drawerstate", drawerState);
+        setDrawer(!drawerState);
+        console.log("setdrawerstate", !drawerState);
+    };
+    
+
+    /** 
+     * Build a url of a given bank with 
+     * @param {String} bankName  Name of the bank
+     * @return   url
+     */
+    function getUrl(bankName, creditAmount, creditType, creditTime, creditInsurance){
+
+        // let creditAmount = this.state.formValues["creditAmount"];
+        // let creditType = this.state.formValues["creditType"];
+        
+        // let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+        
+        let mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
+        // MULTIPLY YEARS WITH 12 TO GET MONTHS
+        let fixedCreditTime = creditTime*12;  
+        
+        let creditTypeCorrect = replaceChars(creditType);
+        let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${mappedCreditInsurance}&creditTime=${fixedCreditTime}`
+        
+        return call_url
+    }
 
 
     /** 
@@ -22,10 +78,10 @@ function FormResults(props) {
      * @param {String} bankName bank name
      * @return {Promise} 
      */
-    function fetchResponse(bankName){
+    function fetchResponse(bankName, creditAmount, creditType, creditTime, creditInsurance){
         
-        
-        var url = props.getUrl(bankName);
+        console.log(`Retrieveing result for bank ${bankName}`)
+        var url = getUrl(bankName, creditAmount, creditType, creditTime, creditInsurance);
 
         let request = fetch(url, {
             method: 'GET',
@@ -46,7 +102,7 @@ function FormResults(props) {
             });
             }
         })
-        .catch((error) =>{
+        .catch((error) => {
             console.error(error);
         });
 
@@ -57,21 +113,20 @@ function FormResults(props) {
     /** 
      * Gather calculations for all active banks
      */
-    async function gatherCalculations(activeBanks){
-        console.log('Triggered gatherCalculations');
-        
+    async function gatherCalculations(activeBanks, creditAmount, creditType, creditTime, creditInsurance){
+        // console.log('Triggered gatherCalculations');
+        if (!processingResolve) {
+            setProcessingResolve(true);
+        }
+        setOfferList([]);
+
         // TODO: handle wait
-        await Promise.all(activeBanks.map((bank) => fetchResponse(bank))).then(
+        await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then(
         );
         setProcessingResolve(processingResolve => !processingResolve)
-
     };
 
-    useEffect(() => {
-        gatherCalculations(props.activeBanks);
-        // set type of interest rate
-    }, []);
-
+    
 
     var omType = compareFixedInterestRate ? "fixed" : "variable";
     var offerItems = offerList.filter(function(e, i){
@@ -103,76 +158,125 @@ function FormResults(props) {
         setCompareFixedInterestRate(newComparisonState);
     }
 
+    const handleSubmit = (event) => {
+        gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
+    }
+
     return (
 
-    <div>
-                
-        {/* TOGGLE BUTTON FOR INTEREST RATE COMPARISON  */}
-        <Grid container spacing={2} justify="center">
+        <div>
+        
 
-            <Grid item xs={12} md={3}>
-            <Grid item xs={12} md={12}>
-                <Hidden smDown>
-                <Box pt={"4em"}/>
-                </Hidden>
-                <Button onClick={props.backToStart} 
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth={true}>
-                        Nazaj na izračun
-                </Button>
-            </Grid>
+        <Row>
+            {/* Desktop config */}
+            <Col className="d-none d-lg-block mt-lg-5" lg={4}>
+                
+                <div className="bg-white shadow-sm">
+                <Container>
+                    <SideConfig 
+                        creditType={props.creditType}
+                        creditAmount={props.creditAmount}
+                        creditTime={props.creditTime}
+                        creditAffiliation={props.creditAffiliation}
+                        creditInsurance={props.creditInsurance}
+                        handleChange={props.handleChange} 
+                        handleFinishClick={props.handleFinishClick}
+                        availableBankSkills={props.availableBankSkills}
+                        activeBanks={props.activeBanks} />
+
+                    <Row className="mt-3 justify-content-center">
+                        <Col>
+                            <Button variant="primary" onClick={handleSubmit} block>Potrdi</Button>
+                        </Col>
+                    </Row>
+                </Container>
+                </div>
+            </Col>
+
+            {/* Mobile and tablet results */}
+            <Col xs={12} lg={8}>
+
+                {/* heading and config toggle */}
+                <Row className="justify-content-between pt-4">
+                    <Col>
+                        <h4>Rezultati</h4>
+                    </Col>
+                    <Col xs={2} >
+                        <div onClick={props.backToStart}>
+                            <IconButton>
+                                <RotateLeftIcon/>
+                            </IconButton> 
+                        </div>
+                    </Col>
+                    <Col xs={2} className="d-lg-none-right">
+                        <div onClick={toggleDrawer}>
+                            <IconButton>
+                                <TuneIcon/>
+                            </IconButton> 
+                        </div>
+                        
+                        
+                    </Col>
+                </Row>
+
+                {/* toggle interest rate */}
+                <Row>
+                    <Col>
+                        <FormControl required={true}>
+                            <RadioGroup aria-label="interestRateType"  
+                            name="interestRateType" 
+                            value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
+                            onChange={handleComparisonChange}
+                            row>
+                                
+                            
+                            <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
+                            <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
+
+                            </RadioGroup>
+                        
+                        </FormControl>
+                    </Col>
+                </Row>
+                
+                {/* DISPLAY OFFER ITEMS */}
+                { processingResolve ? (
+                    <Backdrop/>
+                ) : (
             
-            <Grid item xs={12} md={12}>
-                <Box pt={"1em"}/>
-                
-                <FormControl required={true}>
-                {/* XS SM ROW */}
-                <Hidden mdUp>
-                    <Typography variant="caption"><strong>Tip obrestne mere</strong></Typography>
-                    <RadioGroup aria-label="interestRateType"  
-                    name="interestRateType" 
-                    value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
-                    onChange={handleComparisonChange}
-                    row>
-                        
-                    
-                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
-                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+                    (offerItems.length) > 0 ? 
+                    <Row className="justify-content-center">
+                        <Col xs={12}>{offerItems}</Col>
+                    </Row>
+                    : (
+                    <Row className="justify-content-center">
+                        <Col xs={12}>
+                            <h2>Za izbrane parametre nismo našli rezultatov</h2>
+                        </Col>
+                    </Row>
+                    )
+                )}
 
-                    </RadioGroup>
-                </Hidden>
-                
-                {/* SM UP */}
-                <Hidden smDown>
-                    <RadioGroup aria-label="interestRateType"  
-                    name="interestRateType" 
-                    value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
-                    onChange={handleComparisonChange}>
-                        
-                    <span><strong>Tip obrestne mere</strong></span>
-                    <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna"} />
-                    <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna"} />
+            </Col>
+        </Row>
 
-                    </RadioGroup>
-                </Hidden>
-                
-                </FormControl>
-            </Grid>
-            </Grid>
-        
-            <Grid item xs={12} sm={10} md={9}>
-            {/* DISPLAY OFFER ITEMS */}
-            { processingResolve ? (
-                <Backdrop/>
-            ) : (
-        
-                (offerItems.length) > 0 ? 
-                <div>{offerItems}</div> 
-                : <Typography variant="h3">No results found for your search</Typography>
-            )}
-            </Grid> 
-        </Grid>
+        {<RightDrawer 
+        state={drawer} 
+        toggleDrawer={toggleDrawer}
+        creditType={props.creditType}
+        creditAmount={props.creditAmount}
+        creditTime={props.creditTime}
+        creditAffiliation={props.creditAffiliation}
+        creditInsurance={props.creditInsurance}
+        handleChange={props.handleChange} 
+        creditValueRangeMapper={props.creditValueRangeMapper} 
+        handleFinishClick={props.handleFinishClick}
+        availableBankSkills={props.availableBankSkills}
+        activeBanks={props.activeBanks}
+        gatherCalculations={gatherCalculations}
+        />} 
+    
+            
     </div>
 )};
 

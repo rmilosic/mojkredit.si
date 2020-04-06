@@ -1,17 +1,18 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import { 
+  Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+from 'react-bootstrap';
+
 import { Grid, FormControl, Box, Typography, Hidden } from '@material-ui/core';
 
 // custom compnents
 import CreditFormStepper from './CreditFormStepper';
-import valueMapper from './utils/calcSetup.yml';
-// import creditValueRangeMapper from '../config/creditValueRangeMapper';
-import creditRangeMap from './utils/creditRangeMap.yml';
+import {getMinValue, getMaxValue} from './utils.js';
 import FormResults from './FormResults';
 
+
 // images
-import finsterDark from '../../resources/img/finster-dark.svg';
-// import finsterLight from '../resources/img/finster.svg';
+import finsterLight from '../../resources/img/finster-light-new.svg';
 
 
 class CalculatorPage extends React.Component {
@@ -47,7 +48,7 @@ class CalculatorPage extends React.Component {
     this.handleFinishClick = this.handleFinishClick.bind(this)
     this.showForm = this.showForm.bind(this)
     this.backToStart = this.backToStart.bind(this)
-    this.getUrl = this.getUrl.bind(this)
+    // this.getUrl = this.getUrl.bind(this)
 
   }
 
@@ -105,36 +106,42 @@ class CalculatorPage extends React.Component {
   }
 
 
-  replaceChars = (txt) => {
-    let replaceList={ "č":"c", "š":"s", "ž":"z" };
-    var new_text = txt.replace(/č|ž|š/g, function(match) {return replaceList[match];})
-    return new_text
-  }
-
-  /** 
-  * Build a url of a given bank with 
-  * @param {String} bankName  Name of the bank
-  * @return   url
-  */
-  getUrl(bankName){
-
-    let creditAmount = this.state.formValues["creditAmount"];
-    let creditType = this.state.formValues["creditType"];
-    
-    let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
-    
-    // MULTIPLY YEARS WITH 12 TO GET MONTHS
-    let creditTime = this.state.formValues["creditTime"]*12;  
-
-    // TODO remove ŠUMNIKI FROM bankName for URL generation!!
-    
-    let creditTypeCorrect = this.replaceChars(creditType);
-    let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
-    
-    return call_url
-  }
-
   
+
+  // /** 
+  // * Build a url of a given bank with 
+  // * @param {String} bankName  Name of the bank
+  // * @return   url
+  // */
+  // getUrl(bankName){
+
+  //   let creditAmount = this.state.formValues["creditAmount"];
+  //   let creditType = this.state.formValues["creditType"];
+    
+  //   let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
+    
+  //   // MULTIPLY YEARS WITH 12 TO GET MONTHS
+  //   let creditTime = this.state.formValues["creditTime"]*12;  
+    
+  //   let creditTypeCorrect = this.replaceChars(creditType);
+  //   let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${creditInsurance}&creditTime=${creditTime}`
+    
+  //   return call_url
+  // }
+
+
+  // TODO: refractor
+  setCreditAmount = (value) => {
+    let formValues = this.state.formValues;
+    formValues["creditAmount"] = value;
+    this.setState({formValues});
+  }
+  
+  setCreditTime = (value) => {
+    let formValues = this.state.formValues;
+    formValues["creditTime"] = value;
+    this.setState({formValues});
+  }
 
   /**
    * Reset the form back to beginning
@@ -159,11 +166,26 @@ class CalculatorPage extends React.Component {
     var newValue;
     var name;
 
+    console.log("event", event);
+    console.log("element", elem);
+    console.log("value", value);
+    console.log("event target", event.target);
+  
     // select and assign active banks to state when changing creditType
     if (event.target.name === 'creditType') {
       this.setActiveBanks(event.target.value);
+    }
+
+    if (event.target.name === 'creditInsurance') {
+      console.log('triggered insurance change');
 
       // trigger function to set min max values for time and amount of credit
+      // TODO: edit this
+      // let newFormValues = this.state.formValues;
+      // let activeBanks = this.state.bankSkills[creditType]
+      // newFormValues['creditAmount'] = getMinValue('min_amonunt', formValues['creditInsurance'], formValues['creditType'], activeBanks);
+      // this.setState({formValues: newFormValues});
+
     }
 
     if (event.target.name) {
@@ -185,48 +207,68 @@ class CalculatorPage extends React.Component {
 
     return (
       // LOGO
-     
-      <Container maxWidth="md">
-        <Grid container>
-            {/* Display logo */}
-            <Grid item xs={12} sm={10} md={8}>
-              <Box pt={"2em"}/>
-                <a href="/"><img style={{"height": "2.5em"}} src={finsterDark}/></a>
-              <Box pt={"0.5em"} />
-            </Grid>
-        </Grid>
-        
+      <div>
+      <Container fluid>
+        <Row>
+            <Navbar className="shadow-sm bg-white">
+                <Col xs={6} md={3} lg={2}>
+                    <Navbar.Brand href="/izracun-kredita">
+                        <Image 
+                            src={finsterLight}
+                            alt="Finster Logo"
+                            fluid
+                        />
+                    </Navbar.Brand>
+                </Col>
+            </Navbar>
+          </Row>
+      </Container>
+      
+              
+      <Container>  
         {/* DISPLAY FORM IF WE ARE NOT DISPLAYING RESULTS */}
         { !this.state.creditFormHidden ? (
           
-            <Grid container justify="center">
-              <Grid item xs={12} sm={10} md={8}>
-                <CreditFormStepper 
-                  creditType={this.state.formValues['creditType']}
-                  creditAmount={this.state.formValues['creditAmount']}
-                  creditTime={this.state.formValues['creditTime']}
-                  creditAffiliation={this.state.formValues['creditAffiliation']}
-                  creditInsurance={this.state.formValues['creditInsurance']}
-                  handleChange={this.handleChange} 
-                  creditValueRangeMapper={creditRangeMap} 
-                  handleFinishClick={this.handleFinishClick}
-                  availableBankSkills={availableBankSkills}
-                  activeBanks={this.state.formValues['activeBanks']}
-                  /> 
-              </Grid>
-            </Grid>
+        <Row className="justify-content-center">
+          <Col xs={12} sm={10} md={8}>
+
+              <CreditFormStepper 
+                creditType={this.state.formValues['creditType']}
+                creditAmount={this.state.formValues['creditAmount']}
+                creditTime={this.state.formValues['creditTime']}
+                creditAffiliation={this.state.formValues['creditAffiliation']}
+                creditInsurance={this.state.formValues['creditInsurance']}
+                handleChange={this.handleChange} 
+                handleFinishClick={this.handleFinishClick}
+                availableBankSkills={availableBankSkills}
+                activeBanks={this.state.formValues['activeBanks']}
+                setCreditAmount={this.setCreditAmount}
+                setCreditTime={this.setCreditTime}
+                /> 
+          </Col>
+        </Row>
+             
           
         ) : (
-          
-            <FormResults 
-            backToStart={this.backToStart}
-            activeBanks={this.state.formValues['activeBanks']}
-            getUrl={this.getUrl}
-             />
 
+              <FormResults 
+              backToStart={this.backToStart}
+              activeBanks={this.state.formValues['activeBanks']}
+              getUrl={this.getUrl}
+              creditType={this.state.formValues['creditType']}
+              creditAmount={this.state.formValues['creditAmount']}
+              creditTime={this.state.formValues['creditTime']}
+              creditAffiliation={this.state.formValues['creditAffiliation']}
+              creditInsurance={this.state.formValues['creditInsurance']}
+              handleChange={this.handleChange} 
+              handleFinishClick={this.handleFinishClick}
+              availableBankSkills={availableBankSkills}
+              activeBanks={this.state.formValues['activeBanks']}
+              />
         )}
       
       </Container>
+      </div>
       
     );
   }

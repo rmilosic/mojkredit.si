@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
 import { Grid, Typography, Box } from '@material-ui/core';
+import { 
+    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+  from 'react-bootstrap';
+
+// images
 import SkbLogo from '../../resources/img/skb-logo-otp.png';
 import SberbankLogo from '../../resources/img/sberbank-logo-png-2.png';
 import SparkasseLogo from '../../resources/img/sparkasse-logo.png';
 import UnicreditLogo from '../../resources/img/unicredit-logo.jpg';
 import GorenjskaLogo from '../../resources/img/gorenjska-logo.jpg';
+
+// icons
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 class OfferRowPanel extends Component {
@@ -33,17 +39,24 @@ class OfferRowPanel extends Component {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                     >
-                        <Grid container  alignContent="center">
-                            <Grid item xs={7}>
-                                <img className="d-block"
+                        
+                        <Row className="py-3 justify-content-between">
+                            <Col xs={8} md={4} lg={4}>
+                                <Image className="d-block"
                                 src={this.imgMapper[this.props.bankName]}
                                 alt={this.props.bankName}
-                                style={{"height": "2.5rem"}} /> 
-                            </Grid>
-                            <Grid item xs={5}>
-                                <Typography variant="h5">{this.props["totalAmountPaid"]} €</Typography>
-                            </Grid>
-                        </Grid>
+                                fluid
+                                /> 
+                            </Col>
+                       
+                            <Col xs={12} md={4} lg={6}>
+                                <p className="mt-3 mt-sm-4 mt-md-0">
+                                    <span className="d-sm-inline d-lg-block">Skupni znesek: </span>
+                                    <span className="text-success h4">{this.props["totalAmountPaid"]} €</span>
+                                </p>
+                            </Col>
+                        </Row>
+
             
                     </ExpansionPanelSummary>
 

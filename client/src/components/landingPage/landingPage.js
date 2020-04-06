@@ -15,7 +15,7 @@ import langingPageGraphic from '../../resources/img/landing-graphic-phone.svg';
 
 
 import { 
-    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+    Nav, Navbar, Container, Row, Col, Image, Button } 
 from 'react-bootstrap';
 
 function LandingPage() {
