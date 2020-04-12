@@ -8,6 +8,9 @@ dist
 # Serverless directories
 .serverless
 package-lock.json
+backend/*.js
+backend/serverless_sdk
 
 # secret files
 .env.development
+backend/api/package-lock.json

@@ -1,0 +1,15 @@
+abanka_hitri:
+  handler: api/abanka/hitri.handler
+  events:
+    - http:
+        path: /abanka/hitri
+        method: get
+        cors: true
+  request:
+    template:
+      application/json: '{ 
+        "creditAmount": "$input.params(''creditAmount'')",
+        "creditTime": "$input.params(''creditTime'')",
+        "creditInsurance": "$input.params(''creditInsurance'')"
+        "cooperation": "$input.params(''cooperation'')"
+        }'

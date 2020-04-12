@@ -11,9 +11,9 @@
 #
 # Happy Coding!
 
-service: mojkredit-backend
+service: calculator-backend
 # app and org for use with dashboard.serverless.com
-app: credit-api
+app: finster
 org: milosicr
 
 # You can pin your service to only deploy with a specific Serverless version
@@ -69,6 +69,7 @@ functions:
   - ${file(./api/sparkasse/sparkasse.yml)}
   - ${file(./api/unicredit/unicredit.yml)}
   - ${file(./api/gorenjska/gorenjska.yml)}
+  - ${file(./api/abanka/abanka.yml)}
 
 
   
