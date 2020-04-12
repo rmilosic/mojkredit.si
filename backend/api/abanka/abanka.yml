@@ -13,3 +13,36 @@ abanka_hitri:
         "creditInsurance": "$input.params(''creditInsurance'')"
         "cooperation": "$input.params(''cooperation'')"
         }'
+
+abanka_stanovanjski:
+  handler: api/abanka/stanovanjski.handler
+  events:
+    - http:
+        path: /abanka/stanovanjski
+        method: get
+        cors: true
+  request:
+    template:
+      application/json: '{ 
+        "creditAmount": "$input.params(''creditAmount'')",
+        "creditTime": "$input.params(''creditTime'')",
+        "creditInsurance": "$input.params(''creditInsurance'')"
+        "cooperation": "$input.params(''cooperation'')"
+        }'
+
+
+abanka_gotovinski:
+  handler: api/abanka/gotovinski.handler
+  events:
+    - http:
+        path: /abanka/gotovinski
+        method: get
+        cors: true
+  request:
+    template:
+      application/json: '{ 
+        "creditAmount": "$input.params(''creditAmount'')",
+        "creditTime": "$input.params(''creditTime'')",
+        "creditInsurance": "$input.params(''creditInsurance'')"
+        "cooperation": "$input.params(''cooperation'')"
+        }'

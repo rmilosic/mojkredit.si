@@ -22,7 +22,7 @@ module.exports.handler = (event, context, callback) => {
 
 
 
-  function returnCalculation () {
+  function returnCalcultion () {
     const post_options = {
       "options": {
         "host": "www.abanka.si",
@@ -44,10 +44,17 @@ module.exports.handler = (event, context, callback) => {
         }
       }
     }
-    var data = {"namenId": 3, "zavarovanjeId": 10, "komitentnost": true, "placaNaTRR": true, "vrstaIzracunaId": 0, "znesekKredita": queryData['creditAmount'], "doba": queryData['creditTime'] };
+
+    var placaNaTRR = (queryData["creditInsurance"] == 13) ? null : queryData["cooperation"];
+    var data = {
+      "namenId": 0, "zavarovanjeId": queryData["creditInsurance"], 
+      "komitentnost": queryData["cooperation"], "placaNaTRR": placaNaTRR, 
+      "vrstaIzracunaId": 0, "znesekKredita": queryData['creditAmount'], 
+      "doba": queryData['creditTime'] 
+    };
     // var data = {"namenId": "1", "zavarovanjeId": "10", "komitentnost": "true", "placaNaTRR": "true", "vrstaIzracunaId": "0", "znesekKredita": "25000", "doba": "120" }
     var post_data = JSON.stringify(data);
-    console.log("post data: \n", post_data);
+    // console.log("post data: \n", post_data);
     
 
 
@@ -55,8 +62,8 @@ module.exports.handler = (event, context, callback) => {
       
       var chunks = [];
       
-      console.log('statusCode:', res.statusCode);
-      console.log('headers:', res.headers);
+      // console.log('statusCode:', res.statusCode);
+      // console.log('headers:', res.headers);
 
       // res.setEncoding('utf8');
      
@@ -65,7 +72,7 @@ module.exports.handler = (event, context, callback) => {
           chunks.push(Buffer.from(chunk));
 
       }).on("end",  function() {
-        console.log('chunks \n', chunks);
+        // console.log('chunks \n', chunks);
         var buffer = Buffer.concat(chunks);
 
 
@@ -74,13 +81,13 @@ module.exports.handler = (event, context, callback) => {
             // console.log(err);
           }
           let body = decoded.toString();
-          console.log("body: \n", body.toString());
+          // console.log("body: \n", body.toString());
 
 
           // Process body
 
           let responseList = JSON.parse(body);
-          console.log('response list \n', responseList);
+          // console.log('response list \n', responseList);
           
           var finalList = [];
           responseList.map((response) => {
@@ -110,7 +117,7 @@ module.exports.handler = (event, context, callback) => {
 
           });
 
-          console.log("result \n", finalList.flat());
+          // console.log("result \n", finalList.flat());
 
           callback(null, {
             statusCode: 200,
@@ -142,6 +149,6 @@ module.exports.handler = (event, context, callback) => {
   }
 
 
-  returnCalculation()
+  returnCalcultion()
 
 };

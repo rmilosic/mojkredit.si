@@ -4,7 +4,7 @@ const https = require('https');
 var functions = require('./functions');
 var zlib = require('zlib');
 
-// console.log('Loading function');
+console.log('Loading function');
 
 module.exports.handler = (event, context, callback) => {
 
@@ -22,7 +22,7 @@ module.exports.handler = (event, context, callback) => {
 
 
 
-  function returnCalculation () {
+  function returnCalcultion () {
     const post_options = {
       "options": {
         "host": "www.abanka.si",
@@ -44,7 +44,14 @@ module.exports.handler = (event, context, callback) => {
         }
       }
     }
-    var data = {"namenId": 3, "zavarovanjeId": 10, "komitentnost": true, "placaNaTRR": true, "vrstaIzracunaId": 0, "znesekKredita": queryData['creditAmount'], "doba": queryData['creditTime'] };
+
+    var placaNaTRR = (queryData["creditInsurance"] == 13) ? null : queryData["cooperation"];
+    var data = {
+      "namenId": 1, "zavarovanjeId": queryData["creditInsurance"], 
+      "komitentnost": queryData["cooperation"], "placaNaTRR": placaNaTRR, 
+      "vrstaIzracunaId": 0, "znesekKredita": queryData['creditAmount'], 
+      "doba": queryData['creditTime'] 
+    };
     // var data = {"namenId": "1", "zavarovanjeId": "10", "komitentnost": "true", "placaNaTRR": "true", "vrstaIzracunaId": "0", "znesekKredita": "25000", "doba": "120" }
     var post_data = JSON.stringify(data);
     console.log("post data: \n", post_data);
@@ -71,7 +78,7 @@ module.exports.handler = (event, context, callback) => {
 
         zlib.gunzip(buffer, function(err, decoded) {
           if (err) {
-            // console.log(err);
+            console.log(err);
           }
           let body = decoded.toString();
           console.log("body: \n", body.toString());
@@ -142,6 +149,6 @@ module.exports.handler = (event, context, callback) => {
   }
 
 
-  returnCalculation()
+  returnCalcultion()
 
 };

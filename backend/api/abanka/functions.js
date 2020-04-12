@@ -32,6 +32,11 @@ function parseLoanFields(
     //     "effectiveInterestRate": strNumToCommaSep(parseFloat(effectiveInterestRate.replace(".", "").replace(",", ".")).toFixed(2)),
     //     "totalAmountPaid": strNumToCommaSep(totalAmountPaid),
     //     }
+    if (annualInterestRate.split('%').length == 1){
+        annualInterestRate = parseFloat(annualInterestRate.split(" + ")[1].replace(",", ".")).toFixed(2).toString().replace(".", ",");
+    } else {
+        annualInterestRate = annualInterestRate.split('%')[0].trim()
+    }
     var result = {
     "monthlyAnnuity": monthlyAnnuity,
     "annualInterestRate": annualInterestRate,
@@ -53,50 +58,38 @@ function parseLoanFields(
  */
 function extractLoanDataGeneric(data){
     
-    var offerTitle = data['productBoxData']['ProductName'];
-
+   
     var calculations = data['calculations'];
 
-    var calc_parsed = calculations.map((calc) => {
+    var result = calculations.map((calc) => {
+        console.log("calc", calc);
         var monthlyAnnuity = calc['monthlyPayment'].split(" EUR")[0];
         var annualInterestRate = calc['interestRate'];
         var totalLoanCost = calc['sumCosts'].split(" EUR")[0];
         var totalAmountPaid = calc['totalAmountToPay'].split(" EUR")[0];
         var effectiveInterestRate = calc['effectiveInterestRate'];
         
-        return parseLoanFields(monthlyAnnuity, annualInterestRate, totalLoanCost, totalAmountPaid, effectiveInterestRate)
+        var loanFields = parseLoanFields(monthlyAnnuity, annualInterestRate, totalLoanCost, totalAmountPaid, effectiveInterestRate);
+        loanFields["offerTitle"] = calc['productType'];
+
+        switch (calc["interestRateLegalTextKey"]) {
+            case "variableInterestRate":
+                loanFields["omType"] = "variable";
+                break;
+            
+            case "fixedInterestRate":
+                loanFields["omType"] = "fixed";
+                break;
+        }
+
+        
+        return loanFields;
     })
 
 
-    console.log("calc parsed \n", calc_parsed);
-    // console.log("calculations \n", calculations);
-    var monthlyAnnuity = data["Višina mesečne obremenitve"];
-    var annualInterestRate = data["Obrestna mera"];
-    if ("Obrestna mera" in data){
-        var  annualInterestRate = data["Obrestna mera"];
-    } else {
-        var  annualInterestRate = data["Nominalna obrestna mera"];
-    }
-    var totalAmountPaid = parseFloat(data["Skupni znesek kredita, ki ga plača kreditojemalec"]
-        .split(" EUR")[0].replace(".", "").replace(",", ".")).toFixed(2);
-    var effectiveInterestRate = data["Letna efektivna obrestna mera"];
-
-    // calculate toal loan cost
-    var creditAmount = parseFloat(data["Znesek kredita"]
-        .split(" EUR")[0].replace(".", "").replace(",", ".")).toFixed(2);
-    var totalLoanCost = totalAmountPaid - creditAmount;
-    // console.log("creditAmount: ", creditAmount);
-    // console.log("totalAmountPaid: ", totalAmountPaid);
-    // console.log("totalLoanCost: ", totalLoanCost);
-
-    var result = parseLoanFields(
-        monthlyAnnuity=monthlyAnnuity,
-        annualInterestRate=annualInterestRate,
-        totalLoanCost=totalLoanCost,
-        totalAmountPaid=totalAmountPaid,
-        effectiveInterestRate=effectiveInterestRate
-    )
+    console.log("result \n", result);
     
+
     return result
 }
 

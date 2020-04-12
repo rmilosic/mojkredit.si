@@ -1,12 +1,16 @@
 sberbank: 
   creditInsurance:
     mortgage: 2
-    insurance: 1       
+    insurance: 1  
+  cooperation:
+    true: 2
+    false: 4
 
 skb: 
   creditInsurance: 
     mortgage: 0
     insurance: 2
+  
 
 sparkasse: 
   creditInsurance: 
@@ -24,3 +28,11 @@ gorenjska:
   creditInsurance:
     mortgage: 0
     insurance: 1
+
+abanka:
+  creditInsurance:
+    mortgage: 13
+    insurance: 10
+  cooperation:
+    true: true
+    false: false

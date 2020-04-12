@@ -50,9 +50,6 @@ sberbank:
         min_amount: 15000
         max_amount: 500000
             
-        
-    
-
 skb: 
   stanovanjski: 
     creditInsurance:

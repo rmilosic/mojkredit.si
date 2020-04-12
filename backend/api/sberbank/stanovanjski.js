@@ -41,7 +41,7 @@ module.exports.handler = (event, context, callback) => {
 
   function calculateFixed () {
     var fixed_post_options = {
-      "data": `id=17&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=1&znesekKredita=${queryData['creditAmount']}
+      "data": `id=17&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=${queryData["cooperation"]}&valuta=1&vrstaOM=1&znesekKredita=${queryData['creditAmount']}
     &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
       "options": post_options
     }

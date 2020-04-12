@@ -62,12 +62,25 @@ function FormResults(props) {
         
         // let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
         
-        let mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
+        try {
+            var mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
+        } catch (error) {
+            var mappedCreditInsurance = null;
+        }
+       
+
+        try {
+            var mappedCooperation = valueMapper[bankname]["cooperation"]["true"];
+        } catch (error) {
+            var mappedCooperation = null;
+        }
+        
         // MULTIPLY YEARS WITH 12 TO GET MONTHS
         let fixedCreditTime = creditTime*12;  
         
         let creditTypeCorrect = replaceChars(creditType);
-        let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + `?creditAmount=${creditAmount}&creditInsurance=${mappedCreditInsurance}&creditTime=${fixedCreditTime}`
+        let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + 
+        `?creditAmount=${creditAmount}&creditInsurance=${mappedCreditInsurance}&creditTime=${fixedCreditTime}&cooperation=${mappedCooperation}`
         
         return call_url
     }
@@ -93,9 +106,28 @@ function FormResults(props) {
             if (response.ok) {
             response.json().then(json => {
                 // TODO: call function to render row with data and logo
-                var pushData = {}
-                pushData["data"] = json['data'];
-                pushData["bankName"] = bankName;
+                // console.log(`json ${bankName}`, json);
+                var data = json["data"];
+                
+                if (Array.isArray(data)){
+                    // true - push all elements
+                    // false - push one
+                    var pushData = data.map((offer) => {
+                        offer["bankName"] = bankName;
+                        offer["data"] = offer;
+                        return offer
+                    });
+                    console.log("push data: \n", pushData);
+
+                } else {
+                    var pushData = {
+                        "bankName": bankName,
+                        "data": data
+                    }
+                    console.log("push data normal: \n", pushData);
+                }
+                // pushData["data"] = json['data'];
+                // pushData["bankName"] = bankName;
                 
                 setOfferList(offerListRef => offerListRef.concat(pushData));
     
@@ -120,13 +152,11 @@ function FormResults(props) {
         }
         setOfferList([]);
 
-        // TODO: handle wait
-        await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then(
-        );
+        // TODO: handle wait 
+        // await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
+        await Promise.race(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
         setProcessingResolve(processingResolve => !processingResolve)
     };
-
-    
 
     var omType = compareFixedInterestRate ? "fixed" : "variable";
     var offerItems = offerList.filter(function(e, i){
