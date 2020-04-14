@@ -27,10 +27,10 @@ export default function FormBasic(props) {
   const [validAmount, setValidAmount] = React.useState(false);
   const [validTime, setValidTime] = React.useState(false);
 
-  const [minAmount, setMinAmount] = React.useState(null);
-  const [maxAmount, setMaxAmount] = React.useState(null);
-  const [minTime, setMinTime] = React.useState(null);
-  const [maxTime, setMaxTime] = React.useState(null);
+  const [minAmount,  setMinAmount] = React.useState(null);
+  const [maxAmount,  setMaxAmount] = React.useState(null);
+  const [minTime,  setMinTime] = React.useState(null);
+  const [maxTime,  setMaxTime] = React.useState(null);
 
   const [amountValMessage, setAmountValMessage] = React.useState('');
   const [timeValMessage, setTimeValMessage] = React.useState('');
