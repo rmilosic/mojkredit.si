@@ -2,33 +2,25 @@
 import React  from 'react';
 import ReactDOM from 'react-dom';
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
+// import {
+//   BrowserRouter as Router
+// } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 
 
 import Layout from './components/Layout';
 
-// styles for bootstrap
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import stackInterfaceCSS from './resources/css/stack-interface.css';
-// import iconsMindCSS from './resources/css/iconsmind.css';
-// import bootstrapCSS from './resources/css/bootstrap.css';
-// import themeCSS from './resources/css/theme.css';
-// import customCSS from './resources/css/custom.css';
-// import fontRalewayCSS from './resources/css/font-raleway.css';
 
 require('typeface-montserrat');
 // Theming
 import {MyTheme} from './components/MyTheme.js';
 import MyStyles from './resources/scss/app.scss';
 
-// import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
-
 // import scripts
 import customScripts from './resources/js/custom.js';
+// import bootstrapUtils from '../bootstrap-4.3.1/js/dist/util'
 
 
 const trackingId = "UA-159836417-1"; // Replace with your Google Analytics tracking ID

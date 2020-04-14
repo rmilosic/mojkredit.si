@@ -68,18 +68,18 @@ skb:
         
     
   potrošniški: 
-      creditInsurance:
-          mortgage: 
-              min_time: 3
-              max_time: 84
-              min_amount: 120
-              max_amount: 50000
-          
-          insurance: 
-              min_time: 3
-              max_time: 84
-              min_amount: 120
-              max_amount: 50000
+    creditInsurance:
+        mortgage: 
+            min_time: 3
+            max_time: 84
+            min_amount: 120
+            max_amount: 50000
+        
+        insurance: 
+            min_time: 3
+            max_time: 84
+            min_amount: 120
+            max_amount: 50000
             
 sparkasse: 
   stanovanjski: 
