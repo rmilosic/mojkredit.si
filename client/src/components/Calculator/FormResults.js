@@ -65,13 +65,15 @@ function FormResults(props) {
         try {
             var mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
         } catch (error) {
+            console.log(error)
             var mappedCreditInsurance = null;
         }
        
 
         try {
-            var mappedCooperation = valueMapper[bankname]["cooperation"]["true"];
+            var mappedCooperation = valueMapper[bankName]["cooperation"]["true"];
         } catch (error) {
+            console.log(error)
             var mappedCooperation = null;
         }
         
@@ -153,8 +155,8 @@ function FormResults(props) {
         setOfferList([]);
 
         // TODO: handle wait 
-        // await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
-        await Promise.race(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
+        await Promise.all(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
+        // await Promise.race(activeBanks.map((bank) => fetchResponse(bank, creditAmount, creditType, creditTime, creditInsurance))).then();
         setProcessingResolve(processingResolve => !processingResolve)
     };
 

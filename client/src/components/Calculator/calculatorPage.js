@@ -33,7 +33,6 @@ class CalculatorPage extends React.Component {
       bankSkills: {
         'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska', 'abanka'],
         'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
-        // TODO: FIX ŠTUDENTSKI KREDIT PRIKAZOVANJE
         'študentski': ['gorenjska'],
         'hitri': ['sberbank', 'sparkasse', 'unicredit', 'abanka'],
         'gotovinski': ['sberbank', 'abanka']
