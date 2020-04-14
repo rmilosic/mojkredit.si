@@ -11,9 +11,9 @@
 #
 # Happy Coding!
 
-service: mojkredit-backend
+service: calculator-backend
 # app and org for use with dashboard.serverless.com
-app: credit-api
+app: finster
 org: milosicr
 
 # You can pin your service to only deploy with a specific Serverless version
@@ -27,9 +27,10 @@ provider:
 # you can overwrite defaults here
   stage: dev
   region: eu-west-1
+  timeout: 10
+  # cfnRole: rok-mi-cfn-default
 
 
-# TODO: ADD CFN ROLE
 # TODO: ADD LOGGING GROUPS AND CONFIG MONITORING
 # TODO: ADD TESTS FOR FUNCTIONS
 
@@ -69,6 +70,7 @@ functions:
   - ${file(./api/sparkasse/sparkasse.yml)}
   - ${file(./api/unicredit/unicredit.yml)}
   - ${file(./api/gorenjska/gorenjska.yml)}
+  - ${file(./api/abanka/abanka.yml)}
 
 
   

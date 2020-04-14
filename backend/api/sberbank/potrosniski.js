@@ -42,7 +42,7 @@ module.exports.handler = (event, context, callback) => {
   function calculateFixed () {
     
     var fixed_post_options = {
-      "data": `id=4&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=2&valuta=1&vrstaOM=1&znesekKredita=${queryData['creditAmount']}
+      "data": `id=4&nacinZavarovanja=${queryData['creditInsurance']}&namenKredita=2&oblikaSodelovanja=${queryData["cooperation"]}&valuta=1&vrstaOM=1&znesekKredita=${queryData['creditAmount']}
       &odplacilnaDoba=${queryData['creditTime']}&zadnjaMesecnaAnuiteta=0&elektronskiNaslov=&format=html`,
       "options": post_options
     }
@@ -50,6 +50,9 @@ module.exports.handler = (event, context, callback) => {
     const req = https.request(fixed_post_options.options, (res) => {
     
       let body = '';
+
+      // console.log("res headers: ", res.headers);
+      // console.log("res status: ", res.statusCode);
   
       res.setEncoding('utf8');
       res.on('data', (chunk) => {

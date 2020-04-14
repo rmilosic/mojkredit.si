@@ -31,12 +31,11 @@ class CalculatorPage extends React.Component {
       },
       // TODO show form options depending on present bankSkills
       bankSkills: {
-        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
+        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska', 'abanka'],
         'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
-        // TODO: FIX ŠTUDENTSKI KREDIT PRIKAZOVANJE
         'študentski': ['gorenjska'],
-        'hitri': ['sberbank', 'sparkasse', 'unicredit'],
-        'gotovinski': ['sberbank']
+        'hitri': ['sberbank', 'sparkasse', 'unicredit', 'abanka'],
+        'gotovinski': ['sberbank', 'abanka']
       },
       offerResults: [],
       creditFormHidden: false,
