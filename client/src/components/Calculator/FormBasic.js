@@ -34,6 +34,7 @@ export default function FormBasic(props) {
 
   const [amountValMessage, setAmountValMessage] = React.useState('');
   const [timeValMessage, setTimeValMessage] = React.useState('');
+  const [totalValMessage, setTotalValMessage] = React.useState(null);
 
 
   /**
@@ -45,6 +46,8 @@ export default function FormBasic(props) {
     // set changed credit type
     props.setCreditType(event.target.value);
     // set state to valid
+    props.setCreditAmount(null);
+    props.setCreditTime(null);
     !validPurpose ? setValidPurpose(true) : null;
 
   };
@@ -61,7 +64,9 @@ export default function FormBasic(props) {
     console.log("amount: ", event.target.value)
     console.log("credit Type", props.creditType);
     console.log("active banks", props.activeBanks);
+
     setValidAmount(false);
+    props.setCreditAmount(null);
 
     if (props.creditType != null && props.activeBanks != null){
       setAmountValMessage(``)
@@ -81,6 +86,7 @@ export default function FormBasic(props) {
       } else {
         setAmountValMessage(``);
         setValidAmount(true);
+        props.setCreditAmount(parseInt(value));
       }
 
     } else {
@@ -93,6 +99,8 @@ export default function FormBasic(props) {
     event.preventDefault();
 
     setValidTime(false);
+    props.setCreditTime(null);
+
     var value = event.target.value;
 
     if (props.creditType != null && props.activeBanks != null){
@@ -114,6 +122,7 @@ export default function FormBasic(props) {
       } else {
         setTimeValMessage(``);
         setValidTime(true);
+        props.setCreditTime(parseInt(value));
       }
 
     } else {
@@ -134,9 +143,8 @@ export default function FormBasic(props) {
     if (validPurpose && validAmount && validTime){
       props.handleFinishClick()
     } else {
-      console.log("not valid, redo")
+      setTotalValMessage("Ups, potrebno je odpraviti zgornje napake.")
     }
-    
     
 
   };  
@@ -146,10 +154,10 @@ export default function FormBasic(props) {
     
     <div>
     <Row className="my-5 justify-content-center">
-        <Col className="text-center" xs={12} sm={10}>
-          <h4><i>Enostavna pot do najugodnejšega kredita.</i></h4>
-        </Col>
-      </Row>
+      <Col className="text-center" xs={12} sm={10}>
+        <h4><i>Enostavna pot do najugodnejšega kredita.</i></h4>
+      </Col>
+    </Row>
     
     <form onSubmit={handleSubmit}>
     {/* CREDIT PURPOSE */}
@@ -175,7 +183,7 @@ export default function FormBasic(props) {
     </Row>
 
     {/* ŽELJEN ZNESEK */}
-    <Row className="my-5 py-4">
+    <Row className="my-5 py-2">
       <Col xs={12} lg={7}>
         <h4>Izberite željen znesek</h4>
         <Tooltip title="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book" arrow>
@@ -237,6 +245,7 @@ export default function FormBasic(props) {
       <Col xs={12} sm={6} lg={4} >
       
       {/* ADD VALIDATION TO FORM */}
+        { (totalValMessage != null) ? (<p className="text-danger">{totalValMessage}</p>) : null }
         <Button  className="btn-block" type="submit" variant="contained" color="primary">Izračunaj</Button>
       </Col>
     </Row>

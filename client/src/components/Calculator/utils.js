@@ -150,12 +150,18 @@ export function getMinValue(finalValue, creditInsurance, creditType, activeBanks
 }
 
 export function replaceChars (txt) {
+    // console.log("txt replace: ", txt)    ;
     let replaceList={ "č":"c", "š":"s", "ž":"z" };
-    var new_text = txt.replace(/č|ž|š/g, function(match) {return replaceList[match];})
-    return new_text
+
+    return txt.replace(/č|ž|š/g, function(match) {return replaceList[match];})
+    
   }
+
+export function toTitleCase(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+}
 
 export default {
     getHighestMinValue, getLowestMaxValue, 
     getMaxValue, getMinValue, 
-    replaceChars, getConsolidatedValues}
+    replaceChars, getConsolidatedValues, toTitleCase}

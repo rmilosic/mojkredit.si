@@ -8,6 +8,7 @@ from 'react-bootstrap';
 // import CreditFormStepper from './CreditFormStepper';
 import FormBasic from './FormBasic';
 import FormResults from './FormResults';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 
 // images
@@ -224,7 +225,13 @@ class CalculatorPage extends React.Component {
               <Row className="bg-dark text-white">
               <Navbar>
                 <Col className="py-2 pl-4">
-                  <h5 className="my-auto">Brskalnik kreditov</h5>
+                  <h5 className="my-auto">Brskalnik kreditov
+                  {!this.state.creditFormHidden ?  null : (
+                  <div className="d-inline">
+                    <ChevronRightIcon/> Rezultati
+                  </div>
+                  )}
+                  </h5>
                 </Col>
               </Navbar>
               </Row>

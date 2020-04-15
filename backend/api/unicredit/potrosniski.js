@@ -29,7 +29,7 @@ module.exports.handler = (event, context, callback) => {
   
   // let queryString = querystring.parse(message, null, null);
   var postData = querystring.stringify({
-      "id":9,"amount": queryData["creditAmount"],"period": queryData["creditTime"],"isClient": true,"amountMin":500,"amountMax":30000,"periodMin":3,"periodMax":84,"carValue":0,"carYear":null,"annuityMin":30,"annuityMax":11000,"calcByAnnuity":false,"amountDef":1304.39,"carDeposit":0,"carValueMin":null,"carValueMax":null,"uomMonths":null,"incomeMin":600,"incomeMax":3500,"outcomeMin":0,"outcomeMax":3500,"withAccount":null,"withInsurance":null,"clientIncome":null,"clientOutcome":null,"eligibilityScore":null,
+      "id":9,"amount": queryData["creditAmount"],"period": queryData["creditTime"],"isClient": queryData["cooperation"], "amountMin":500,"amountMax":30000,"periodMin":3,"periodMax":84,"carValue":0,"carYear":null,"annuityMin":30,"annuityMax":11000,"calcByAnnuity":false,"amountDef":1304.39,"carDeposit":0,"carValueMin":null,"carValueMax":null,"uomMonths":null,"incomeMin":600,"incomeMax":3500,"outcomeMin":0,"outcomeMax":3500,"withAccount":null,"withInsurance":null,"clientIncome":null,"clientOutcome":null,"eligibilityScore":null,
       "segments":[
         {"idOm":1,"isClient":false,"showAccount":1,"showInsurance":2},
         {"idOm":1,"isClient":true,"showAccount":0,"showInsurance":1},
