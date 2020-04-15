@@ -10,21 +10,27 @@ skb:
   creditInsurance: 
     mortgage: 0
     insurance: 2
+  cooperation:
+    null: null
 
 sparkasse: 
-  creditInsurance: 
-    mortgage: 0
-    insurance: 1
+  creditInsurance:
+    null: null
+  cooperation:
+    null: null 
     
 unicredit: 
   creditInsurance:
-    mortgage: 0
-    insurance: 1
+    null: null
+  cooperation:
+    true: true
+    false: false
     
 gorenjska:
   creditInsurance:
-    mortgage: 0
-    insurance: 1
+    null: null
+  cooperation:
+    null: null
 
 abanka:
   creditInsurance:

@@ -1,0 +1,27 @@
+stanovanjski: 
+  - sberbank
+  - skb
+  - sparkasse
+  - unicredit
+  - gorenjska
+  - abanka
+
+potrošniški: 
+  - sberbank
+  - skb
+  - sparkasse
+  - unicredit
+  - gorenjska
+
+študentski: 
+  - gorenjska
+
+hitri:
+  - sberbank
+  - sparkasse
+  - unicredit
+  - abanka
+  
+gotovinski: 
+  - sberbank
+  - abanka

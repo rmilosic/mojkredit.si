@@ -114,9 +114,9 @@ export default function SimpleTabs() {
     
     var elements = tabMapper[type];
     
-    var components = elements.map(function(el) {
+    var components = elements.map(function(el, index) {
      return(
-            <Col className="pb-2" xs={12} md={10} lg={4}>
+            <Col key={index} className="pb-2" xs={12} md={10} lg={4}>
               <Card style={{backgroundColor: '#fffff'}}>
                 <Container fluid>
                   {/* ROW CARDS */}
