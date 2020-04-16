@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, FormControl, Box, Typography, Hidden, IconButton } from '@material-ui/core';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
 import { 
-    Nav, Navbar, Container, Row, Col, Image, Button, Form } 
+    Container, Row, Col,  Button, ButtonGroup } 
   from 'react-bootstrap';
 
 // import config
@@ -19,7 +15,7 @@ import Backdrop from './Backdrop';
 import RightDrawer from './RightDrawer';
 import valueMapper from './utils/calcSetup.yml';
 import {replaceChars} from './utils';
-import SideConfig from './SideConfig';
+import SideConfigNew from './SideConfigNew';
 
 // import icons
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
@@ -29,14 +25,18 @@ import InfoIcon from '@material-ui/icons/Info';
 function FormResults(props) {
 
     // state management
-    const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
+    
     const [processingResolve, setProcessingResolve] = useState(true);
     const [offerList, setOfferList] = useState([]);
 
+    const [compareFixedInterestRate, setCompareFixedInterestRate] = useState(true);
+    const [sortBy, setSortBy] = useState('totalAmountPaid');
+    
+
     const [drawer, setDrawer] = React.useState(false);
     // var offerListRef = offerList;
-
-
+    
+    // Trigger gatherCalculations once on load of component
     useEffect( () => {
         gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
         // set type of interest rate
@@ -67,14 +67,7 @@ function FormResults(props) {
      */
     function getFetchItems(bankName, creditAmount, creditTypes, creditTime){
 
-        // let creditAmount = this.state.formValues["creditAmount"];
-        // let creditType = this.state.formValues["creditType"];
-        
-        // let creditInsurance = valueMapper[bankName]["creditInsurance"][this.state.formValues['creditInsurance']]; 
         console.log("geturl props ", arguments);
-        var urlList = [];
-
-
 
         // get bank config object
         var bankConfig = calcSetup[bankName];
@@ -85,30 +78,9 @@ function FormResults(props) {
         var possibleInsurances = [];
         var possibleCooperation = [];
 
-        // if (creditInsuranceMap != null){
-        //     Object.entries(creditInsuranceMap).forEach(([insuranceName, value]) => {
-        //         console.log("ins name: ", insuranceName);
-        //         console.log("ins value: ", value);
-        //         possibleInsurances.push(value);
-        //     });
-        // } else {
-        //     possibleInsurances.push(null)
-        // }
-
-        // if (cooperationMap != null){
-        //     Object.entries(cooperationMap).forEach(([cooperation, value]) => {
-        //         console.log("coop name: ", cooperation);
-        //         console.log("coop value: ", value);
-        //         possibleCooperation.push(value);
-        //     });
-        // }
-        console.log("possible ins: ", possibleInsurances);
-        console.log("possible coop: ", possibleCooperation);
-        
-        console.log("bankconfig: ", bankConfig);
-
         var combinations = [];
-
+        
+        // Create all possible combinations of insurance and cooperation
         Object.entries(creditInsuranceMap).forEach(([insName, insValue]) => {
 
             Object.entries(cooperationMap).forEach(([coopName, coopValue]) => {
@@ -169,28 +141,7 @@ function FormResults(props) {
             }
         });
 
-        // try {
-        //     var mappedCreditInsurance = valueMapper[bankName]["creditInsurance"][creditInsurance]; 
-        // } catch (error) {
-        //     console.log(error)
-        //     var mappedCreditInsurance = null;
-        // }
-       
-
-        // try {
-        //     var mappedCooperation = valueMapper[bankName]["cooperation"]["true"];
-        // } catch (error) {
-        //     console.log(error)
-        //     var mappedCooperation = null;
-        // }
-        
-        // // MULTIPLY YEARS WITH 12 TO GET MONTHS
-        // // let fixedCreditTime = creditTime*12;  
-        
-        // let creditTypeCorrect = replaceChars(creditType);
-        // let call_url = `${process.env.LAMBDA_HOST}/${bankName}/${creditTypeCorrect}` + 
-        // `?creditAmount=${creditAmount}&creditInsurance=${mappedCreditInsurance}&creditTime=${creditTime}&cooperation=${mappedCooperation}`
-        
+ 
         return fetchItems
     }
 
@@ -230,6 +181,7 @@ function FormResults(props) {
                     // true - push all elements
                     // false - push one
                     var pushData = responseList.map((offer) => {
+
                         offer["bankName"] = bankName;
                         offer["creditType"] = fetchItem["creditType"];
                         offer["cooperation"] = fetchItem["cooperation"];
@@ -274,16 +226,35 @@ function FormResults(props) {
         setProcessingResolve(processingResolve => !processingResolve)
     };
 
+    // translate interestRate type
     var omType = compareFixedInterestRate ? "fixed" : "variable";
-    var offerItems = offerList.filter(function(e, i){
+
+    // filter offer list where only items with selected interest rate are available
+    var filteredItems = offerList.filter(function(e, i){
    
         // retrieve the right data in relation to interest rate type
         if(e["data"][omType] != null){
           return true;
         }
           return false;
-        })
-        .map(function (e, i){
+        }
+    );
+
+    // sort filtered items according to selected search strategy
+    filteredItems.sort((a, b) => {
+        if (parseFloat(a["data"][omType][sortBy]) < parseFloat(b["data"][omType][sortBy])){
+            console.log("parsefloat a", parseFloat(a["data"][omType][sortBy]));
+            console.log("parsefloat b", parseFloat(b["data"][omType][sortBy]));
+            return -1
+        } else {
+            console.log("parsefloat a", parseFloat(a["data"][omType][sortBy]));
+            console.log("parsefloat b", parseFloat(b["data"][omType][sortBy]));
+            return 1
+        }
+    })
+
+    // map list of items to js objects
+    var offerItems = filteredItems.map(function (e, i){
           return <OfferRowWhole key={i}  
                 bankName={e["bankName"] }  
                 offerTitle={e["offerTitle"]}
@@ -298,16 +269,35 @@ function FormResults(props) {
                 />
     });
 
+
+    /**
+     * HANDLERS FOR CHANGES IN FORMS
+     */
+
     /**
      * Handle change in interest rate type comparison
      */
-    function handleComparisonChange() {
-        let comparisonState = compareFixedInterestRate;
-        let newComparisonState = comparisonState ? false : true;
-        
-        setCompareFixedInterestRate(newComparisonState);
+    function handleComparisonChange(event) {
+        console.log(event);
+        var value = event.target.value;
+        var newValue = (value == "fixed") ? true : false;
+        setCompareFixedInterestRate(newValue);
     }
 
+    /**
+     * Handle change in sortby sideconfig
+     * @param {*} event 
+     */
+    function handleSortByChange(event){
+        console.log(event);
+        let value = event.target.value;
+        setSortBy = value;
+    }
+
+    /**
+     * Handle forceful submit of form with new params
+     * @param {*} event 
+     */
     const handleSubmit = (event) => {
         gatherCalculations(props.activeBanks, props.creditAmount, props.creditType, props.creditTime, props.creditInsurance);
     }
@@ -321,77 +311,38 @@ function FormResults(props) {
             {/* Desktop config */}
             <Col className="d-none d-lg-block mt-lg-5" lg={3}>
                 
-                <div className="bg-white shadow-sm">
-                {/* <Container>
-                    <SideConfig 
-                        creditType={props.creditType}
-                        creditAmount={props.creditAmount}
-                        creditTime={props.creditTime}
-                        creditAffiliation={props.creditAffiliation}
-                        creditInsurance={props.creditInsurance}
-                        handleChange={props.handleChange} 
-                        handleFinishClick={props.handleFinishClick}
-                        availableBankSkills={props.availableBankSkills}
-                        activeBanks={props.activeBanks} />
+                <div className="bg-white p-4 shadow-sm">
+                    <Container>
+                        <SideConfigNew 
+                        handleComparisonChange={handleComparisonChange}
+                        handleSortByChange={handleSortByChange}
+                        compareFixedInterestRate={compareFixedInterestRate}
+                        sortBy={sortBy}
+                        backToStart={props.backToStart}
+                        />
 
-                    <Row className="mt-3 justify-content-center">
-                        <Col>
-                            <Button variant="primary" onClick={handleSubmit} block>Potrdi</Button>
-                        </Col>
-                    </Row>
-                </Container> */}
+                        {/* <Row className="mt-3 justify-content-center">
+                            <Col>
+                                <Button variant="primary" onClick={handleSubmit} block>Potrdi</Button>
+                            </Col>
+                        </Row> */}
+                    </Container>
                 </div>
             </Col>
 
-            {/* Mobile and tablet results */}
-            <Col xs={12} lg={9}>
-
-                {/* heading and config toggle */}
-                {/* <Row className="justify-content-between pt-4">
-                    <Col>
-                        <FormControl required={true}>
-                            <RadioGroup aria-label="interestRateType"  
-                            name="interestRateType" 
-                            value={compareFixedInterestRate ? "fiksnaOM" : "spremenljivaOM"}  
-                            onChange={handleComparisonChange}
-                            row>
-                                
-                            
-                            <FormControlLabel value={"fiksnaOM"} control={<Radio />} label={"Fiksna OM"} />
-                            <FormControlLabel value={"spremenljivaOM"} control={<Radio />} label={"Variabilna OM"} />
-
-                            </RadioGroup>
-                        
-                        </FormControl>
-                        </Col>
-                    <Col xs={2} >
-                        <div onClick={props.backToStart}>
-                            <IconButton>
-                                <RotateLeftIcon/>
-                            </IconButton> 
-                        </div>
-                    </Col>
-                    <Col xs={2} className="d-lg-none-right">
-                        <div onClick={toggleDrawer}>
-                            <IconButton>
-                                <TuneIcon/>
-                            </IconButton> 
-                        </div>
-                        
-                        
-                    </Col>
-                </Row> */}
+            
+            <Col  xs={12} lg={9}>
                 
-
-                {/* toggle */}
-                
-                <Row className="justify-content-center">
-                    <Col>
-                        <Button variant="dark"><small>Ponastavi</small></Button>
-                        <Button variant="dark"><small>Uredis</small></Button>
+                <Row className="d-md-none justify-content-center my-2">
+                    <Col xs={6}>
+                        <ButtonGroup aria-label="Mobile options">
+                            <Button variant="dark" onClick={props.backToStart}><RotateLeftIcon size="sm"/>Ponastavi</Button>
+                            <Button variant="dark" onClick={toggleDrawer}> <TuneIcon size="sm"/>Filtriraj</Button>
+                        </ButtonGroup>
                     </Col>
                 </Row>
-               
+            
+
                 {/* DISPLAY OFFER ITEMS */}
                 {/* if loading screen, display backgdrop */}
                 { processingResolve ? (
@@ -400,10 +351,10 @@ function FormResults(props) {
             
                     (offerItems.length) > 0 ?
                     <div>
-                    <Row>
-                    <Col>
-                        <InfoIcon/><span>Prikazani rezultati so informativne narave</span>
-                    </Col>
+                    <Row className="py-2">
+                        <Col>
+                            <InfoIcon/><span>Prikazani rezultati so informativne narave</span>
+                        </Col>
                     </Row> 
                     <Row className="justify-content-center">
                         <Col xs={12}>{offerItems}</Col>
@@ -422,21 +373,17 @@ function FormResults(props) {
             </Col>
         </Row>
 
-        {/* {<RightDrawer 
+       {<RightDrawer 
         state={drawer} 
         toggleDrawer={toggleDrawer}
-        creditType={props.creditType}
-        creditAmount={props.creditAmount}
-        creditTime={props.creditTime}
-        creditAffiliation={props.creditAffiliation}
-        creditInsurance={props.creditInsurance}
-        handleChange={props.handleChange} 
-        creditValueRangeMapper={props.creditValueRangeMapper} 
         handleFinishClick={props.handleFinishClick}
-        availableBankSkills={props.availableBankSkills}
-        activeBanks={props.activeBanks}
+        handleComparisonChange={handleComparisonChange}
+        handleSortByChange={handleSortByChange}
+        compareFixedInterestRate={compareFixedInterestRate}
+        sortBy={sortBy}
+        backToStart={props.backToStart}
         gatherCalculations={gatherCalculations}
-        />}  */}
+        />}  
     
     </Container>   
     </div>

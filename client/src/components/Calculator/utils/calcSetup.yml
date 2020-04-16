@@ -4,7 +4,6 @@ sberbank:
     insurance: 1  
   cooperation:
     true: 2
-    false: 4
 
 skb: 
   creditInsurance: 
