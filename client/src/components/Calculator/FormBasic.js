@@ -13,13 +13,6 @@ from 'react-bootstrap';
 
 import { getConsolidatedValues } from './utils'
 
-// import CreditType from './CreditType';
-// import CreditAmount from './CreditAmount';
-// import CreditTime from './CreditTime';
-// import CreditInsurance from './CreditInsurance';
-// import { Card, CardContent } from '@material-ui/core';
-
-
 
 export default function FormBasic(props) {
   // state

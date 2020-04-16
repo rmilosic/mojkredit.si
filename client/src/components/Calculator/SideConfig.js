@@ -21,7 +21,7 @@ export default function SideConfig(props) {
             <div>
               <Row>
                 <Col>
-                  <h4 className="mt-2 text-muted">Nastavitve</h4>
+                  <span className="mt-2 text-muted">Nastavitve</span>
                 </Col>
               </Row>
               <Row>

@@ -108,11 +108,12 @@ export function getConsolidatedValues(type, finalValue, creditTypes, activeBanks
     var candidateValues = getAnyBankCreditValues(finalValue, creditTypes, activeBanks)
     var finalValue = null;
 
+    
     console.log("candidates", candidateValues);
     if (type == 'min'){
-        finalValue = Array.min(candidateValues);
+        finalValue = Math.min(...candidateValues);
     } if (type == 'max'){
-        finalValue = Array.max(candidateValues);
+        finalValue = Math.max(...candidateValues);
     }
 
     return finalValue;
