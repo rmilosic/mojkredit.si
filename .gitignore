@@ -14,3 +14,8 @@ backend/serverless_sdk
 # secret files
 .env.development
 backend/api/package-lock.json
+
+
+# bootstrap
+bootstrap-4.3.1/.github
+bootstrap-4.3.1/nuget
