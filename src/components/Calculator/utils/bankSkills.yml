@@ -5,6 +5,7 @@ stanovanjski:
   - unicredit
   - gorenjska
   - abanka
+  - nlb
 
 potrošniški: 
   - sberbank
@@ -15,6 +16,10 @@ potrošniški:
 
 študentski: 
   - gorenjska
+  - nlb
+
+osebni:
+  - nlb
 
 hitri:
   - sberbank

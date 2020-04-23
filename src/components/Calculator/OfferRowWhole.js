@@ -11,6 +11,7 @@ import SparkasseLogo from '../../resources/img/sparkasse-logo.png';
 import UnicreditLogo from '../../resources/img/unicredit-logo.jpg';
 import GorenjskaLogo from '../../resources/img/gorenjska-logo.jpg';
 import AbankaLogo from '../../resources/img/abanka-logo.png';
+import NLBLogo from '../../resources/img/nlb-logo.png';
 
 
 //  config
@@ -28,7 +29,8 @@ export default function OfferRowPanel(props) {
         "sparkasse": SparkasseLogo,
         "unicredit": UnicreditLogo,
         "gorenjska": GorenjskaLogo,
-        "abanka": AbankaLogo
+        "abanka": AbankaLogo,
+        "nlb": NLBLogo  
     };
 
         

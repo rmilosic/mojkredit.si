@@ -1,14 +1,17 @@
-import React from 'react';
+import React from 'react'
 import { 
   Navbar, Container, Row, Col, Image} 
-from 'react-bootstrap';
+from 'react-bootstrap'
 
 
 // custom compnents
 // import CreditFormStepper from './CreditFormStepper';
-import FormBasic from './FormBasic';
-import FormResults from './FormResults';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import FormBasic from './FormBasic'
+import FormResults from './FormResults'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+
+// import configs
+import bankSkills from './utils/bankSkills.yml'
 
 
 // images
@@ -29,14 +32,6 @@ class CalculatorPage extends React.Component {
         'creditAffiliation': true,
         'activeBanks': null,
         'creditInsurance': null,
-      },
-      // TODO show form options depending on present bankSkills
-      bankSkills: {
-        'stanovanjski': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska', 'abanka'],
-        'potrošniški': ['sberbank', 'skb', 'sparkasse', 'unicredit', 'gorenjska'],
-        'študentski': ['gorenjska'],
-        'hitri': ['sberbank', 'sparkasse', 'unicredit', 'abanka'],
-        'gotovinski': ['sberbank', 'abanka']
       },
       offerResults: [],
       creditFormHidden: false,
@@ -69,14 +64,14 @@ class CalculatorPage extends React.Component {
     // set active banks either from a single string or array
     if (Array.isArray(creditType)){
       let activeBanksAll = creditType.map((creditType) => {
-        return this.state.bankSkills[creditType];
+        return bankSkills[creditType];
       });
 
       activeBanks = Array.from(new Set(activeBanksAll.flat()));
 
     } else {
       
-      activeBanks = this.state.bankSkills[creditType]
+      activeBanks = bankSkills[creditType]
     
     }
     newFormValues['activeBanks'] = activeBanks;
@@ -89,7 +84,7 @@ class CalculatorPage extends React.Component {
   */
   getAvailableBankSkills(){
     let skillsList = []
-    for (const [key, value] of Object.entries(this.state.bankSkills)) {
+    for (const [key, value] of Object.entries(bankSkills)) {
       if (value.length) {
         skillsList.push(key);
       }
@@ -138,9 +133,9 @@ class CalculatorPage extends React.Component {
     let mapper = {
       "nakup-stanovanja": ["stanovanjski"],
       "adaptacija-stanovanja": ["stanovanjski"],
-      "nakup-avtomobila": ["hitri", "potrošniški", "gotovinski"],
-      "potovanja-poroka": ["hitri", "potrošniški", "gotovinski"],
-      "drugo": ["hitri", "potrošniški", "gotovinski"]
+      "nakup-avtomobila": ["hitri", "potrošniški", "gotovinski", "osebni"],
+      "potovanja-poroka": ["hitri", "potrošniški", "gotovinski", "osebni"],
+      "drugo": ["hitri", "potrošniški", "gotovinski", "študentski", "osebni"]
     }
 
     let newValue = mapper[value];
@@ -176,7 +171,6 @@ class CalculatorPage extends React.Component {
     console.log(value);
 
     let formValues = this.state.formValues;
-    let bankSkills = this.state.bankSkills;
 
     var newValue;
     var name;

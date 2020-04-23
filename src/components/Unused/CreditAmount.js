@@ -13,7 +13,7 @@ import {
   from 'react-bootstrap';
 
 
-import {getMinValue, getMaxValue} from './utils';
+import {getMinValue, getMaxValue} from '../Calculator/utils';
 
 
 Array.min = function( array ){

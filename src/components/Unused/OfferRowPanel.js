@@ -71,9 +71,7 @@ class OfferRowPanel extends Component {
                             <Grid item xs={12}><Typography>Skupni stroški kredita: <strong>{this.props["totalLoanCost"]} €</strong></Typography></Grid>
                         
                         </Grid>
-                         {/* <p>Letna obrestna mera: {this.props["annualInterestRate"]}</p>
-                        <p>Efektivna obrestna mera: {this.props["effectiveInterestRate"]}</p>
-                         <p>Skupni stroški kreditaanuiteta: {this.props["totalLoanCost"]}</p>*/}
+                     
                        
                     </ExpansionPanelDetails>
                 </ExpansionPanel>

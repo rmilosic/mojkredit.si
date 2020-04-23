@@ -38,3 +38,11 @@ abanka:
   cooperation:
     true: true
     false: false
+
+nlb:
+  creditInsurance:
+    mortgage: "h"
+    without: "z"
+  cooperation:
+    true: "1"
+    false: ""
